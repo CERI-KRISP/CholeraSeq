@@ -73,17 +73,27 @@ workflow CHOLERA_ANALYSIS_NF {
     )
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
+
+    //============================
+    // CUSTOM START
+    //============================
+
     //
-    // MODULE: Run FastQC
+    // SUBWORKFLOWS
     //
-    FASTQC (
+    QUALITY_CONTROL_WF (
         INPUT_CHECK.out.reads
     )
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
+    ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions.first())
+
+    //============================
+    // CUSTOM STOP
+    //============================
 
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
+
 
     //
     // MODULE: MultiQC
@@ -98,7 +108,7 @@ workflow CHOLERA_ANALYSIS_NF {
     ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
+    //ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
 
     MULTIQC (
         ch_multiqc_files.collect(),
