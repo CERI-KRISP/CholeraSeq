@@ -27,7 +27,7 @@ include { CHOLERA_ANALYSIS_NF } from './workflows/cholera_analysis_nf'
 //
 // WORKFLOW: Run main CERI-KRISP/cholera_analysis_nf analysis pipeline
 //
-workflow CERIKRISP_CHOLERA_ANALYSIS_NF {
+workflow CERI_KRISP {
     CHOLERA_ANALYSIS_NF ()
 }
 
@@ -42,7 +42,7 @@ workflow CERIKRISP_CHOLERA_ANALYSIS_NF {
 // See: https://github.com/nf-core/rnaseq/issues/619
 //
 workflow {
-    CERIKRISP_CHOLERA_ANALYSIS_NF ()
+    CERI_KRISP ()
 }
 
 /*
