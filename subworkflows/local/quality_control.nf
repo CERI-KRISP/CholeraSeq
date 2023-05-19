@@ -11,7 +11,7 @@ workflow QUALITY_CONTROL_WF {
 
         FASTQC(reads_ch)
 
-        //FASTP(reads_ch)
+        FASTP(reads_ch, [], false, false)
 
     emit:
         versions = FASTQC.out.versions.first()
