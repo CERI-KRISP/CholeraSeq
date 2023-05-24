@@ -47,6 +47,6 @@ def create_fastq_channel(LinkedHashMap row) {
 // Function to get list of [ meta, [ fastq_1, fastq_2 ] ]
 def check_is_contig(fastq_1) {
     println(fastq_1.split("\\.")[-1])
-    println(file(fastq_q).extension)
+    println(file(fastq_1).extension)
     //return is_contig
 }
