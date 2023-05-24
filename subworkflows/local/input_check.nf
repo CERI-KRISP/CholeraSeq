@@ -26,6 +26,7 @@ def create_fastq_channel(LinkedHashMap row) {
     def meta = [:]
     meta.id         = row.sample
     meta.single_end = row.single_end.toBoolean()
+    meta.is_contig  = check_is_contig(row.fastq_1)
 
     // add path(s) of the fastq file(s) to the meta map
     def fastq_meta = []
@@ -41,4 +42,11 @@ def create_fastq_channel(LinkedHashMap row) {
         fastq_meta = [ meta, [ file(row.fastq_1), file(row.fastq_2) ] ]
     }
     return fastq_meta
+}
+
+// Function to get list of [ meta, [ fastq_1, fastq_2 ] ]
+def check_is_contig(fastq_1) {
+    println(fastq_1)
+    println(fastq_1.class)
+    return is_contig
 }
