@@ -8,7 +8,7 @@ workflow VARIANT_CALLING_WF {
 
     main:
 
-        SNIPPY_RUN(reads_ch, [], false, false)
+        SNIPPY_RUN(reads_ch, params.fasta)
 
     emit:
         versions = SNIPPY_RUN.out.versions

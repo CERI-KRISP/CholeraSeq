@@ -93,14 +93,14 @@ workflow CHOLERA_ANALYSIS_NF {
 
     cleaned_reads_ch = QUALITY_CONTROL_WF.out.trimmed_reads
                         .mix(reads_ch.contigs)
-                        .collect()
-                        .view()
+                        //.collect()
+                        //.view()
                         //.dump(tag: 'cleaned_reads_ch')
 
-    //VARIANT_CALLING_WF (
-        //QUALITY_CONTROL_WF.out.trimmed_reads
-    //)
-    //ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
+    VARIANT_CALLING_WF (
+        cleaned_reads_ch
+    )
+    ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
 
     //============================
     // CUSTOM STOP
