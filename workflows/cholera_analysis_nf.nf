@@ -85,12 +85,11 @@ workflow CHOLERA_ANALYSIS_NF {
                     fastqs:  it[0].is_contig == false
                 }
 
-    reads_ch.contigs.view()
 
-    //QUALITY_CONTROL_WF (
-        //reads_ch.fastqs
-    //)
-    //ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
+    QUALITY_CONTROL_WF (
+        reads_ch.fastqs
+    )
+    ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
 
     //VARIANT_CALLING_WF (
         //QUALITY_CONTROL_WF.out.reads
