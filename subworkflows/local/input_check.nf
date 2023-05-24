@@ -48,5 +48,5 @@ def create_fastq_channel(LinkedHashMap row) {
 def check_is_contig(fastq_1) {
     println(fastq_1)
     println(fastq_1.class)
-    return is_contig
+    //return is_contig
 }
