@@ -81,7 +81,6 @@ workflow CHOLERA_ANALYSIS_NF {
 
     INPUT_CHECK.out.reads.view()
 
-/*
     reads_ch = INPUT_CHECK.out.reads
                 .branch {
                     contigs: { it[0].is_contig == true }
@@ -89,7 +88,7 @@ workflow CHOLERA_ANALYSIS_NF {
                 }
 
     reads_ch.fastqs.view()
-*/
+
     //QUALITY_CONTROL_WF (
         //reads_ch.fastqs
     //)
