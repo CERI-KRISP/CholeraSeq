@@ -39,6 +39,7 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 //
 include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { QUALITY_CONTROL_WF } from '../subworkflows/local/quality_control'
+include { VARIANT_CALLING_WF } from '../subworkflows/local/variant_calling'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
