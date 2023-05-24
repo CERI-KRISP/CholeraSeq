@@ -85,7 +85,7 @@ workflow CHOLERA_ANALYSIS_NF {
                     fastqs:  it[0].is_contig == false
                 }
 
-    reads_ch.fastqs.view()
+    reads_ch.contigs.view()
 
     //QUALITY_CONTROL_WF (
         //reads_ch.fastqs
