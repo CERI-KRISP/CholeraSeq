@@ -12,7 +12,6 @@ process SNIPPY_RUN {
     path reference
 
     output:
-    tuple val(meta), path("${prefix}/${prefix}.tab")              , emit: tab
     tuple val(meta), path("${prefix}/${prefix}.csv")              , emit: csv
     tuple val(meta), path("${prefix}/${prefix}.html")             , emit: html
     tuple val(meta), path("${prefix}/${prefix}.vcf")              , emit: vcf
