@@ -91,6 +91,11 @@ workflow CHOLERA_ANALYSIS_NF {
     )
     ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
 
+    cleaned_reads_ch = QUALITY_CONTROL_WF.out.reads
+                        .(reads_ch.contigs)
+                        .view()
+                        //.dump(tag: 'cleaned_reads_ch')
+
     //VARIANT_CALLING_WF (
         //QUALITY_CONTROL_WF.out.reads
     //)
