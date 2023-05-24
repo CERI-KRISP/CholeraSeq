@@ -84,10 +84,10 @@ workflow CHOLERA_ANALYSIS_NF {
     )
     ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions.first())
 
-    VARIANT_CALLING_WF (
-        QUALITY_CONTROL_WF.out.reads
-    )
-    ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions.first())
+    //VARIANT_CALLING_WF (
+        //QUALITY_CONTROL_WF.out.reads
+    //)
+    //ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions.first())
 
     //============================
     // CUSTOM STOP
