@@ -35,7 +35,7 @@ process SNIPPY_RUN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: "--cpus $task.cpus"
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fastq_inputs = (meta.single_end && !meta.is_contig) ? "--se ${reads[0]}" : "--R1 ${reads[0]} --R2 ${reads[1]}"
     def final_inputs = meta.is_contig ? "--ctgs ${reads[0]}" : fastq_inputs
@@ -43,7 +43,6 @@ process SNIPPY_RUN {
     """
     snippy \\
         $args \\
-        --cpus $task.cpus \\
         --outdir $prefix \\
         --reference $reference \\
         --prefix $prefix \\
