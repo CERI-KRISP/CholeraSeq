@@ -79,6 +79,9 @@ workflow CHOLERA_ANALYSIS_NF {
     // CUSTOM START
     //============================
 
+    INPUT_CHECK.out.reads.view()
+
+/*
     reads_ch = INPUT_CHECK.out.reads
                 .branch {
                     contigs: { it[0].is_contig == true }
@@ -86,11 +89,11 @@ workflow CHOLERA_ANALYSIS_NF {
                 }
 
     reads_ch.fastqs.view()
-
-    QUALITY_CONTROL_WF (
-        reads_ch.fastqs
-    )
-    ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
+*/
+    //QUALITY_CONTROL_WF (
+        //reads_ch.fastqs
+    //)
+    //ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
 
     //VARIANT_CALLING_WF (
         //QUALITY_CONTROL_WF.out.reads
