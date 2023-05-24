@@ -12,6 +12,7 @@ process SNIPPY_RUN {
     path reference
 
     output:
+    tuple val(meta), path("${prefix}/${prefix}.tab")              , emit: tab
     tuple val(meta), path("${prefix}/${prefix}.csv")              , emit: csv
     tuple val(meta), path("${prefix}/${prefix}.html")             , emit: html
     tuple val(meta), path("${prefix}/${prefix}.vcf")              , emit: vcf
@@ -34,7 +35,7 @@ process SNIPPY_RUN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: "--cpus $task.cpus"
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def fastq_inputs = (meta.single_end && !meta.is_contig) ? "--se ${reads[0]}" : "--R1 ${reads[0]} --R2 ${reads[1]}"
     def final_inputs = meta.is_contig ? "--ctgs ${reads[0]}" : fastq_inputs
@@ -42,6 +43,7 @@ process SNIPPY_RUN {
     """
     snippy \\
         $args \\
+        --cpus $task.cpus \\
         --outdir $prefix \\
         --reference $reference \\
         --prefix $prefix \\
