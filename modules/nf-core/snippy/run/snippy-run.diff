@@ -1,0 +1,35 @@
+Changes in module 'nf-core/snippy/run'
+--- modules/nf-core/snippy/run/main.nf
++++ modules/nf-core/snippy/run/main.nf
+@@ -1,6 +1,6 @@
+ process SNIPPY_RUN {
+     tag "$meta.id"
+-    label 'process_low'
++    label 'process_medium'
+ 
+     conda "bioconda::snippy=4.6.0"
+     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+@@ -36,8 +36,10 @@
+ 
+     script:
+     def args = task.ext.args ?: ''
+-    prefix = task.ext.prefix ?: "${meta.id}"
+-    def read_inputs = meta.single_end ? "--se ${reads[0]}" : "--R1 ${reads[0]} --R2 ${reads[1]}"
++    def prefix = task.ext.prefix ?: "${meta.id}"
++    def fastq_inputs = (meta.single_end && !meta.is_contig) ? "--se ${reads[0]}" : "--R1 ${reads[0]} --R2 ${reads[1]}"
++    def final_inputs = meta.is_contig ? "--ctgs ${reads[0]}" : fastq_inputs
++
+     """
+     snippy \\
+         $args \\
+@@ -45,7 +47,7 @@
+         --outdir $prefix \\
+         --reference $reference \\
+         --prefix $prefix \\
+-        $read_inputs
++        $final_inputs
+ 
+     cat <<-END_VERSIONS > versions.yml
+     "${task.process}":
+
+************************************************************
