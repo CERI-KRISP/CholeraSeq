@@ -79,12 +79,10 @@ workflow CHOLERA_ANALYSIS_NF {
     // CUSTOM START
     //============================
 
-    INPUT_CHECK.out.reads.view()
-
     reads_ch = INPUT_CHECK.out.reads
                 .branch {
-                    contigs: { it[0].is_contig == true }
-                    fastqs: { it[0].is_contig == false }
+                    contigs:  it[0].is_contig == true
+                    fastqs:  it[0].is_contig == false
                 }
 
     reads_ch.fastqs.view()
