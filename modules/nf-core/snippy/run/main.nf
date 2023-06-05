@@ -45,7 +45,6 @@ process SNIPPY_RUN {
         $args \\
         --cpus $task.cpus \\
         --outdir $prefix \\
-        --reference $reference \\
         --prefix $prefix \\
         $final_inputs
 

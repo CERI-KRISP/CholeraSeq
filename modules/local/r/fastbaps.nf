@@ -3,9 +3,9 @@ process R_FASTBAPS {
     label 'process_medium'
 
     conda "bioconda::r-fastbaps=1.0.8"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2' :
-        'biocontainers/snippy:4.6.0--hdfd78af_2' }"
+    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        //'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2' :
+        //'biocontainers/snippy:4.6.0--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(reads)
@@ -13,22 +13,6 @@ process R_FASTBAPS {
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.tab")              , emit: tab
-    tuple val(meta), path("${prefix}/${prefix}.csv")              , emit: csv
-    tuple val(meta), path("${prefix}/${prefix}.html")             , emit: html
-    tuple val(meta), path("${prefix}/${prefix}.vcf")              , emit: vcf
-    tuple val(meta), path("${prefix}/${prefix}.bed")              , emit: bed
-    tuple val(meta), path("${prefix}/${prefix}.gff")              , emit: gff
-    tuple val(meta), path("${prefix}/${prefix}.bam")              , emit: bam
-    tuple val(meta), path("${prefix}/${prefix}.bam.bai")          , emit: bai
-    tuple val(meta), path("${prefix}/${prefix}.log")              , emit: log
-    tuple val(meta), path("${prefix}/${prefix}.aligned.fa")       , emit: aligned_fa
-    tuple val(meta), path("${prefix}/${prefix}.consensus.fa")     , emit: consensus_fa
-    tuple val(meta), path("${prefix}/${prefix}.consensus.subs.fa"), emit: consensus_subs_fa
-    tuple val(meta), path("${prefix}/${prefix}.raw.vcf")          , emit: raw_vcf
-    tuple val(meta), path("${prefix}/${prefix}.filt.vcf")         , emit: filt_vcf
-    tuple val(meta), path("${prefix}/${prefix}.vcf.gz")           , emit: vcf_gz
-    tuple val(meta), path("${prefix}/${prefix}.vcf.gz.csi")       , emit: vcf_csi
-    tuple val(meta), path("${prefix}/${prefix}.txt")              , emit: txt
     path "versions.yml"                                           , emit: versions
 
     when:
@@ -39,6 +23,8 @@ process R_FASTBAPS {
     prefix = task.ext.prefix ?: "${meta.id}"
     def fastq_inputs = (meta.single_end && !meta.is_contig) ? "--se ${reads[0]}" : "--R1 ${reads[0]} --R2 ${reads[1]}"
     def final_inputs = meta.is_contig ? "--ctgs ${reads[0]}" : fastq_inputs
+
+//NOTE: https://github.com/gtonkinhill/fastbaps#command-line-script
 
     """
     snippy \\
@@ -51,7 +37,7 @@ process R_FASTBAPS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        snippy: \$(echo \$(snippy --version 2>&1) | sed 's/snippy //')
+        R_FASTBAPS: FIXME
     END_VERSIONS
     """
 }
