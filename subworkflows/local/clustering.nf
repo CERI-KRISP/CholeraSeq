@@ -10,9 +10,12 @@ workflow CLUSTERING_WF {
 
     main:
 
-        SNIPPY_RUN( reads_ch, params.fasta )
-
-        R_FASTBAPS
+        if(enable_fastbaps) {
+            R_FASTBAPS
+            //in_run_gubbins_ch =
+        } else {
+            //in_run_gubbins_ch =
+        }
 
          RUN_GUBBINS
          MASK_GUBBINS
