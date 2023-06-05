@@ -46,6 +46,7 @@ process SNIPPY_RUN {
         --cpus $task.cpus \\
         --outdir $prefix \\
         --prefix $prefix \\
+        --ref $reference \\
         $final_inputs
 
     cat <<-END_VERSIONS > versions.yml
