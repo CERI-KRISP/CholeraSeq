@@ -1,3 +1,5 @@
+
+
 library(fastbaps)
 library(ape)
 
@@ -5,8 +7,8 @@ library(ape)
 library(Biostrings)
 
 args = commandArgs(trailingOnly=TRUE)
-refFile  = args[0] # '/blue/salemi/share/cholera2022clinical_analyses/snippy_20221111/snippy_ww/gubbins/ww.clean.nepalRef.fasta'
-clusterFile  = args[1] # '/blue/salemi/share/cholera2022clinical_analyses/snippy_20221111/snippy_ww/gubbins/ww.clusters.tsv'
+refFile  = args[1] # '/blue/salemi/share/cholera2022clinical_analyses/snippy_20221111/snippy_ww/gubbins/ww.clean.nepalRef.fasta'
+clusterFile  = args[2] # '/blue/salemi/share/cholera2022clinical_analyses/snippy_20221111/snippy_ww/gubbins/ww.clusters.tsv'
 
 
 ###Upload Afasta alignment
@@ -30,8 +32,7 @@ write.table(x = myClustersDF,
 #
 #Load the fasta file as dnastringset with biostrings
 
-WwAln<- readDNAStringSet(
-  filepath = refFile)
+WwAln<- readDNAStringSet( filepath = refFile)
 
 #NOTE: Track this information in the log file
 #length(WwAln) #2141

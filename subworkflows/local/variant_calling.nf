@@ -1,5 +1,6 @@
 include { SNIPPY_CORE    } from '../../modules/nf-core/snippy/core/main.nf'
-include { SNIPPY_RUN   } from '../../modules/nf-core/snippy/run/main.nf'
+include { SNIPPY_RUN     } from '../../modules/nf-core/snippy/run/main.nf'
+include { SNIPPY_VCF_REPORT   } from '../../modules/local/snippy/vcf_report.nf'
 
 
 workflow VARIANT_CALLING_WF {
@@ -13,6 +14,8 @@ workflow VARIANT_CALLING_WF {
         //NOTE: Later, we could implement the snippy-vcf_report
         //enhancement as per the combined shell script
         SNIPPY_RUN(reads_ch, params.fasta)
+
+        SNIPPY_VCF_REPORT(SNIPPY_RUN.out.vcf_report_tuple)
 
         ch_merge_vcf = SNIPPY_RUN.out.vcf.collect{ meta, vcf -> vcf }
                             .map{ vcf -> [[id:'snippy-core'], vcf]}

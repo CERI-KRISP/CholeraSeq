@@ -2,7 +2,7 @@ process R_FASTBAPS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::r-fastbaps=1.0.8"
+    conda "bioconda::r-fastbaps=1.0.8 bioconda::bioconductor-biostrings=2.66.0"
     //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         //'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2' :
         //'biocontainers/snippy:4.6.0--hdfd78af_2' }"
