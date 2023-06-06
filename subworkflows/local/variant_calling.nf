@@ -14,6 +14,10 @@ workflow VARIANT_CALLING_WF {
         //enhancement as per the combined shell script
         SNIPPY_RUN(reads_ch, params.fasta)
 
+
+        //TODO: Drop the samples from further analysis if the vcf_report is 0.
+        //Addresses the negative control
+
         ch_merge_vcf = SNIPPY_RUN.out.vcf.collect{ meta, vcf -> vcf }
                             .map{ vcf -> [[id:'snippy-core'], vcf]}
 
