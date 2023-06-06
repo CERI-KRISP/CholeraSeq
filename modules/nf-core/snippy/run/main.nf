@@ -50,6 +50,15 @@ process SNIPPY_RUN {
         --ref $reference \\
         $final_inputs
 
+
+    snippy-vcf_report \\
+            --cpus $task.cpus \\
+            --ref $prefix/ref.fa \\
+            --vcf $prefix/${prefix}.vcf \\
+            --bam $prefix/${prefix}.bam \\
+    > ${prefix}.vcf_report.txt
+
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         snippy: \$(echo \$(snippy --version 2>&1) | sed 's/snippy //')
