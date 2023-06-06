@@ -1,6 +1,6 @@
 process SNIPPY_VCF_REPORT {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda "bioconda::snippy=4.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
