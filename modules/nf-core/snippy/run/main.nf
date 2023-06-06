@@ -12,7 +12,7 @@ process SNIPPY_RUN {
     path reference
 
     output:
-    tuple val(meta), path("${prefix}.vcf_report.txt")             , emit: vcf_report
+    tuple val(meta), path("${prefix}/${prefix}.vcf_report.txt")   , emit: vcf_report
     tuple val(meta), path("${prefix}/${prefix}.tab")              , emit: tab
     tuple val(meta), path("${prefix}/${prefix}.csv")              , emit: csv
     tuple val(meta), path("${prefix}/${prefix}.html")             , emit: html
@@ -56,7 +56,7 @@ process SNIPPY_RUN {
             --ref $prefix/ref.fa \\
             --vcf $prefix/${prefix}.vcf \\
             --bam $prefix/${prefix}.bam \\
-    > ${prefix}.vcf_report.txt
+    > $prefix/${prefix}.vcf_report.txt
 
 
     cat <<-END_VERSIONS > versions.yml
