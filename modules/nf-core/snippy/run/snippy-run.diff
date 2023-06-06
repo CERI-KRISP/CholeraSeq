@@ -9,7 +9,15 @@ Changes in module 'nf-core/snippy/run'
  
      conda "bioconda::snippy=4.6.0"
      container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-@@ -37,7 +37,9 @@
+@@ -12,6 +12,7 @@
+     path reference
+ 
+     output:
++    tuple val(meta), path("${prefix}.vcf_report.txt")             , emit: vcf_report
+     tuple val(meta), path("${prefix}/${prefix}.tab")              , emit: tab
+     tuple val(meta), path("${prefix}/${prefix}.csv")              , emit: csv
+     tuple val(meta), path("${prefix}/${prefix}.html")             , emit: html
+@@ -37,15 +38,26 @@
      script:
      def args = task.ext.args ?: ''
      prefix = task.ext.prefix ?: "${meta.id}"
@@ -20,12 +28,22 @@ Changes in module 'nf-core/snippy/run'
      """
      snippy \\
          $args \\
-@@ -45,7 +47,7 @@
+         --cpus $task.cpus \\
          --outdir $prefix \\
-         --reference $reference \\
+-        --reference $reference \\
          --prefix $prefix \\
 -        $read_inputs
++        --ref $reference \\
 +        $final_inputs
++
++
++    snippy-vcf_report \\
++            --cpus $task.cpus \\
++            --ref $prefix/ref.fa \\
++            --vcf $prefix/${prefix}.vcf \\
++            --bam $prefix/${prefix}.bam \\
++    > ${prefix}.vcf_report.txt
++
  
      cat <<-END_VERSIONS > versions.yml
      "${task.process}":

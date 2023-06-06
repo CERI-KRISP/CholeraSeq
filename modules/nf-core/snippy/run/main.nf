@@ -12,7 +12,7 @@ process SNIPPY_RUN {
     path reference
 
     output:
-    tuple val(meta), path("${prefix}/ref.fa"), path("${prefix}/${prefix}.vcf"), path("${prefix}/${prefix}.bam")    , emit: vcf_report_tuple
+    tuple val(meta), path("${prefix}.vcf_report.txt")             , emit: vcf_report
     tuple val(meta), path("${prefix}/${prefix}.tab")              , emit: tab
     tuple val(meta), path("${prefix}/${prefix}.csv")              , emit: csv
     tuple val(meta), path("${prefix}/${prefix}.html")             , emit: html
