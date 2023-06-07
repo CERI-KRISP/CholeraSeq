@@ -22,7 +22,9 @@ workflow VARIANT_CALLING_WF {
         ch_merge_vcf = SNIPPY_RUN.out.vcf
                             .filter { meta, vcf -> vcf.isEmpty() }
                             .collect{ meta, vcf -> vcf }
-                            .map{ vcf -> [[id:'snippy-core'], vcf]}
+                            .view()
+
+                            //.map{ vcf -> [[id:'snippy-core'], vcf]}
 
 
         ch_merge_aligned_fa = SNIPPY_RUN.out.aligned_fa.collect{meta, aligned_fa -> aligned_fa}
