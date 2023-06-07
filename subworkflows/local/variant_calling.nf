@@ -25,6 +25,8 @@ workflow VARIANT_CALLING_WF {
 
         SNIPPY_RUN.out.vcf
             .join(SNIPPY_RUN.out.aligned_fa)
+            .filter { m, v, f  -> !(f.countLines() <= 27) }
+            .collect()
             .view()
 
         ch_merge_vcf = SNIPPY_RUN.out.vcf
