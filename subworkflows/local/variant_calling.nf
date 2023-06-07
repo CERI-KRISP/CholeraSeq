@@ -20,8 +20,8 @@ workflow VARIANT_CALLING_WF {
 
         SNIPPY_RUN.out.vcf
                 .collect{ meta, vcf -> vcf }
+                .filter { it.isEmpty() }
                 .view()
-                //.filter { vcf.isEmpty() }
 
 
         ch_merge_vcf = SNIPPY_RUN.out.vcf
