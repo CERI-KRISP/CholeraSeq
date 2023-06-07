@@ -19,12 +19,13 @@ workflow VARIANT_CALLING_WF {
         //Addresses the negative control
 
         SNIPPY_RUN.out.vcf
-                .filter { m, f  -> f.countLines() >= 3 }
+                .filter { m, f  -> f.countLines() > 27 }
                 .collect{ meta, vcf -> vcf }
                 .view()
 
 
         ch_merge_vcf = SNIPPY_RUN.out.vcf
+                            .filter { m, f  -> f.countLines() > 27 }
                             .collect{ meta, vcf -> vcf }
                             .map{ vcf -> [[id:'snippy-core'], vcf]}
 
