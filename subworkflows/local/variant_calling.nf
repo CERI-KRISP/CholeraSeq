@@ -25,7 +25,7 @@ workflow VARIANT_CALLING_WF {
 
         SNIPPY_RUN.out.vcf
             .join(SNIPPY_RUN.out.aligned_fa)
-            .filter { m, v, f  -> !(f.countLines() <= 27) }
+            .filter { m, v, f  -> !(v.countLines() <= 27) }
             .collect()
             .view()
 
