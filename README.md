@@ -8,6 +8,9 @@
 
 ## Introduction
 
+> :warning: **ALPHA STAGE PIPELINE!**:
+The pipeline is in activate development and NOT recommended for usage yet.
+
 **CERI-KRISP/cholera_analysis_nf** is a Nextflow pipeline for Cholera outbreaks analysis
 
 <!-- TODO nf-core:
