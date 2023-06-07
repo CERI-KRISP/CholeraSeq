@@ -20,7 +20,7 @@ workflow VARIANT_CALLING_WF {
 
         SNIPPY_RUN.out.vcf
                 .collect{ meta, vcf -> vcf }
-                .filter { it.isEmpty() }
+                .filter { !it.isEmpty() }
                 .view()
 
 
