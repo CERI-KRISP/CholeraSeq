@@ -18,12 +18,6 @@ workflow VARIANT_CALLING_WF {
         //TODO: Drop the samples from further analysis if the vcf_report is 0.
         //Addresses the negative control
 
-        SNIPPY_RUN.out.vcf
-                .filter { m, f  -> f.countLines() > 27 }
-                .collect{ meta, vcf -> vcf }
-                .view()
-
-
         ch_merge_vcf = SNIPPY_RUN.out.vcf
                             .filter { m, f  -> f.countLines() > 27 }
                             .collect{ meta, vcf -> vcf }
@@ -34,7 +28,7 @@ workflow VARIANT_CALLING_WF {
 
         ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
 
-        //SNIPPY_CORE( ch_snippy_core, params.fasta )
+        SNIPPY_CORE( ch_snippy_core, params.fasta )
 
     emit:
         versions = SNIPPY_RUN.out.versions
