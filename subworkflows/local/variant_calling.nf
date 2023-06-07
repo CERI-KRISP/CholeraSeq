@@ -19,8 +19,9 @@ workflow VARIANT_CALLING_WF {
         //Addresses the negative control
 
         SNIPPY_RUN.out.vcf
+                .collect{ meta, vcf -> vcf }
+                .filter { vcf.isEmpty() }
                 .view()
-                //.filter { meta, vcf -> vcf.isEmpty() }
 
 
         ch_merge_vcf = SNIPPY_RUN.out.vcf
