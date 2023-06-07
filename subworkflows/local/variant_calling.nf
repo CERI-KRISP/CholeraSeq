@@ -32,7 +32,7 @@ workflow VARIANT_CALLING_WF {
 
         ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
 
-        SNIPPY_CORE( ch_snippy_core, params.fasta )
+        //SNIPPY_CORE( ch_snippy_core, params.fasta )
 
     emit:
         versions = SNIPPY_RUN.out.versions
