@@ -18,14 +18,14 @@ workflow VARIANT_CALLING_WF {
         //TODO: Drop the samples from further analysis if the vcf_report is 0.
         //Addresses the negative control
 
+        SNIPPY_RUN.out.vcf
+                .filter { meta, vcf -> vcf.isEmpty() }
+                .view()
+
 
         ch_merge_vcf = SNIPPY_RUN.out.vcf
-                            .filter { meta, vcf -> vcf.isEmpty() }
                             .collect{ meta, vcf -> vcf }
-                            .view()
-
-                            //.map{ vcf -> [[id:'snippy-core'], vcf]}
-
+                            .map{ vcf -> [[id:'snippy-core'], vcf]}
 
         ch_merge_aligned_fa = SNIPPY_RUN.out.aligned_fa.collect{meta, aligned_fa -> aligned_fa}
                             .map{ aligned_fa -> [[id:'snippy-core'], aligned_fa]}
