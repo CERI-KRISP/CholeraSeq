@@ -10,8 +10,6 @@ workflow VARIANT_CALLING_WF {
     main:
 
 
-        //NOTE: Later, we could implement the snippy-vcf_report
-        //enhancement as per the combined shell script
         SNIPPY_RUN(reads_ch, params.fasta)
 
 
@@ -19,12 +17,15 @@ workflow VARIANT_CALLING_WF {
         //Addresses the negative control
 
 
-        ch_failed_sample_ids =  SNIPPY_RUN.out.vcf
+        list_failed_sample_ids =  SNIPPY_RUN.out.vcf
                                     .filter { m, f  -> f.countLines() <= 27 }
                                     .map { m, f -> m.id }
-                                    .collect()
+                                    .toList()
                                     .view()
 
+        SNIPPY_RUN.out.vcf
+            .join(SNIPPY_RUN.out.aligned_fa)
+            .view()
 
         ch_merge_vcf = SNIPPY_RUN.out.vcf
                             .collect{ meta, vcf -> vcf }
