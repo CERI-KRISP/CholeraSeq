@@ -105,7 +105,7 @@ workflow CHOLERA_ANALYSIS_NF {
 
 
     CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
-    ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
+    //ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
 
     //============================
     // CUSTOM STOP
