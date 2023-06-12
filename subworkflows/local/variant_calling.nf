@@ -27,14 +27,15 @@ workflow VARIANT_CALLING_WF {
         SNIPPY_RUN.out.vcf
             .join(SNIPPY_RUN.out.aligned_fa)
             .filter { m, v, f  -> (v.countLines() > 27) }
-            .branch {
-                vcf: ( it.getExtension() == "vcf" )
-                aligned_fa: ( it.getExtension() == "fa" )
-            }
-            .set { result }
-
-         result.vcf.view()
-         result.aligned_fa.view()
+            view { m, v, f -> v.getExtension() }
+//            .branch {
+//                vcf: ( it.getExtension() == "vcf" )
+//                aligned_fa: ( it.getExtension() == "fa" )
+//            }
+//            .set { result }
+//
+//         result.vcf.view()
+//         result.aligned_fa.view()
 
 /*
         ch_merge_vcf = SNIPPY_RUN.out.vcf
