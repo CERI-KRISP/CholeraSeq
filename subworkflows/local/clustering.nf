@@ -23,5 +23,5 @@ workflow CLUSTERING_WF {
          //MASK_GUBBINS
 
     emit:
-        versions = R_FASTBAPS.out.versions
+        versions = RUN_GUBBINS.out.versions
 }
