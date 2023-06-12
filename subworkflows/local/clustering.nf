@@ -1,6 +1,6 @@
-include { R_FASTBAPS                  } from '../../modules/local/r/fastbaps.nf'
-include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
-include { MASK_GUBBINS                } from '../../modules/nf-core/gubbins/main.nf'
+//include { R_FASTBAPS                  } from '../../modules/local/r/fastbaps.nf'
+//include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
+//include { MASK_GUBBINS                } from '../../modules/nf-core/gubbins/main.nf'
 
 
 workflow CLUSTERING_WF {
