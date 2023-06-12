@@ -8,7 +8,7 @@ process MASK_GUBBINS {
 
 
     input:
-    path(alignment), path(input_gff)
+    tuple path(alignment), path(input_gff)
 
     output:
     path "*.fasta"                          , emit: fasta
