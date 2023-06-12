@@ -11,7 +11,7 @@ process MASK_GUBBINS {
     tuple path(alignment), path(input_gff)
 
     output:
-    path "*.masked.fasta"                   , emit: masked_fasta
+    path "*.masked.fasta"                   , emit: masked_fast
     path "versions.yml"                     , emit: versions
 
     when:
