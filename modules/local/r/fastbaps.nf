@@ -9,7 +9,6 @@ process R_FASTBAPS {
 
     input:
     tuple val(meta), path(cleaned_fa)
-    path reference
 
     output:
     path "versions.yml"                                           , emit: versions
