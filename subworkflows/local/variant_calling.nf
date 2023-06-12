@@ -13,11 +13,9 @@ workflow VARIANT_CALLING_WF {
 
         //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
         //to addresses the negative control
-
         ch_passed_samples = SNIPPY_RUN.out.vcf
                                 .join(SNIPPY_RUN.out.aligned_fa)
                                 .filter { m, v, f  -> (v.countLines() > 27) }
-
 
         ch_merge_vcf = ch_passed_samples
                             .collect{ meta, vcf, aligned_fa -> vcf }
