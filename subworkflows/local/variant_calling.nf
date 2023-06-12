@@ -1,5 +1,6 @@
-include { SNIPPY_CORE    } from '../../modules/nf-core/snippy/core/main.nf'
-include { SNIPPY_RUN     } from '../../modules/nf-core/snippy/run/main.nf'
+include { SNIPPY_CORE         } from '../../modules/nf-core/snippy/core/main.nf'
+include { SNIPPY_RUN          } from '../../modules/nf-core/snippy/run/main.nf'
+include { SNIPPY_AND_SNPSITES } from '../../modules/local/mulled/snippy_and_snpsites.nf'
 
 
 workflow VARIANT_CALLING_WF {
@@ -30,6 +31,8 @@ workflow VARIANT_CALLING_WF {
         ch_snippy_core.dump(tag: "ch_snippy_core")
 
         SNIPPY_CORE( ch_snippy_core, params.fasta )
+
+        SNIPPY_AND_SNPSITES( SNIPPY_CORE.out.full_aln )
 
     emit:
         versions = SNIPPY_RUN.out.versions
