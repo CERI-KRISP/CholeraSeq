@@ -8,7 +8,7 @@ process MASK_GUBBINS {
 
 
     input:
-    path alignment
+    path(alignment), path(gff)
 
     output:
     path "*.fasta"                          , emit: fasta
@@ -33,8 +33,8 @@ process MASK_GUBBINS {
     """
     mask_gubbins_aln.py \\
       --aln ${alignment} \\
-      --gff ${alignment}.gub.recombination_predictions.gff \\
-      --out ${alignment}.gub.masked.fasta
+      --gff ${gff} \\
+      --out ${alignment.simpleName}.gub.masked.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
