@@ -10,7 +10,7 @@ process GUBBINS {
     path alignment
 
     output:
-    path "*.fasta", path "*.gff"            , emit: fasta_gff
+    tuple path("*.fasta"), path("*.gff")    , emit: fasta_gff
     path "*.fasta"                          , emit: fasta
     path "*.gff"                            , emit: gff
     path "*.vcf"                            , emit: vcf
