@@ -30,9 +30,9 @@ process MASK_GUBBINS {
     """
 
     mask_gubbins_aln.py \\
-      --aln ${aligned_fasta} \\
-      --gff ${aligned_fasta.getName()}.gub.recombination_predictions.gff \\
-      --out ${aligned_fasta.getName()}.gub.masked.fasta
+      --aln ${alignment} \\
+      --gff ${alignment}.gub.recombination_predictions.gff \\
+      --out ${alignment}.gub.masked.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
