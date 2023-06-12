@@ -1,5 +1,5 @@
 process R_FASTBAPS {
-    tag "$meta.id"
+    tag "r-fastbaps"
     label 'process_medium'
 
     conda "bioconda::r-fastbaps=1.0.8 bioconda::bioconductor-biostrings=2.66.0"
@@ -17,12 +17,13 @@ process R_FASTBAPS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: "-p optimise.symmetric -l 1 -t ${task.cpus} "
+    def args = task.ext.args ?: "-p optimise.symmetric  -t ${task.cpus} "
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     run_fastbaps \\
         $args \\
+        -l 1 \\
         -i ${cleaned_fa}
 
     cat <<-END_VERSIONS > versions.yml
