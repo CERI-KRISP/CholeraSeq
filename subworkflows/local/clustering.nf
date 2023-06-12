@@ -20,7 +20,7 @@ workflow CLUSTERING_WF {
         }
 
          RUN_GUBBINS( in_run_gubbins_ch )
-         MASK_GUBBINS( RUN_GUBBINS.out. )
+         MASK_GUBBINS( RUN_GUBBINS.out.fasta )
 
     //emit:
         //versions = RUN_GUBBINS.out.versions
