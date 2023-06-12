@@ -11,15 +11,7 @@ process MASK_GUBBINS {
     tuple path(alignment), path(input_gff)
 
     output:
-    path "*.fasta"                          , emit: fasta
-    path "*.gff"                            , emit: gff
-    path "*.vcf"                            , emit: vcf
-    path "*.csv"                            , emit: stats
-    path "*.phylip"                         , emit: phylip
-    path "*.recombination_predictions.embl" , emit: embl_predicted
-    path "*.branch_base_reconstruction.embl", emit: embl_branch
-    path "*.final_tree.tre"                 , emit: tree
-    path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
+    path "*.masked.fasta"                   , emit: masked_fasta
     path "versions.yml"                     , emit: versions
 
     when:
