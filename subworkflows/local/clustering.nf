@@ -1,12 +1,12 @@
 //include { R_FASTBAPS                  } from '../../modules/local/r/fastbaps.nf'
-//include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
+include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
 //include { MASK_GUBBINS                } from '../../modules/nf-core/gubbins/main.nf'
 
 
 workflow CLUSTERING_WF {
 
     take:
-        reads_ch
+        clean_full_aln_fasta
 
     main:
 
@@ -17,7 +17,7 @@ workflow CLUSTERING_WF {
             //in_run_gubbins_ch =
         }
 
-         //RUN_GUBBINS
+         RUN_GUBBINS(clean_full_aln_fasta)
          //MASK_GUBBINS
 
 //    emit:

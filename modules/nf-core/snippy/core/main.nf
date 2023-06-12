@@ -12,7 +12,6 @@ process SNIPPY_CORE {
     path reference
 
     output:
-    tuple val(meta), path("${prefix}.cleaned_full.aln"), emit: full_aln
     tuple val(meta), path("${prefix}.aln")             , emit: aln
     tuple val(meta), path("${prefix}.full.aln")        , emit: full_aln
     tuple val(meta), path("${prefix}.tab")             , emit: tab
@@ -45,10 +44,6 @@ process SNIPPY_CORE {
         --ref $reference_name \\
         --prefix $prefix \\
         samples/*
-
-
-    # removing ambiguous iupac codes and replacing them with Ns
-    snippy-clean_full_aln ${prefix}.full.aln >  ${prefix}.cleaned_full.aln
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

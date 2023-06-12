@@ -1,7 +1,7 @@
 Changes in module 'nf-core/snippy/core'
 --- modules/nf-core/snippy/core/main.nf
 +++ modules/nf-core/snippy/core/main.nf
-@@ -12,12 +12,13 @@
+@@ -12,12 +12,12 @@
      path reference
  
      output:
@@ -11,7 +11,6 @@ Changes in module 'nf-core/snippy/core'
 -    tuple val(meta), path("${prefix}.vcf")     , emit: vcf
 -    tuple val(meta), path("${prefix}.txt")     , emit: txt
 -    path "versions.yml"                        , emit: versions
-+    tuple val(meta), path("${prefix}.cleaned_full.aln"), emit: full_aln
 +    tuple val(meta), path("${prefix}.aln")             , emit: aln
 +    tuple val(meta), path("${prefix}.full.aln")        , emit: full_aln
 +    tuple val(meta), path("${prefix}.tab")             , emit: tab
@@ -21,16 +20,5 @@ Changes in module 'nf-core/snippy/core'
  
      when:
      task.ext.when == null || task.ext.when
-@@ -45,6 +46,10 @@
-         --prefix $prefix \\
-         samples/*
- 
-+
-+    # removing ambiguous iupac codes and replacing them with Ns
-+    snippy-clean_full_aln ${prefix}.full.aln >  ${prefix}.cleaned_full.aln
-+
-     cat <<-END_VERSIONS > versions.yml
-     "${task.process}":
-         snippy-core: \$(echo \$(snippy-core --version 2>&1) | sed 's/snippy-core //')
 
 ************************************************************
