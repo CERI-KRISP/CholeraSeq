@@ -13,31 +13,21 @@ workflow VARIANT_CALLING_WF {
         SNIPPY_RUN(reads_ch, params.fasta)
 
 
-        //TODO: Drop the samples from further analysis if the vcf_report is 0.
-        //Addresses the negative control
+        //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
+        //to addresses the negative control
+
+        ch_passed_samples = SNIPPY_RUN.out.vcf
+                                .join(SNIPPY_RUN.out.aligned_fa)
+                                .filter { m, v, f  -> (v.countLines() > 27) }
+                                .branch {
+                                    vcf: { m,v,f -> [m, v] }
+                                    aligned_fa: { m,v,f -> [m, f] }
+                                }
+
+        ch_passed_samples.vcf.vie()
 
 /*
-        list_failed_sample_ids =  SNIPPY_RUN.out.vcf
-                                    .filter { m, f  -> f.countLines() <= 27 }
-                                    .map { m, f -> m.id }
-                                    .toList()
-                                    .view()
-*/
-
-        SNIPPY_RUN.out.vcf
-            .join(SNIPPY_RUN.out.aligned_fa)
-            .filter { m, v, f  -> (v.countLines() > 27) }
-            .branch {
-                vcf: { m,v,f -> ( v.getExtension == "vcf") }
-                aligned_fa: { m,v,f -> ( v.getExtension == "fa") }
-            }
-            .set { result }
-
-         result.vcf.view()
-         result.aligned_fa.view()
-
-/*
-        ch_merge_vcf = SNIPPY_RUN.out.vcf
+        ch_merge_vcf = ch_passed_samples.vcf
                             .collect{ meta, vcf -> vcf }
                             .map{ vcf -> [[id:'snippy-core'], vcf]}
 
@@ -47,10 +37,12 @@ workflow VARIANT_CALLING_WF {
 
         ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
 
+*/
         //ch_snippy_core.view()
 
         //SNIPPY_CORE( ch_snippy_core, params.fasta )
-*/
+
+
     emit:
         versions = SNIPPY_RUN.out.versions
 }
