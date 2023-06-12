@@ -18,8 +18,9 @@ workflow VARIANT_CALLING_WF {
                                 .join(SNIPPY_RUN.out.aligned_fa)
                                 .filter { m, v, f  -> (v.countLines() > 27) }
                                 .map {
-                                    m,v,f -> { m.id = "snippy-core"}
+                                    m,v,f -> [[id: "snippy-core", vcf, aligned_fa ]]
                                 }
+                                .collect()
                                 .view()
 
         //SNIPPY_CORE( ch_snippy_core, params.fasta )
