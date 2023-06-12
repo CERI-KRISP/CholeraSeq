@@ -11,15 +11,15 @@ workflow CLUSTERING_WF {
     main:
 
         if(enable_fastbaps) {
-            R_FASTBAPS
+            //R_FASTBAPS
             //in_run_gubbins_ch =
         } else {
             //in_run_gubbins_ch =
         }
 
-         RUN_GUBBINS
-         MASK_GUBBINS
+         //RUN_GUBBINS
+         //MASK_GUBBINS
 
-    emit:
-        versions = SNIPPY_RUN.out.versions
+//    emit:
+//        versions = RUN_GUBBINS.out.versions
 }
