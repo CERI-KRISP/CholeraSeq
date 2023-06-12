@@ -45,6 +45,10 @@ process SNIPPY_CORE {
         --prefix $prefix \\
         samples/*
 
+
+    # removing ambiguous iupac codes and replacing them with Ns
+    snippy-clean_full_aln ${prefix}.full.aln >  ${prefix}.cleaned_full.aln
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         snippy-core: \$(echo \$(snippy-core --version 2>&1) | sed 's/snippy-core //')

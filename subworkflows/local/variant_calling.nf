@@ -31,7 +31,6 @@ workflow VARIANT_CALLING_WF {
 
         SNIPPY_CORE( ch_snippy_core, params.fasta )
 
-
     emit:
         versions = SNIPPY_RUN.out.versions
 }
