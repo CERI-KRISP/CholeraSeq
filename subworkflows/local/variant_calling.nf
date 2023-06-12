@@ -17,11 +17,19 @@ workflow VARIANT_CALLING_WF {
         ch_passed_samples = SNIPPY_RUN.out.vcf
                                 .join(SNIPPY_RUN.out.aligned_fa)
                                 .filter { m, v, f  -> (v.countLines() > 27) }
-                                .map {
-                                    m,v,f -> [[id: "snippy-core"], v, f ]
-                                }
-                                .collect()
-                                .view()
+
+
+        ch_merge_vcf = ch_passed_samples
+                            .collect{ meta, vcf, aligned_fa -> vcf }
+                            .map{ vcf -> [[id:'snippy-core'], vcf]}
+
+        ch_merge_aligned_fa = ch_passed_samples
+                                .collect{meta, vcf, aligned_fa -> aligned_fa}
+                                .map{ aligned_fa -> [[id:'snippy-core'], aligned_fa]}
+
+        ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
+
+        ch_snippy_core.view()
 
         //SNIPPY_CORE( ch_snippy_core, params.fasta )
 
