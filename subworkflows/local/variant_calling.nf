@@ -36,7 +36,7 @@ workflow VARIANT_CALLING_WF {
 
          result.aligned_fa.view()
 
-
+/*
         ch_merge_vcf = SNIPPY_RUN.out.vcf
                             .collect{ meta, vcf -> vcf }
                             .map{ vcf -> [[id:'snippy-core'], vcf]}
@@ -50,7 +50,7 @@ workflow VARIANT_CALLING_WF {
         //ch_snippy_core.view()
 
         //SNIPPY_CORE( ch_snippy_core, params.fasta )
-
+*/
     emit:
         versions = SNIPPY_RUN.out.versions
 }
