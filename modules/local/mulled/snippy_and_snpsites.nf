@@ -11,7 +11,10 @@ process SNIPPY_AND_SNPSITES {
     tuple val(meta), path(snippy_aligned_fasta)
 
     output:
-    tuple val(meta), path("${prefix}.cleaned_full.aln"), emit: full_aln
+    tuple val(meta), path("${prefix}.cleaned_full.aln"), emit: cleaned_full_aln
+    tuple val(meta), path("${prefix}_cls.full.aln")    , emit: cls_full_aln
+    tuple val(meta), path("${prefix}_iq_cls.full.aln") , emit: iq_cls_full_aln
+    tuple val(meta), path("${prefix}_mm_cls.full.aln") , emit: mm_cls_full_aln
     path "versions.yml"                                , emit: versions
 
     when:
