@@ -10,7 +10,7 @@ workflow CLUSTERING_WF {
 
     main:
 
-        if(enable_fastbaps) {
+        if(params.enable_fastbaps) {
             R_FASTBAPS( clean_full_aln_fasta )
             //in_run_gubbins_ch =
         } else {
