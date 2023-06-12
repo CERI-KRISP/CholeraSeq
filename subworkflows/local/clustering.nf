@@ -19,9 +19,9 @@ workflow CLUSTERING_WF {
             in_run_gubbins_ch = clean_full_aln_fasta
         }
 
-         in_run_gubbins_ch.map { m, f -> f }
+         in_run_gubbins_ch.map { m, f -> f }.view()
 
-         RUN_GUBBINS(in_run_gubbins_ch)
+         //RUN_GUBBINS(in_run_gubbins_ch)
          //MASK_GUBBINS
 
     emit:
