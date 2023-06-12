@@ -16,12 +16,13 @@ workflow VARIANT_CALLING_WF {
         //TODO: Drop the samples from further analysis if the vcf_report is 0.
         //Addresses the negative control
 
-
+/*
         list_failed_sample_ids =  SNIPPY_RUN.out.vcf
                                     .filter { m, f  -> f.countLines() <= 27 }
                                     .map { m, f -> m.id }
                                     .toList()
                                     .view()
+*/
 
         SNIPPY_RUN.out.vcf
             .join(SNIPPY_RUN.out.aligned_fa)
