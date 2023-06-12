@@ -27,7 +27,7 @@ workflow VARIANT_CALLING_WF {
 
         ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
 
-        ch_snippy_core.view()
+        ch_snippy_core.dump(tag: "ch_snippy_core")
 
         SNIPPY_CORE( ch_snippy_core, params.fasta )
 
