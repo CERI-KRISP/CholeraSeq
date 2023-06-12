@@ -24,7 +24,7 @@ workflow VARIANT_CALLING_WF {
                                     aligned_fa: { m,v,f -> [m, f] }
                                 }
 
-        ch_passed_samples.vcf.vie()
+        ch_passed_samples.vcf.view()
 
 /*
         ch_merge_vcf = ch_passed_samples.vcf
