@@ -26,18 +26,17 @@ process MASK_GUBBINS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix =
 
     """
 
     mask_gubbins_aln.py \\
-      --aln ../fastbaps/${indFile}.fasta \\
-      --gff ${indFile}.gub.recombination_predictions.gff \\
-      --out ${indFile}.gub.masked.fasta
+      --aln ${aligned_fasta} \\
+      --gff ${aligned_fasta.getName()}.gub.recombination_predictions.gff \\
+      --out ${aligned_fasta.getName()}.gub.masked.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gubbins: \$(run_gubbins.py --version 2>&1)
+        gubbins: \$(mask_gubbins_aln.py --version 2>&1)
     END_VERSIONS
     """
 }
