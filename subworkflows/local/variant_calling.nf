@@ -35,5 +35,6 @@ workflow VARIANT_CALLING_WF {
         SNIPPY_AND_SNPSITES( SNIPPY_CORE.out.full_aln )
 
     emit:
+        cleaned_full_aln = SNIPPY_AND_SNPSITES.out.cleaned_full_aln
         versions = SNIPPY_RUN.out.versions
 }
