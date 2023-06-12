@@ -20,6 +20,6 @@ workflow CLUSTERING_WF {
          //RUN_GUBBINS(clean_full_aln_fasta)
          //MASK_GUBBINS
 
-//    emit:
-//        versions = RUN_GUBBINS.out.versions
+    emit:
+        versions = R_FASTBAPS.out.versions
 }
