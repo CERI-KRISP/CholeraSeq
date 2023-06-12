@@ -17,14 +17,15 @@ process R_FASTBAPS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: "-p optimise.symmetric  -t ${task.cpus} "
+    def args = task.ext.args ?: "-p optimise.symmetric "
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     run_fastbaps \\
         $args \\
         -l 1 \\
-        -i ${cleaned_fa}
+        -i ${cleaned_fa} \\
+        -t ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
