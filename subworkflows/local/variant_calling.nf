@@ -29,8 +29,8 @@ workflow VARIANT_CALLING_WF {
             .filter { m, v, f  -> (v.countLines() > 27) }
             .filter { m, v, f  -> !(v.countLines() <= 27) }
             .branch {
-                vcf: it.extension == "vcf"
-                aligned_fa: ( it.extension() == "fa" )
+                vcf: ( it.extension == "vcf" )
+                aligned_fa: ( it.extension == "fa" )
             }
             .set { result }
 
