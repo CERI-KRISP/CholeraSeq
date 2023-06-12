@@ -40,7 +40,7 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { QUALITY_CONTROL_WF } from '../subworkflows/local/quality_control'
 include { VARIANT_CALLING_WF } from '../subworkflows/local/variant_calling'
-include { CLUSTERING_WF      } from '../subworkflows/local/clustering'
+//include { CLUSTERING_WF      } from '../subworkflows/local/clustering'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,7 +104,7 @@ workflow CHOLERA_ANALYSIS_NF {
     ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
 
 
-    CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
+    //CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
     //ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
 
     //============================
