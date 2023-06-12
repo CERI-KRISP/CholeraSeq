@@ -9,7 +9,6 @@ process SNIPPY_AND_SNPSITES {
 
     input:
     tuple val(meta), path(snippy_aligned_fasta)
-    path reference
 
     output:
     tuple val(meta), path("${prefix}.cleaned_full.aln"), emit: full_aln
