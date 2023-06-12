@@ -31,7 +31,7 @@ workflow VARIANT_CALLING_WF {
 
         ch_snippy_core.view()
 
-        //SNIPPY_CORE( ch_snippy_core, params.fasta )
+        SNIPPY_CORE( ch_snippy_core, params.fasta )
 
 
     emit:
