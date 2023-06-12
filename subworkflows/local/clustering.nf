@@ -1,6 +1,6 @@
 include { R_FASTBAPS                  } from '../../modules/local/r/fastbaps.nf'
 include { SEQKIT_GREP                 } from '../../modules/nf-core/seqkit/grep/main'
-//include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
+include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
 //include { MASK_GUBBINS                } from '../../modules/nf-core/gubbins/main.nf'
 
 
