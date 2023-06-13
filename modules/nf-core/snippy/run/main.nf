@@ -1,7 +1,8 @@
 process SNIPPY_RUN {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
+//FIXME Downgrade the snpEff dependency
     conda "bioconda::snippy=4.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2' :
@@ -12,6 +13,7 @@ process SNIPPY_RUN {
     path reference
 
     output:
+    tuple val(meta), path("${prefix}/${prefix}.vcf_report.txt")   , emit: vcf_report
     tuple val(meta), path("${prefix}/${prefix}.tab")              , emit: tab
     tuple val(meta), path("${prefix}/${prefix}.csv")              , emit: csv
     tuple val(meta), path("${prefix}/${prefix}.html")             , emit: html
@@ -37,15 +39,26 @@ process SNIPPY_RUN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def read_inputs = meta.single_end ? "--se ${reads[0]}" : "--R1 ${reads[0]} --R2 ${reads[1]}"
+    def fastq_inputs = (meta.single_end && !meta.is_contig) ? "--se ${reads[0]}" : "--R1 ${reads[0]} --R2 ${reads[1]}"
+    def final_inputs = meta.is_contig ? "--ctgs ${reads[0]}" : fastq_inputs
+
     """
     snippy \\
         $args \\
         --cpus $task.cpus \\
         --outdir $prefix \\
-        --reference $reference \\
         --prefix $prefix \\
-        $read_inputs
+        --ref $reference \\
+        $final_inputs
+
+
+    snippy-vcf_report \\
+            --cpus $task.cpus \\
+            --ref $prefix/ref.fa \\
+            --vcf $prefix/${prefix}.vcf \\
+            --bam $prefix/${prefix}.bam \\
+    > $prefix/${prefix}.vcf_report.txt
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -12,12 +12,12 @@ process SNIPPY_CORE {
     path reference
 
     output:
-    tuple val(meta), path("${prefix}.aln")     , emit: aln
-    tuple val(meta), path("${prefix}.full.aln"), emit: full_aln
-    tuple val(meta), path("${prefix}.tab")     , emit: tab
-    tuple val(meta), path("${prefix}.vcf")     , emit: vcf
-    tuple val(meta), path("${prefix}.txt")     , emit: txt
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("${prefix}.aln")             , emit: aln
+    tuple val(meta), path("${prefix}.full.aln")        , emit: full_aln
+    tuple val(meta), path("${prefix}.tab")             , emit: tab
+    tuple val(meta), path("${prefix}.vcf")             , emit: vcf
+    tuple val(meta), path("${prefix}.txt")             , emit: txt
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

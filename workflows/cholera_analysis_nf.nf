@@ -39,6 +39,8 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 //
 include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { QUALITY_CONTROL_WF } from '../subworkflows/local/quality_control'
+include { VARIANT_CALLING_WF } from '../subworkflows/local/variant_calling'
+include { CLUSTERING_WF      } from '../subworkflows/local/clustering'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,13 +80,32 @@ workflow CHOLERA_ANALYSIS_NF {
     // CUSTOM START
     //============================
 
-    //
-    // SUBWORKFLOWS
-    //
+    reads_ch = INPUT_CHECK.out.reads
+                .branch {
+                    contigs:  it[0].is_contig == true
+                    fastqs:  it[0].is_contig == false
+                }
+
+
     QUALITY_CONTROL_WF (
-        INPUT_CHECK.out.reads
+        reads_ch.fastqs
     )
-    ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions.first())
+    ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
+
+    cleaned_reads_ch = QUALITY_CONTROL_WF.out.trimmed_reads
+                        .mix(reads_ch.contigs)
+                        //.view()
+                        //.collect()
+                        //.dump(tag: 'cleaned_reads_ch')
+
+    VARIANT_CALLING_WF (
+        cleaned_reads_ch
+    )
+    ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
+
+
+    CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
+    ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
 
     //============================
     // CUSTOM STOP

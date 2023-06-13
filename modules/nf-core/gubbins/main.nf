@@ -1,15 +1,16 @@
 process GUBBINS {
     label 'process_medium'
 
-    conda "bioconda::gubbins=3.0.0"
+    conda "bioconda::gubbins=3.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gubbins:3.0.0--py39h5bf99c6_0' :
-        'biocontainers/gubbins:3.0.0--py39h5bf99c6_0' }"
+        'https://depot.galaxyproject.org/singularity/gubbins:3.3.0--py310pl5321h8472f5a_0' :
+        'biocontainers/gubbins:3.3.0--py310pl5321h8472f5a_0' }"
 
     input:
     path alignment
 
     output:
+    tuple path("*.fasta"), path("*.gff")    , emit: fasta_gff
     path "*.fasta"                          , emit: fasta
     path "*.gff"                            , emit: gff
     path "*.vcf"                            , emit: vcf
