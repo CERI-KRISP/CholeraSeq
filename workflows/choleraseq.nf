@@ -63,7 +63,7 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 // Info required for completion email and summary
 def multiqc_report = []
 
-workflow CHOLERA_ANALYSIS_NF {
+workflow CHOLERASEQ {
 
     ch_versions = Channel.empty()
 
