@@ -30,8 +30,8 @@ workflow CLUSTERING_WF {
 
 */
 
-            SEQKIT_GREP( CLJ_SPLIT_CLUSTERS.out.clusters.map { m,f -> f}.flatten(),
-                         clean_full_aln_fasta.map { m,f -> f})
+            SEQKIT_GREP( CLJ_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [it]},
+                         clean_full_aln_fasta.map { m,f -> f}.collect())
 
             //in_run_gubbins_ch =
         } else {

@@ -9,7 +9,7 @@ process SEQKIT_GREP {
         'biocontainers/seqkit:2.4.0--h9ee0642_0' }"
 
     input:
-    path(pattern)
+    tuple val(meta),  path(pattern)
     path(sequence)
 
     output:
