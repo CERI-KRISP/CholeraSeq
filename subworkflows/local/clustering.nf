@@ -31,7 +31,7 @@ workflow CLUSTERING_WF {
 */
 
 
-            CLJ_SPLIT_CLUSTERS.out.clusters.collate().view()
+        CLJ_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [["id": "cluster"], it]}.view()
 
             //SEQKIT_GREP( CLJ_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [["id": "cluster"], it]},
              //            clean_full_aln_fasta.map { m,f -> f}.collect())
