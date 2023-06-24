@@ -13,25 +13,10 @@ workflow CLUSTERING_WF {
     main:
 
         if(params.enable_fastbaps) {
+
             R_FASTBAPS( clean_full_aln_fasta )
+
             CLJ_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
-
-            //FIXME Implement SEQKIT_GREP
-
-/*
-            ch_out_split_clusters = CLJ_SPLIT_CLUSTERS.out.clusters
-                                .flatten()
-                                .map{ it ->  [ ["id": "cluster"], it ] }
-
-
-            ch_in_seqkit_grep = (clean_full_aln_fasta)
-                                    .join( ch_out_split_clusters)
-                                    .view()
-
-*/
-
-
-            //CLJ_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [["id": it.baseName], it]}.view()
 
             SEQKIT_GREP( CLJ_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [["id": it.baseName], it]},
                          clean_full_aln_fasta.map { m,f -> f}.collect())
