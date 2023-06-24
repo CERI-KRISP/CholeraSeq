@@ -22,9 +22,9 @@ workflow CLUSTERING_WF {
             in_run_gubbins_ch = clean_full_aln_fasta.map { m,f -> f}
         }
 
-         RUN_GUBBINS( in_run_gubbins_ch )
-         MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
+         //RUN_GUBBINS( in_run_gubbins_ch )
+         //MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
 
-    emit:
-        versions = RUN_GUBBINS.out.versions
+    //emit:
+        //versions = RUN_GUBBINS.out.versions
 }
