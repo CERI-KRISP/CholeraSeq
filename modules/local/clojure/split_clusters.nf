@@ -1,5 +1,5 @@
 process CLJ_SPLIT_CLUSTERS {
-    tag "$meta.id"
+    tag "split_clusters"
     label 'process_low'
 
     //FIXME Publish babashka binary in a conda channel
