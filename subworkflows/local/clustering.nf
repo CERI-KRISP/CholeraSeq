@@ -17,7 +17,7 @@ workflow CLUSTERING_WF {
             CLJ_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
 
             //FIXME Implement SEQKIT_GREP
-            in_seqkit_grep = (clean_full_aln_fasta).combine( CLJ_SPLIT_CLUSTERS.out.clusters)
+            in_seqkit_grep = (clean_full_aln_fasta).combine( CLJ_SPLIT_CLUSTERS.out.clusters.collate())
 
             in_seqkit_grep.view()
 
