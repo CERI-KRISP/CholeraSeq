@@ -12,7 +12,7 @@ process CLJ_SPLIT_CLUSTERS {
     tuple val(meta), path(fastbaps_clusters)
 
     output:
-    tuple val(meta), path("cluster.*.txt")             , emit: clusters
+    path("cluster.*.txt")             , emit: clusters
     path "versions.yml"                                , emit: versions
 
     when:
@@ -20,7 +20,7 @@ process CLJ_SPLIT_CLUSTERS {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    //prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     split_clusters.bb.clj $fastbaps_clusters
