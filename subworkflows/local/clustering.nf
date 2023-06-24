@@ -27,7 +27,8 @@ workflow CLUSTERING_WF {
                                     .join( ch_out_split_clusters)
                                     .view()
 
-            SEQKIT_GREP( clean_full_aln_fasta.map { m,f -> f}.collect(),  ch_out_split_clusters )
+            SEQKIT_GREP( clean_full_aln_fasta.map { m,f -> f}.collect(),
+                         CLJ_SPLIT_CLUSTERS.out.clusters )
             //in_run_gubbins_ch =
         } else {
             in_run_gubbins_ch = clean_full_aln_fasta.map { m,f -> f}
