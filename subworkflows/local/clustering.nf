@@ -23,11 +23,11 @@ workflow CLUSTERING_WF {
                                 .map{ it ->  [ ["id": "cluster"], it ] }
 
 
-            ch_in_seqkit_grep = (clean_full_aln_fasta).join( ch_out_split_clusters)
+            ch_in_seqkit_grep = (clean_full_aln_fasta)
+                                    .join( ch_out_split_clusters)
+                                    .view()
 
-            ch_in_seqkit_grep.view()
-
-            //SEQKIT_GREP( in_seqkit_grep )
+            SEQKIT_GREP( clean_full_aln_fasta.map { m,f -> f}.collect(),  ch_out_split_clusters )
             //in_run_gubbins_ch =
         } else {
             in_run_gubbins_ch = clean_full_aln_fasta.map { m,f -> f}
