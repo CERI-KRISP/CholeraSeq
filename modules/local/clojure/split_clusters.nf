@@ -9,7 +9,7 @@ process CLJ_SPLIT_CLUSTERS {
         'babashka/babashka:1.3.181' }"
 
     input:
-    path(fastbaps_clusters)
+    tuple val(meta), path(fastbaps_clusters)
 
     output:
     path("cluster.*.csv")                              , emit: clusters

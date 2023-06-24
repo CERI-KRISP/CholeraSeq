@@ -11,7 +11,7 @@ process R_FASTBAPS {
     tuple val(meta), path(cleaned_fa)
 
     output:
-    path "fastbaps_clusters.csv"                                  , emit: classification
+    tuple val(meta), path "fastbaps_clusters.csv"                                  , emit: classification
     path "versions.yml"                                           , emit: versions
 
     when:
