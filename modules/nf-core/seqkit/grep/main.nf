@@ -36,7 +36,7 @@ process SEQKIT_GREP {
         ${sequence} \\
         -o ${prefix}.${suffix}.gz \\
 
-    gunzip --keep ${prefix}.${suffix}.gz
+    gunzip -k ${prefix}.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
