@@ -23,7 +23,7 @@ process CLJ_SPLIT_CLUSTERS {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    split.bb.clj $fastbaps_clusters
+    split_clusters.bb.clj $fastbaps_clusters
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
