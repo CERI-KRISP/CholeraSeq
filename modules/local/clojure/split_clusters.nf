@@ -9,10 +9,10 @@ process CLJ_SPLIT_CLUSTERS {
         'babashka/babashka:1.3.181' }"
 
     input:
-    tuple val(meta), path(fastbaps_clusters)
+    path(fastbaps_clusters)
 
     output:
-    path("cluster.*.csv")                              , emit: cleaned_full_aln
+    path("cluster.*.csv")                              , emit: clusters
     path "versions.yml"                                , emit: versions
 
     when:
@@ -23,7 +23,7 @@ process CLJ_SPLIT_CLUSTERS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    split.bb.clj fastbaps_clusters
+    split.bb.clj $fastbaps_clusters
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
