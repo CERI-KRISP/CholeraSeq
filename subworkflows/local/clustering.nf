@@ -25,7 +25,7 @@ workflow CLUSTERING_WF {
 
             ch_in_seqkit_grep = (clean_full_aln_fasta.collect()).join( ch_out_split_clusters)
 
-            //in_seqkit_grep.view()
+            ch_in_seqkit_grep.view()
 
             //SEQKIT_GREP( in_seqkit_grep )
             //in_run_gubbins_ch =
