@@ -27,7 +27,7 @@
 
 (defn- write-cluster-txt [edn-data cluster-id]
   (spit
-    (str "cluster." (name cluster-id) ".csv")
+    (str "cluster." (name cluster-id) ".txt")
     (create-cluster-str (get edn-data cluster-id))))
 
 (defn separate-clusters [cluster-file]
