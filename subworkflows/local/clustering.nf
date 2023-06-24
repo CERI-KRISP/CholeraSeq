@@ -18,7 +18,7 @@ workflow CLUSTERING_WF {
 
             //FIXME Implement SEQKIT_GREP
 
-            (CLJ_SPLIT_CLUSTERS.out.clusters).view()
+            (CLJ_SPLIT_CLUSTERS.out.clusters).map( v -> ["test", v]).view()
 
             //in_seqkit_grep = (clean_full_aln_fasta).combine( (CLJ_SPLIT_CLUSTERS.out.clusters).collate())
 
