@@ -6,7 +6,7 @@ process CLJ_SPLIT_CLUSTERS {
     //conda "bioconda::snippy=4.6.0 bioconda::snp-sites=2.5.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://babashka/babashka:1.3.181':
-        'babashka/babashka:1.3.181' }"
+        'docker.io/babashka/babashka:1.3.181' }"
 
     input:
     tuple val(meta), path(fastbaps_clusters)
