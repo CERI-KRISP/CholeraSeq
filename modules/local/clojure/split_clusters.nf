@@ -12,7 +12,7 @@ process CLJ_SPLIT_CLUSTERS {
     tuple val(meta), path(fastbaps_clusters)
 
     output:
-    path("cluster.*.txt")                              , emit: clusters
+    tuple val(meta), path("cluster.*.txt")             , emit: clusters
     path "versions.yml"                                , emit: versions
 
     when:
