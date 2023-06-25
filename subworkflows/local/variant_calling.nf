@@ -18,7 +18,12 @@ workflow VARIANT_CALLING_WF {
         // 27 -> No SNP found
         ch_passed_samples = SNIPPY_RUN.out.vcf
                                 .join(SNIPPY_RUN.out.aligned_fa)
-                                .filter { m, v, f  -> (v.countLines() > 50) }
+                                .filter { m, v, f  -> (v.countLines() > params.vcf_threshold) }
+
+        ch_failed_samples = SNIPPY_RUN.out.vcf
+                                .join(SNIPPY_RUN.out.aligned_fa)
+                                .filter { m, v, f  -> (v.countLines() < params.vcf_threshold) }
+                                .collectFile(name: "${params.outdir}/failed_samples.txt", newLine: true)
 
         ch_merge_vcf = ch_passed_samples
                             .collect{ meta, vcf, aligned_fa -> vcf }
