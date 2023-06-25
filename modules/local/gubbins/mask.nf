@@ -26,7 +26,7 @@ process MASK_GUBBINS {
     mask_gubbins_aln.py \\
       --aln ${alignment} \\
       --gff ${input_gff} \\
-      --out ${alignment.simpleName}.gub.masked.fasta
+      --out ${alignment.baseName}.gub.masked.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
