@@ -15,19 +15,18 @@ workflow VARIANT_CALLING_WF {
         //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
         //to addresses the negative control
 
-        // 27 -> No SNP found
-        ch_passed_samples = SNIPPY_RUN.out.vcf
-                                .join(SNIPPY_RUN.out.aligned_fa)
-                                .filter { m, v, f  -> (v.countLines() > params.vcf_threshold) }
+        ch_snipped_samples = SNIPPY_RUN.out.vcf.join(SNIPPY_RUN.out.aligned_fa)
 
-/*
-        ch_failed_samples = SNIPPY_RUN.out.vcf
-                                .join(SNIPPY_RUN.out.aligned_fa)
-                                .filter { m, v, f  -> (v.countLines() < params.vcf_threshold) }
+        ch_failed_samples = ch_snipped_samples
+                                .filter { m, v, f  -> (v.countLines() <= params.vcf_threshold) }
                                 .collect { m,v,f -> [m.id] }
                                 .flatten()
                                 .collectFile(name: "${params.outdir}/failed_samples.txt", newLine: true)
-*/
+
+
+        // 27 -> No SNP found
+        ch_passed_samples = ch_snipped_samples
+                                .filter { m, v, f  -> (v.countLines() > params.vcf_threshold) }
 
         ch_merge_vcf = ch_passed_samples
                             .collect{ meta, vcf, aligned_fa -> vcf }

@@ -13,7 +13,7 @@ process CLJ_SPLIT_CLUSTERS {
 
     output:
     path("cluster.*.txt")             , emit: clusters
-    path "versions.yml"                                , emit: versions
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
