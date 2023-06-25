@@ -23,7 +23,8 @@ workflow VARIANT_CALLING_WF {
         ch_failed_samples = SNIPPY_RUN.out.vcf
                                 .join(SNIPPY_RUN.out.aligned_fa)
                                 .filter { m, v, f  -> (v.countLines() < params.vcf_threshold) }
-                                .collect { m,v,f -> m.id }
+                                .collect { m,v,f -> [m.id] }
+                                .flatten()
                                 .collectFile(name: "${params.outdir}/failed_samples.txt", newLine: true)
 
         ch_merge_vcf = ch_passed_samples
