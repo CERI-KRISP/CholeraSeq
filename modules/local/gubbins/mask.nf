@@ -20,8 +20,6 @@ process MASK_GUBBINS {
     script:
     def args = task.ext.args ?: ''
 
-    //FIXME this is a custom script and isn't delivered with gubbins package
-
     """
     mask_gubbins_aln.py \\
       --aln ${alignment} \\
