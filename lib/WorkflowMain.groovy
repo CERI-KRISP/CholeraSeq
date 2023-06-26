@@ -1,5 +1,5 @@
 //
-// This file holds several functions specific to the main.nf workflow in the CERI-KRISP/cholera_analysis_nf pipeline
+// This file holds several functions specific to the main.nf workflow in the CERI-KRISP/CholeraSeq pipeline
 //
 
 import nextflow.Nextflow

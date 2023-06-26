@@ -1,10 +1,10 @@
 Run Name: $runName
 
 <% if (success){
-    out << "## CERI-KRISP/cholera_analysis_nf execution completed successfully! ##"
+    out << "## CERI-KRISP/CholeraSeq execution completed successfully! ##"
 } else {
     out << """####################################################
-## CERI-KRISP/cholera_analysis_nf execution completed unsuccessfully! ##
+## CERI-KRISP/CholeraSeq execution completed unsuccessfully! ##
 ####################################################
 The exit status of the task that caused the workflow execution to fail was: $exitStatus.
 The full error message was:
@@ -27,5 +27,5 @@ Pipeline Configuration:
 <% out << summary.collect{ k,v -> " - $k: $v" }.join("\n") %>
 
 --
-CERI-KRISP/cholera_analysis_nf
-https://github.com/CERI-KRISP/cholera_analysis_nf
+CERI-KRISP/CholeraSeq
+https://github.com/CERI-KRISP/CholeraSeq

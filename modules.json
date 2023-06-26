@@ -1,6 +1,6 @@
 {
-    "name": "CERI-KRISP/cholera_analysis_nf",
-    "homePage": "https://github.com/CERI-KRISP/cholera_analysis_nf",
+    "name": "CERI-KRISP/CholeraSeq",
+    "homePage": "https://github.com/CERI-KRISP/CholeraSeq",
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {

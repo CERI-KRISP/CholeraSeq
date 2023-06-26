@@ -1,4 +1,4 @@
-# CERI-KRISP/cholera_analysis_nf: Citations
+# CERI-KRISP/CholeraSeq: Citations
 
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 
