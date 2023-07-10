@@ -75,6 +75,7 @@ We thank the following people for their extensive assistance in the development 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
 Carla Mavian
 Eduan Wilkinson
+Massimiliano S. Tagliamonte
 
 ## Citations
 
