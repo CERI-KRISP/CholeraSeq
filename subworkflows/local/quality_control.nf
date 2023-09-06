@@ -15,7 +15,7 @@ workflow QUALITY_CONTROL_WF {
 
     emit:
         trimmed_reads = FASTP.out.reads
-        fastp_json = FASTP.out.reads
+        fastp_json = FASTP.out.json
         //FIXME add the FASTP version as well
         versions = FASTQC.out.versions.first()
 }
