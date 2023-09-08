@@ -10,6 +10,10 @@
 
 **CERI-KRISP/CholeraSeq** is a Nextflow pipeline for Cholera outbreaks analysis
 
+> :warning: **ALPHA STAGE PIPELINE!**:
+The pipeline is in activate development and NOT recommended for usage yet.
+
+
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
    major pipeline sections and the types of output it produces. You're giving an overview to someone new
