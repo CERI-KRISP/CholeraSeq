@@ -1,4 +1,4 @@
-# CERI-KRISP/cholera_analysis_nf: Output
+# CERI-KRISP/CholeraSeq: Output
 
 ## Introduction
 

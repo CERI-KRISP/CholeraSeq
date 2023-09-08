@@ -20,13 +20,11 @@ process MASK_GUBBINS {
     script:
     def args = task.ext.args ?: ''
 
-    //FIXME this is a custom script and isn't delivered with gubbins package
-
     """
     mask_gubbins_aln.py \\
       --aln ${alignment} \\
       --gff ${input_gff} \\
-      --out ${alignment.simpleName}.gub.masked.fasta
+      --out ${alignment.baseName}.gub.masked.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

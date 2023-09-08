@@ -27,11 +27,13 @@ process GUBBINS {
 
     script:
     def args = task.ext.args ?: ''
+
     """
     run_gubbins.py \\
         --threads $task.cpus \\
         $args \\
         $alignment
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gubbins: \$(run_gubbins.py --version 2>&1)

@@ -1,8 +1,8 @@
-process SNIPPY_AND_SNPSITES {
+process SNIPPY_CLEAN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::snippy=4.6.0 bioconda::snp-sites=2.5.1"
+    conda "bioconda::snippy=4.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2':
         'biocontainers/snippy:4.6.0--hdfd78af_1' }"

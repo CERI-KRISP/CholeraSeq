@@ -63,9 +63,10 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 // Info required for completion email and summary
 def multiqc_report = []
 
-workflow CHOLERA_ANALYSIS_NF {
+workflow CHOLERASEQ {
 
     ch_versions = Channel.empty()
+    ch_multiqc_files = Channel.empty()
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -125,11 +126,12 @@ workflow CHOLERA_ANALYSIS_NF {
     methods_description    = WorkflowCholera_analysis_nf.methodsDescriptionText(workflow, ch_multiqc_custom_methods_description)
     ch_methods_description = Channel.value(methods_description)
 
-    ch_multiqc_files = Channel.empty()
     ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
-    //ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastp_json.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
 
     MULTIQC (
         ch_multiqc_files.collect(),

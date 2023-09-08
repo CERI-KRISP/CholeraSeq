@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    CERI-KRISP/cholera_analysis_nf
+    CERI-KRISP/CholeraSeq
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/CERI-KRISP/cholera_analysis_nf----------------------------------------------------------------------------------------
+    Github : https://github.com/CERI-KRISP/CholeraSeq----------------------------------------------------------------------------------------
 */
 
 nextflow.enable.dsl = 2
@@ -22,13 +22,13 @@ WorkflowMain.initialise(workflow, params, log)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { CHOLERA_ANALYSIS_NF } from './workflows/cholera_analysis_nf'
+include { CHOLERASEQ } from './workflows/choleraseq'
 
 //
-// WORKFLOW: Run main CERI-KRISP/cholera_analysis_nf analysis pipeline
+// WORKFLOW: Run main CERI-KRISP/CholeraSeq analysis pipeline
 //
 workflow CERI_KRISP {
-    CHOLERA_ANALYSIS_NF ()
+    CHOLERASEQ ()
 }
 
 /*

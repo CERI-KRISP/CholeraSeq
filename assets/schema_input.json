@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/CERI-KRISP/cholera_analysis_nf/master/assets/schema_input.json",
-    "title": "CERI-KRISP/cholera_analysis_nf pipeline - params.input schema",
+    "$id": "https://raw.githubusercontent.com/CERI-KRISP/CholeraSeq/master/assets/schema_input.json",
+    "title": "CERI-KRISP/CholeraSeq pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
     "items": {

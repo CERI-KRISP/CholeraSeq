@@ -9,11 +9,12 @@ process SEQKIT_GREP {
         'biocontainers/seqkit:2.4.0--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(sequence)
-    path pattern
+    tuple val(meta),  path(pattern)
+    path(sequence)
 
     output:
     tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter
+    tuple val(meta), path("*.{fa,fq}")     , emit: fasta
     path "versions.yml"                    , emit: versions
 
     when:
@@ -34,6 +35,8 @@ process SEQKIT_GREP {
         ${pattern_file} \\
         ${sequence} \\
         -o ${prefix}.${suffix}.gz \\
+
+    gunzip -k ${prefix}.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

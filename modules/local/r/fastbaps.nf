@@ -11,7 +11,7 @@ process R_FASTBAPS {
     tuple val(meta), path(cleaned_fa)
 
     output:
-    path "fastbaps_clusters.csv"                                  , emit: fastbaps_clusters
+    tuple val(meta), path("fastbaps_clusters.csv")                , emit: classification
     path "versions.yml"                                           , emit: versions
 
     when:
@@ -29,8 +29,7 @@ process R_FASTBAPS {
         -t ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        R_FASTBAPS: 1.0.8
+    "${task.process}": R_FASTBAPS: 1.0.8
     END_VERSIONS
     """
 }

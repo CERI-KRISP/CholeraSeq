@@ -1,6 +1,6 @@
 author: abhi18av
 description: A Nextflow pipeline for Cholera outbreak analysis
-name: cholera_analysis_nf
+name: CholeraSeq
 prefix: CERI-KRISP
 skip:
 - igenomes

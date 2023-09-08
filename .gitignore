@@ -9,3 +9,6 @@ testing*
 
 null
 _resources
+
+.lsp
+.clj-kondo

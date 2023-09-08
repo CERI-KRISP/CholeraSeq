@@ -1,6 +1,6 @@
 include { SNIPPY_CORE         } from '../../modules/nf-core/snippy/core/main.nf'
 include { SNIPPY_RUN          } from '../../modules/nf-core/snippy/run/main.nf'
-include { SNIPPY_AND_SNPSITES } from '../../modules/local/mulled/snippy_and_snpsites.nf'
+include { SNIPPY_CLEAN        } from '../../modules/local/snippy/snippy_clean.nf'
 
 
 workflow VARIANT_CALLING_WF {
@@ -14,9 +14,19 @@ workflow VARIANT_CALLING_WF {
 
         //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
         //to addresses the negative control
-        ch_passed_samples = SNIPPY_RUN.out.vcf
-                                .join(SNIPPY_RUN.out.aligned_fa)
-                                .filter { m, v, f  -> (v.countLines() > 27) }
+
+        ch_snipped_samples = SNIPPY_RUN.out.vcf.join(SNIPPY_RUN.out.aligned_fa)
+
+        ch_failed_samples = ch_snipped_samples
+                                .filter { m, v, f  -> (v.countLines() <= params.vcf_threshold) }
+                                .collect { m,v,f -> [m.id] }
+                                .flatten()
+                                .collectFile(name: "${params.outdir}/failed_samples.txt", newLine: true)
+
+
+        // 27 -> No SNP found
+        ch_passed_samples = ch_snipped_samples
+                                .filter { m, v, f  -> (v.countLines() > params.vcf_threshold) }
 
         ch_merge_vcf = ch_passed_samples
                             .collect{ meta, vcf, aligned_fa -> vcf }
@@ -32,9 +42,10 @@ workflow VARIANT_CALLING_WF {
 
         SNIPPY_CORE( ch_snippy_core, params.fasta )
 
-        SNIPPY_AND_SNPSITES( SNIPPY_CORE.out.full_aln )
+        SNIPPY_CLEAN( SNIPPY_CORE.out.full_aln )
 
     emit:
-        cleaned_full_aln = SNIPPY_AND_SNPSITES.out.cleaned_full_aln
+        cleaned_full_aln = SNIPPY_CLEAN.out.cleaned_full_aln
+        snippy_varcall_txt = SNIPPY_RUN.out.txt
         versions = SNIPPY_RUN.out.versions
 }

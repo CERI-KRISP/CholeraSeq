@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/CERI-KRISP/cholera_analysis_nf/master/nextflow_schema.json",
-    "title": "CERI-KRISP/cholera_analysis_nf pipeline parameters",
+    "$id": "https://raw.githubusercontent.com/CERI-KRISP/CholeraSeq/master/nextflow_schema.json",
+    "title": "CERI-KRISP/CholeraSeq pipeline parameters",
     "description": "A Nextflow pipeline for Cholera outbreak analysis",
     "type": "object",
     "definitions": {
