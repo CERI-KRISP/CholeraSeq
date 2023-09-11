@@ -1,3 +1,5 @@
 sample,fastq_1,fastq_2
+SRR8364252,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_1.fastq.gz,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_2.fastq.gz
+SRR8364253,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/003/SRR8364253/SRR8364253_1.fastq.gz,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/003/SRR8364253/SRR8364253_2.fastq.gz,
 SRR771360,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR771/SRR771360/SRR771360.fastq.gz,
 SRR771582,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR771/SRR771582/SRR771582.fastq.gz,
