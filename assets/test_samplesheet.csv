@@ -1,0 +1,8 @@
+sample,fastq_1,fastq_2
+SRR8364252,s3://sra-pub-src-3/SRR8364252/env901_1.fastq.gz,s3://sra-pub-src-3/SRR8364252/env901_2.fastq.gz
+SRR8364253,s3://sra-pub-src-3/SRR8364253/env898_2.fastq.gz,s3://sra-pub-src-3/SRR8364253/env898_2.fastq.gz
+SRR771360,s3://sra-pub-src-14/SRR771360/2010EL-1795--2.fastq.gz,
+SRR771582,s3://sra-pub-src-11/SRR771582/2010EL-1796--2.fastq.gz,
+AHFZ00000000.1,../resources/test_fastas/AHFZ01.fasta,
+AHGA00000000.1,../resources/test_fastas/AHGA01.fasta,
+AHGB01000000.1,../resources/test_fastas/AHGB01.fasta,
