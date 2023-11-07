@@ -23,7 +23,7 @@ process PYTHON_SEQ_CLEANER {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    seq_clearner.py -f ${params.fasta_threshold} $input_fasta ${prefix}.fasta
+    seq_cleaner.py -f ${params.fasta_threshold} $input_fasta ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
