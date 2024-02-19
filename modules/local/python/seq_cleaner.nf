@@ -5,8 +5,8 @@ process PYTHON_SEQ_CLEANER {
     conda "conda-forge::python=3.10.13"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://python/python:3.10.13-bullseye':
-        'docker.io/python:3.10.13-slim-bullseye' }
+        'docker://python/python:3.10.13-slim-bullseye':
+        'docker.io/python:3.10.13-slim-bullseye' }"
 
     input:
     tuple val(meta), path(input_fasta)
