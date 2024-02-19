@@ -6,7 +6,7 @@ process PYTHON_SEQ_CLEANER {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://python/python:3.10.13-bullseye':
-        'docker.io/python/python:3.10.13-bullseye' }"
+        'docker.io/python:3.10.13-slim-bullseye' }
 
     input:
     tuple val(meta), path(input_fasta)
