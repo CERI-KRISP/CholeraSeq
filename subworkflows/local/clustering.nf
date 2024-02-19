@@ -12,7 +12,9 @@ workflow CLUSTERING_WF {
         clean_full_aln_fasta
 
     main:
-        filtered_fasta = PYTHON_SEQ_CLEANER ( clean_full_aln_fasta )
+        PYTHON_SEQ_CLEANER ( clean_full_aln_fasta )
+
+        filtered_fasta = PYTHON_SEQ_CLEANER.out.cleaned_fasta
 
         if(params.enable_fastbaps) {
 
