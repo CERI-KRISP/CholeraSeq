@@ -12,8 +12,8 @@ process PYTHON_SEQ_CLEANER {
     tuple val(meta), path(input_fasta)
 
     output:
-    path("${prefix}.fasta")             , emit: cleaned_fasta
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("${prefix}.fasta")             , emit: cleaned_fasta
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
