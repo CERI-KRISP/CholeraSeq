@@ -4,7 +4,7 @@ process GUBBINS {
     conda "bioconda::gubbins=3.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gubbins:3.3.0--py310pl5321h8472f5a_0' :
-        'biocontainers/gubbins:3.3.0--py310pl5321h8472f5a_0' }"
+        'quay.io/biocontainers/gubbins:3.3.0--py310pl5321h8472f5a_0' }"
 
     input:
     path alignment
