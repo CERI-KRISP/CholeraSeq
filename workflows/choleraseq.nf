@@ -78,8 +78,9 @@ workflow CHOLERASEQ {
 
 
     //============================
-    // CUSTOM START
+    // CORE GENOME ALIGNMENT
     //============================
+
 
     reads_ch = INPUT_CHECK.out.reads
                 .branch {
