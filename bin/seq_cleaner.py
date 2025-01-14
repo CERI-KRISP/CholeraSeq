@@ -31,7 +31,7 @@ class Cleaner(object):
     maxseqs = 0                 # Maximum number of sequences to process
     startseq = None             # Number of first sequence to process
     doindex = False
-    
+
     def parseArgs(self, args):
         if "-h" in args or "--help" in args:
             return False
@@ -250,7 +250,7 @@ The following options are designed to process portions of the input file:
                 for row in seqdata:
                     rep.write("{}\t{}\t{}\t{}\t{}\n".format(*row))
         sys.stderr.write("{} sequences read, {} written ({} filtered).\n".format(nin, nout, nin-nout))
-            
+
     def remove_nstretch(self, seq_record):
         cleanbases = []
         instretch = False
