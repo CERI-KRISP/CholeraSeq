@@ -41,6 +41,7 @@ include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { QUALITY_CONTROL_WF } from '../subworkflows/local/quality_control'
 include { VARIANT_CALLING_WF } from '../subworkflows/local/variant_calling'
 include { CLUSTERING_WF      } from '../subworkflows/local/clustering'
+include { CLUSTERING_WF as PATCH_CORE_ALIGNMENT_WF  } from '../subworkflows/local/clustering'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,80 +69,96 @@ workflow CHOLERASEQ {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
-    INPUT_CHECK (
-        ch_input
-    )
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+
+    if (params.core_alignment) {
+
+        PATCH_CORE_ALIGNMENT_WF(params.core_alignment)
+        ch_versions = ch_versions.mix(PATCH_CORE_ALIGNMENT_WF.out.versions)
+
+    } else {
+
+        //
+        // SUBWORKFLOW: Read in samplesheet, validate and stage input files
+        //
+        INPUT_CHECK (
+            ch_input
+        )
+        ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
 
-    //============================
-    // CORE GENOME ALIGNMENT
-    //============================
+        //============================
+        // CORE GENOME ALIGNMENT
+        //============================
 
 
-    reads_ch = INPUT_CHECK.out.reads
-                .branch {
-                    contigs:  it[0].is_contig == true
-                    fastqs:  it[0].is_contig == false
-                }
+        reads_ch = INPUT_CHECK.out.reads
+                    .branch {
+                        contigs:  it[0].is_contig == true
+                        fastqs:  it[0].is_contig == false
+                    }
 
 
-    QUALITY_CONTROL_WF (
-        reads_ch.fastqs
-    )
-    ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
+        QUALITY_CONTROL_WF (
+            reads_ch.fastqs
+        )
+        ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
 
-    cleaned_reads_ch = QUALITY_CONTROL_WF.out.trimmed_reads
-                        .mix(reads_ch.contigs)
-                        //.view()
-                        //.collect()
-                        //.dump(tag: 'cleaned_reads_ch')
+        cleaned_reads_ch = QUALITY_CONTROL_WF.out.trimmed_reads
+                            .mix(reads_ch.contigs)
+                            //.view()
+                            //.collect()
+                            //.dump(tag: 'cleaned_reads_ch')
 
-    VARIANT_CALLING_WF (
-        cleaned_reads_ch
-    )
-    ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
-
-
-    CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
-    ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
-
-    //============================
-    // CUSTOM STOP
-    //============================
-
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    )
+        VARIANT_CALLING_WF (
+            cleaned_reads_ch
+        )
+        ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
 
 
-    //
-    // MODULE: MultiQC
-    //
-    workflow_summary    = WorkflowCholera_analysis_nf.paramsSummaryMultiqc(workflow, summary_params)
-    ch_workflow_summary = Channel.value(workflow_summary)
+        CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
+        ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
 
-    methods_description    = WorkflowCholera_analysis_nf.methodsDescriptionText(workflow, ch_multiqc_custom_methods_description)
-    ch_methods_description = Channel.value(methods_description)
+        ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
+        ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastp_json.collect{it[1]}.ifEmpty([]))
+        ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
 
-    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
-    ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastp_json.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
+    }
 
-    MULTIQC (
-        ch_multiqc_files.collect(),
-        ch_multiqc_config.toList(),
-        ch_multiqc_custom_config.toList(),
-        ch_multiqc_logo.toList()
-    )
-    multiqc_report = MULTIQC.out.report.toList()
+
+        //============================
+        // CUSTOM STOP
+        //============================
+
+        CUSTOM_DUMPSOFTWAREVERSIONS (
+            ch_versions.unique().collectFile(name: 'collated_versions.yml')
+        )
+
+
+
+        //
+        // MODULE: MultiQC
+        //
+        workflow_summary    = WorkflowCholera_analysis_nf.paramsSummaryMultiqc(workflow, summary_params)
+        ch_workflow_summary = Channel.value(workflow_summary)
+
+        methods_description    = WorkflowCholera_analysis_nf.methodsDescriptionText(workflow, ch_multiqc_custom_methods_description)
+        ch_methods_description = Channel.value(methods_description)
+
+        ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+        ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
+        ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
+
+        MULTIQC (
+            ch_multiqc_files.collect(),
+            ch_multiqc_config.toList(),
+            ch_multiqc_custom_config.toList(),
+            ch_multiqc_logo.toList()
+        )
+        multiqc_report = MULTIQC.out.report.toList()
 }
+
+
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
