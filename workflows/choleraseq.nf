@@ -72,7 +72,9 @@ workflow CHOLERASEQ {
 
     if (params.core_alignment) {
 
-        PATCH_CORE_ALIGNMENT_WF([[id: 'patch_core_alignment'], params.core_alignment])
+        in_core_alignment = Channel.of([[id: 'patch_core_alignment'], params.core_alignment])
+
+        PATCH_CORE_ALIGNMENT_WF (in_core_alignment)
         ch_versions = ch_versions.mix(PATCH_CORE_ALIGNMENT_WF.out.versions)
 
     } else {
