@@ -1,6 +1,6 @@
 include { R_FASTBAPS                  } from '../../modules/local/r/fastbaps.nf'
 include { PYTHON_SEQ_CLEANER          } from '../../modules/local/python/seq_cleaner.nf'
-include { CAT_CAT                     } from '../../modules/nf-core/cat/main.nf'
+include { CAT_CAT                     } from '../../modules/nf-core/cat/cat/main.nf'
 include { SEQKIT_GREP                 } from '../../modules/nf-core/seqkit/grep/main'
 include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
 include { MASK_GUBBINS                } from '../../modules/local/gubbins/mask.nf'
