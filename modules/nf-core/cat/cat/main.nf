@@ -11,7 +11,7 @@ process CAT_CAT {
     tuple val(meta), path(files_in)
 
     output:
-    tuple val(meta), path("merged.core_aln.fasta"), emit: file_out
+    tuple val(meta), path("${prefix}")            , emit: file_out
     path "versions.yml"                           , emit: versions
 
     when:
@@ -32,7 +32,7 @@ process CAT_CAT {
     // | ungzipped | gzipped    | cat      | pigz     |
 
     // Use input file ending as default
-    prefix   = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
+    prefix   = task.ext.prefix ?: "merged.core_aln.fasta" // "${meta.id}${getFileSuffix(file_list[0])}"
     out_zip  = prefix.endsWith('.gz')
     in_zip   = file_list[0].endsWith('.gz')
     command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
