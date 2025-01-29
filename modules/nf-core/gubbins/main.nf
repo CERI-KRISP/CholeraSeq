@@ -1,5 +1,6 @@
 process GUBBINS {
     label 'process_medium'
+    tag "${alignment.baseName}"
 
     conda "bioconda::gubbins=3.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
