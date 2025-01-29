@@ -8,7 +8,7 @@ process GUBBINS {
         'quay.io/biocontainers/gubbins:3.3.0--py310pl5321h8472f5a_0' }"
 
     input:
-    tuple val(meta), path alignment
+    tuple val(meta), path(alignment)
 
     output:
     tuple val(meta), path("*.fasta"), path("*.gff")    , emit: fasta_gff
