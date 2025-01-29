@@ -1,6 +1,6 @@
 process MASK_GUBBINS {
     label 'process_medium'
-    tag "${alignment.baseName}"
+    tag "${meta.id}"
 
     conda "bioconda::gubbins=3.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -9,7 +9,7 @@ process MASK_GUBBINS {
 
 
     input:
-    tuple path(alignment), path(input_gff)
+    tuple val(meta), path(alignment), path(input_gff)
 
     output:
     path "*.masked.fasta"                   , emit: masked_fast

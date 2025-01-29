@@ -32,11 +32,11 @@ workflow PATCH_CORE_ALIGNMENT_WF {
             SEQKIT_GREP( CLJ_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [["id": it.baseName], it]},
                          ch_cat_core_alignment.map { m,f -> f}.collect())
 
-            in_run_gubbins_ch = SEQKIT_GREP.out.fasta.map { m,f -> f}
+            in_run_gubbins_ch = SEQKIT_GREP.out.fasta
 
         } else {
 
-            in_run_gubbins_ch = ch_cat_core_alignment.map { m,f -> f}
+            in_run_gubbins_ch = ch_cat_core_alignment
 
         }
 
