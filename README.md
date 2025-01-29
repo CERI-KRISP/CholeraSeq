@@ -17,7 +17,7 @@ The pipeline is in active development and NOT recommended for usage yet.
 
 ## Reference sequence
 
-[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554?labelColor=000000)](https://doi.org/zenodo.10984554)
+[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
 
 
 ## Documentation
