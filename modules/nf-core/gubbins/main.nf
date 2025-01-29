@@ -1,5 +1,6 @@
 process GUBBINS {
     label 'process_medium'
+    tag "${meta.id}"
 
     conda "bioconda::gubbins=3.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -7,10 +8,10 @@ process GUBBINS {
         'quay.io/biocontainers/gubbins:3.3.0--py310pl5321h8472f5a_0' }"
 
     input:
-    path alignment
+    tuple val(meta), path(alignment)
 
     output:
-    tuple path("*.fasta"), path("*.gff")    , emit: fasta_gff
+    tuple val(meta), path("*.fasta"), path("*.gff")    , emit: fasta_gff
     path "*.fasta"                          , emit: fasta
     path "*.gff"                            , emit: gff
     path "*.vcf"                            , emit: vcf
