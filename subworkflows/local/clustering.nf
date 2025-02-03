@@ -36,7 +36,7 @@ workflow CLUSTERING_WF {
          RUN_GUBBINS( in_run_gubbins_ch )
          MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
 
-         IQTREE(MASK_GUBBINS.out.masked_fasta, [], [], [], [], [], [], [], [] )
+        IQTREE(MASK_GUBBINS.out.masked_fasta, [], [], [], [], [], [], [], [], [], [], [], [] )
 
     emit:
         versions = RUN_GUBBINS.out.versions
