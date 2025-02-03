@@ -37,11 +37,11 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { INPUT_CHECK        } from '../subworkflows/local/input_check'
-include { QUALITY_CONTROL_WF } from '../subworkflows/local/quality_control'
-include { VARIANT_CALLING_WF } from '../subworkflows/local/variant_calling'
-include { CLUSTERING_WF      } from '../subworkflows/local/clustering'
-include { PATCH_CORE_ALIGNMENT_WF  } from '../subworkflows/local/patch_core_alignment'
+include { INPUT_CHECK                } from '../subworkflows/local/input_check'
+include { QUALITY_CONTROL_WF         } from '../subworkflows/local/quality_control'
+include { VARIANT_CALLING_WF         } from '../subworkflows/local/variant_calling'
+include { CLUSTERING_WF              } from '../subworkflows/local/clustering'
+include { COMBINE_CORE_ALIGNMENT_WF  } from '../subworkflows/local/combine_core_alignment'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
