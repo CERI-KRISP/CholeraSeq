@@ -41,7 +41,7 @@ include { INPUT_CHECK                } from '../subworkflows/local/input_check'
 include { QUALITY_CONTROL_WF         } from '../subworkflows/local/quality_control'
 include { VARIANT_CALLING_WF         } from '../subworkflows/local/variant_calling'
 include { CLUSTERING_WF              } from '../subworkflows/local/clustering'
-include { COMBINE_CORE_ALIGNMENT_WF  } from '../subworkflows/local/combine_core_alignment'
+include { COMBINE_CORE_ALIGNMENTS_WF  } from '../subworkflows/local/combine_core_alignments'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,8 +72,8 @@ workflow CHOLERASEQ {
 
     if (params.global_core_alignment && params.cohort_core_alignment) {
 
-        COMBINE_CORE_ALIGNMENT_WF (params.global_core_alignment, params.cohort_core_alignment)
-        ch_versions = ch_versions.mix(COMBINE_CORE_ALIGNMENT_WF.out.versions)
+        COMBINE_CORE_ALIGNMENTS_WF (params.global_core_alignment, params.cohort_core_alignment)
+        ch_versions = ch_versions.mix(COMBINE_CORE_ALIGNMENTS_WF.out.versions)
 
     } else {
 
