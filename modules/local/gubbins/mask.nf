@@ -12,8 +12,8 @@ process MASK_GUBBINS {
     tuple val(meta), path(alignment), path(input_gff)
 
     output:
-    tuple val(meta), path("*masked.fasta"), path([])  , emit: masked_fasta
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("*masked.fasta")  , emit: masked_fasta
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
