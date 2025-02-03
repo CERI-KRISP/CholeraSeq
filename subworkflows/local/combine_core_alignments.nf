@@ -5,9 +5,10 @@ include { SEQKIT_GREP                 } from '../../modules/nf-core/seqkit/grep/
 include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
 include { MASK_GUBBINS                } from '../../modules/local/gubbins/mask.nf'
 include { CLJ_SPLIT_CLUSTERS          } from '../../modules/local/clojure/split_clusters.nf'
+include { IQTREE                      } from '../../modules/nf-core/iqtree/main'
 
 
-workflow PATCH_CORE_ALIGNMENT_WF {
+workflow COMBINE_CORE_ALIGNMENTS_WF {
 
     take:
         global_core_alignment
@@ -42,6 +43,10 @@ workflow PATCH_CORE_ALIGNMENT_WF {
 
          RUN_GUBBINS( in_run_gubbins_ch )
          MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
+
+         in_iqtree = MASK_GUBBINS.out.masked_fasta.map {m -> [m[0], m[1], []]}
+
+         IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
     emit:
         versions = RUN_GUBBINS.out.versions
