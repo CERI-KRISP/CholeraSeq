@@ -4,7 +4,7 @@ include { SEQKIT_GREP                 } from '../../modules/nf-core/seqkit/grep/
 include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
 include { MASK_GUBBINS                } from '../../modules/local/gubbins/mask.nf'
 include { CLJ_SPLIT_CLUSTERS          } from '../../modules/local/clojure/split_clusters.nf'
-
+include { IQTREE                      } from '../modules/nf-core/iqtree/main'
 
 workflow CLUSTERING_WF {
 
