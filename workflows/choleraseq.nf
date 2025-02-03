@@ -72,8 +72,8 @@ workflow CHOLERASEQ {
 
     if (params.global_core_alignment && params.cohort_core_alignment) {
 
-        PATCH_CORE_ALIGNMENT_WF (params.global_core_alignment, params.cohort_core_alignment)
-        ch_versions = ch_versions.mix(PATCH_CORE_ALIGNMENT_WF.out.versions)
+        COMBINE_CORE_ALIGNMENT_WF (params.global_core_alignment, params.cohort_core_alignment)
+        ch_versions = ch_versions.mix(COMBINE_CORE_ALIGNMENT_WF.out.versions)
 
     } else {
 
