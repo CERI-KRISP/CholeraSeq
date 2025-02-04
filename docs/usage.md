@@ -58,9 +58,10 @@ The command for running the pipeline is as follows:
 
 ```bash
 nextflow run ceri-krisp/choleraseq \
+         -profile docker \
          --samplesheet /path/to/samplesheet.csv \
-         --bed /data/Twist_met/Twist_Methylome/bundle_reference_files/covered_targets_Twist_Methylome_hg38_annotated_collapsed.bed \
-         -profile docker
+         --outdir results
+
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -73,7 +74,7 @@ work                # Directory containing the nextflow working files
 .nextflow_log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
-### Unsure whether this section is a generalisation and should stay as is?
+### Use of `YAML` file for parameters
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 

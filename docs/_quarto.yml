@@ -10,8 +10,8 @@ website:
       contents:
         - text: "Usage"
           href: usage.md
-        - text: "Output"
-          href: output.md
+        # - text: "Output"
+        #   href: output.md
 
 format:
   html:
