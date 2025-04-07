@@ -14,8 +14,9 @@
 
 ## Reference sequence
 
-[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
+We have created a multi-fasta reference with global cohort available on NCBI, available at the link below.
 
+[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
 
 ## Documentation
 
