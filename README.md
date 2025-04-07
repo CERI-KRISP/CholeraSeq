@@ -24,7 +24,7 @@ The documentation for the pipeline is hosted at https://ceri-krisp.github.io/Cho
 
 ## Testing
 
-A built-in test profile are available in the choleraseq pipeline with different size of datasets. This profile can be used to run tests on the relevant infrastructure using the bundled test datasets ([published on Zenodo](https://doi.org/FIXME/zenodo.FIXME)), to help users identify and resolve any infrastructural issue before the analysis stage.
+A built-in test profile are available in the choleraseq pipeline with different size of datasets. This profile can be used to run tests on the relevant infrastructure using the `test` profile, to help users identify and resolve any infrastructural issue before the analysis stage.
 
 **NOTE**: The snippets below assumes you have `docker` on the sever/machine you wish to test the pipeline. For other institutional configs please refer [nf-core/configs](https://nf-co.re/docs/usage/configuration#max-resources) project, which are all applicable to this pipeline.
 
