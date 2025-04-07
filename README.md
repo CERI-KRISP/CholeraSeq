@@ -20,7 +20,7 @@ We have created a multi-fasta reference with global cohort available on NCBI, av
 
 ## Documentation
 
-The documentation for the pipeline is hosted at https://ceri-krisp.github.io/CholeraSeq/usage.html 
+The documentation for the pipeline is hosted at https://ceri-krisp.github.io/CholeraSeq/
 
 ## Testing
 
