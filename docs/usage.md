@@ -24,9 +24,13 @@ You will need to create a samplesheet with information about the samples you wou
 # Input
 
 The input samplesheet should be in CSV format, containing either of the three possibilities
-1. Paired-end reads (e.g `SRR8364252`)
-2. Single-end reads (e.g. `SRR771360` )
-3. Fasta files (e.g. `AHGB01000000`)
+
+  1. Paired-end reads (e.g `SRR8364252`)
+
+  2. Single-end reads (e.g. `SRR771360` )
+
+  3. Fasta files (e.g. `AHGB01000000`)
+
 
 ```csv
 sample,fastq_1,fastq_2
