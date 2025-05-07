@@ -10,6 +10,7 @@ workflow CLUSTERING_WF {
 
     take:
         clean_full_aln_fasta
+        ch_cat_core_alignment
 
     main:
         PYTHON_SEQ_CLEANER ( clean_full_aln_fasta )
@@ -29,7 +30,7 @@ workflow CLUSTERING_WF {
 
         } else {
 
-            in_run_gubbins_ch = ch_cat_core_alignment
+            in_run_gubbins_ch = filtered_fasta
 
         }
 
