@@ -10,7 +10,6 @@ workflow CLUSTERING_WF {
 
     take:
         clean_full_aln_fasta
-        ch_cat_core_alignment
 
     main:
         PYTHON_SEQ_CLEANER ( clean_full_aln_fasta )
