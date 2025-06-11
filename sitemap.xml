@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://CERI-KRISP.github.io/CholeraSeq/output.html</loc>
-    <lastmod>2025-02-04T07:55:24.602Z</lastmod>
+    <loc>https://CERI-KRISP.github.io/CholeraSeq/installation.html</loc>
+    <lastmod>2025-06-11T12:58:58.654Z</lastmod>
   </url>
   <url>
     <loc>https://CERI-KRISP.github.io/CholeraSeq/usage.html</loc>
-    <lastmod>2025-04-07T12:58:08.603Z</lastmod>
+    <lastmod>2025-06-11T12:40:04.333Z</lastmod>
+  </url>
+  <url>
+    <loc>https://CERI-KRISP.github.io/CholeraSeq/output.html</loc>
+    <lastmod>2025-06-11T12:54:56.927Z</lastmod>
   </url>
 </urlset>
