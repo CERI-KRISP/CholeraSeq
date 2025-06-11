@@ -4,9 +4,12 @@
 
 ## Introduction
 
-We developed the `CholeraSeq` pipeline, designed to...
+**CERI-KRISP/CholeraSeq** is a Nextflow pipeline for genomic data analysis of Cholera outbreaks.
 
 ## Dataset
+
+
+https://doi.org/zenodo.10984554
 
 [![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554?labelColor=000000)](https://doi.org/zenodo.10984554)
 
