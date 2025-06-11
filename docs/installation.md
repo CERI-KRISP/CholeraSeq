@@ -1,21 +1,21 @@
 # Installation Instructions for Nextflow, Docker, and Java JDK 17 LTS on Ubuntu
 
 
-
-As the CholeraSeq pipeline uses nf-core template, the extensive documentation regarding installation, configuration and customization of the pipeline are applicable for CholeraSeq.
-
 In this document, we provide minimal instructions required by a user to initiate testing of the pipeline. If you need to install this pipeline on a cluster (HPC or K8s) then please refer the to the nf-core docs and community.
+
+:::{.callout-tip}
+## nf-core documentation
+As the CholeraSeq pipeline uses nf-core template, the extensive documentation regarding installation, configuration and customization of the pipeline are applicable for CholeraSeq.
+:::
+
+
 
 ## Prerequisites
 
 - Ubuntu Linux (18.04 or newer recommended)
 - `curl` and `wget` installed
 
-
 ---
-
-
-> :heavy_check_mark: **With this you're all set with Nextflow. Next stop, conda or docker - pick one!**: <br>
 
 
 ## 1. Install Java JDK 17 LTS
