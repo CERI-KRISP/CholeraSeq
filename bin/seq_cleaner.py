@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Original author: Alberto
+
 import sys
 import csv
 import os.path
