@@ -12,3 +12,6 @@ _resources
 
 .lsp
 .clj-kondo
+
+
+docs/_site

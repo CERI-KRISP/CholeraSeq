@@ -10,7 +10,7 @@ workflow VARIANT_CALLING_WF {
 
     main:
 
-        SNIPPY_RUN(reads_ch, params.fasta)
+        SNIPPY_RUN(reads_ch, params.fasta) //NOTE: Either fasta or gbk
 
         //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
         //to addresses the negative control

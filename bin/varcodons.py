@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+
+# Original author: Alberto
+
 import sys
 import csv
 import numpy as np
@@ -453,7 +456,7 @@ Usage: varcodons.py [options...]
 
 where options are:
 
-  -g G | GFF or GenBank file containing gene annotations (required).
+  -g G | GenBank file containing gene annotations (required).
   -f F | Alignment in FASTA format (required).
   -c C | Chromosome name.
   -o O | Name of output file (default: standard output).

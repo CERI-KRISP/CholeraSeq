@@ -12,13 +12,9 @@ workflow CLUSTERING_WF {
         clean_full_aln_fasta
 
     main:
-        PYTHON_SEQ_CLEANER ( clean_full_aln_fasta )
-
-        filtered_fasta = PYTHON_SEQ_CLEANER.out.cleaned_fasta
-
         if(params.enable_fastbaps) {
 
-            R_FASTBAPS( filtered_fasta )
+            R_FASTBAPS( clean_full_aln_fasta )
 
             CLJ_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
 
@@ -29,17 +25,29 @@ workflow CLUSTERING_WF {
 
         } else {
 
-            in_run_gubbins_ch = ch_cat_core_alignment
+            in_run_gubbins_ch = clean_full_aln_fasta
 
         }
 
          RUN_GUBBINS( in_run_gubbins_ch )
+
          MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
 
-         in_iqtree = MASK_GUBBINS.out.masked_fasta.map {m -> [m[0], m[1], []]}
+
+         //VARIANT_CODON_ALIGNMENT using varcodons and GBK reference
+         //MASK_GUBBINS.out.masked_fasta. Also use the -r to generate and output
+        //a report for users for information (-a)
+
+
+        //TODO: MASK_GUBBINS output should be concatenated
+
+         PYTHON_SEQ_CLEANER ( MASK_GUBBINS.out.masked_fasta )
+
+        //TODO: Check the overall functionality
+         in_iqtree = PYTHON_SEQ_CLEANER.out.cleaned_fasta.map {m -> [m[0], m[1], []]}
 
          IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
     emit:
-        versions = RUN_GUBBINS.out.versions
+        versions = RUN_GUBBINS.out.versions //TODO:
 }

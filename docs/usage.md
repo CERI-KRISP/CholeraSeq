@@ -4,9 +4,12 @@
 
 ## Introduction
 
-We developed the `CholeraSeq` pipeline, designed to...
+**CERI-KRISP/CholeraSeq** is a Nextflow pipeline for genomic data analysis of Cholera outbreaks.
 
 ## Dataset
+
+
+https://doi.org/zenodo.10984554
 
 [![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554?labelColor=000000)](https://doi.org/zenodo.10984554)
 
@@ -23,23 +26,28 @@ You will need to create a samplesheet with information about the samples you wou
 
 # Input
 
+The input samplesheet should be in CSV format, containing either of the three possibilities
 
-| sample         | fastq_1                                                                                                                  | fastq_2                                                                        |
-| SRR8364252     | ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_1.fastq.gz                                           | ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_2.fastq.gz |
-| SRR8364253     | ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/003/SRR8364253/SRR8364253_1.fastq.gz                                           | ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/003/SRR8364253/SRR8364253_2.fastq.gz |
-| SRR771360      | ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR771/SRR771360/SRR771360.fastq.gz                                                   |                                                                                |
-| SRR771582      | ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR771/SRR771582/SRR771582.fastq.gz                                                   |                                                                                |
-| AHFZ00000000.1 | https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHFZ01.fasta |                                                                                |
-| AHGA00000000.1 | https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHGA01.fasta |                                                                                |
-| AHGB01000000.1 | https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHGB01.fasta |                                                                                |
+  1. Paired-end reads (e.g `SRR8364252`)
 
+  2. Single-end reads (e.g. `SRR771360` )
+
+  3. Fasta files (e.g. `AHGB01000000`)
+
+
+```csv
+sample,fastq_1,fastq_2
+SRR8364252,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_1.fastq.gz,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_2.fastq.gz
+SRR771360,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR771/SRR771360/SRR771360.fastq.gz,
+AHGB01000000.1,https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHGB01.fasta,
+```
 
 ## Running the pipeline
 
 
 ### Test profiles
 
-A built-in test profile are available in the choleraseq pipeline with different size of datasets. This profile can be used to run tests on the relevant infrastructure using the bundled test datasets ([published on Zenodo](https://doi.org/FIXME/zenodo.FIXME)), to help users identify and resolve any infrastructural issue before the analysis stage.
+A built-in test profile are available in the choleraseq pipeline with different size of datasets. This profile can be used to run tests on the relevant infrastructure using the `test` profile, to help users identify and resolve any infrastructural issue before the analysis stage.
 
 **NOTE**: The snippets below assumes you have `docker` on the sever/machine you wish to test the pipeline. For other institutional configs please refer [nf-core/configs](https://nf-co.re/docs/usage/configuration#max-resources) project, which are all applicable to this pipeline.
 
@@ -58,9 +66,10 @@ The command for running the pipeline is as follows:
 
 ```bash
 nextflow run ceri-krisp/choleraseq \
+         -profile docker \
          --samplesheet /path/to/samplesheet.csv \
-         --bed /data/Twist_met/Twist_Methylome/bundle_reference_files/covered_targets_Twist_Methylome_hg38_annotated_collapsed.bed \
-         -profile docker
+         --outdir results
+
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -73,7 +82,7 @@ work                # Directory containing the nextflow working files
 .nextflow_log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
-### Unsure whether this section is a generalisation and should stay as is?
+### Use of `YAML` file for parameters
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 

@@ -1,4 +1,5 @@
-[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.15167441-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.15167441)
+
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.10.1-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
@@ -9,25 +10,22 @@
 ## Introduction
 
 
-**CERI-KRISP/CholeraSeq** is a Nextflow pipeline for data analysis of Cholera outbreaks.
-
-> :warning: **ALPHA STAGE PIPELINE!**:
-The pipeline is in active development and NOT recommended for usage yet.
+**CERI-KRISP/CholeraSeq** is a Nextflow pipeline for data genomic analysis of Cholera outbreaks.
 
 
 ## Reference sequence
 
-[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
+We have created a multi-fasta reference with global cohort available on NCBI, available at the link below.
 
+[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
 
 ## Documentation
 
-The documentation for the pipeline is hosted in https://ceri-krisp.github.io/choleraseq/usage.html
-
+The documentation for the pipeline is hosted at https://ceri-krisp.github.io/CholeraSeq/
 
 ## Testing
 
-A built-in test profile are available in the choleraseq pipeline with different size of datasets. This profile can be used to run tests on the relevant infrastructure using the bundled test datasets ([published on Zenodo](https://doi.org/FIXME/zenodo.FIXME)), to help users identify and resolve any infrastructural issue before the analysis stage.
+A built-in test profile are available in the choleraseq pipeline with different size of datasets. This profile can be used to run tests on the relevant infrastructure using the `test` profile, to help users identify and resolve any infrastructural issue before the analysis stage.
 
 **NOTE**: The snippets below assumes you have `docker` on the sever/machine you wish to test the pipeline. For other institutional configs please refer [nf-core/configs](https://nf-co.re/docs/usage/configuration#max-resources) project, which are all applicable to this pipeline.
 
@@ -36,31 +34,6 @@ A built-in test profile are available in the choleraseq pipeline with different 
 $ nextflow run CERI-KRISP/CholeraSeq \
   -profile test,docker --outdir test_output
 
-```
-
-
-
-### Test profiles
-
-Two built-in test profiles are available in target-methylseq-qc pipeline for each mode of execution. These profiles can be used to run tests on the relevant infrastructure using the bundled test datasets , helping users to identify and resolve any infrastructural issue before the actual analysis stage.
-
-
-
-Two built-in test profiles are available in target-methylseq-qc pipeline for each mode of execution. These profiles can be used to run tests on the relevant infrastructure using the bundled test datasets ([published on Zenodo](https://doi.org/10.5281/zenodo.13597863)), to help users identify and resolve any infrastructural issue before the analysis stage.
-
-
-**NOTE**: The snippets below assumes you have `docker` on the sever/machine you wish to test the pipeline. For other institutional configs please refer [nf-core/configs](https://nf-co.re/docs/usage/configuration#max-resources) project, which are all applicable to this pipeline.
-
-```bash
-
-# picard_profiler mode
-$ nextflow run wal-yan/target-methylseq-qc \
-  -profile docker,test_picard_profiler
-
-
-# bed_filter mode
-$ nextflow run wal-yan/target-methylseq-qc \
-  -profile docker,test_bed_filter
 ```
 
 
