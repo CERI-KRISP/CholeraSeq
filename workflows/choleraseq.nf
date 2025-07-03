@@ -71,11 +71,19 @@ workflow CHOLERASEQ {
 
 
     if (params.global_core_alignment && params.cohort_core_alignment) {
+        //===============================
+        // COMBINE CORE GENOME ALIGNMENT
+        //===============================
+
 
         COMBINE_CORE_ALIGNMENTS_WF (params.global_core_alignment, params.cohort_core_alignment)
         ch_versions = ch_versions.mix(COMBINE_CORE_ALIGNMENTS_WF.out.versions)
 
     } else {
+
+        //============================
+        // CORE GENOME ALIGNMENT
+        //============================
 
         //
         // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -84,11 +92,6 @@ workflow CHOLERASEQ {
             ch_input
         )
         ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
-
-
-        //============================
-        // CORE GENOME ALIGNMENT
-        //============================
 
 
         reads_ch = INPUT_CHECK.out.reads
@@ -102,6 +105,9 @@ workflow CHOLERASEQ {
             reads_ch.fastqs
         )
         ch_versions = ch_versions.mix(QUALITY_CONTROL_WF.out.versions)
+        ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
+        ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastp_json.collect{it[1]}.ifEmpty([]))
+
 
         cleaned_reads_ch = QUALITY_CONTROL_WF.out.trimmed_reads
                             .mix(reads_ch.contigs)
@@ -114,13 +120,13 @@ workflow CHOLERASEQ {
         )
         ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
 
+        if (!params.skip_clustering) {
 
-        CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
-        ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
+            CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
+            ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
+            ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
 
-        ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastqc_zip.collect{it[1]}.ifEmpty([]))
-        ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastp_json.collect{it[1]}.ifEmpty([]))
-        ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
+        }
 
     }
 
