@@ -41,6 +41,11 @@
                         "git_sha": "f2d63bd5b68925f98f572eed70993d205cc694b7",
                         "installed_by": ["modules"]
                     },
+                    "samtools/consensus": {
+                        "branch": "master",
+                        "git_sha": "41dfa3f7c0ffabb96a6a813fe321c6d1cc5b6e46",
+                        "installed_by": ["modules"]
+                    },
                     "seqkit/grep": {
                         "branch": "master",
                         "git_sha": "fd08c25c759d5d1f30422e73c9be153dbf657724",
