@@ -142,7 +142,7 @@ workflow CHOLERASEQ {
             }
 
 
-            ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
+            //ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
             ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
 
         }
