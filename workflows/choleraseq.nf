@@ -129,18 +129,15 @@ workflow CHOLERASEQ {
 
             if(params.global_core_alignment ) {
 
-
-                cohort_core_aln = VARIANT_CALLING_WF.out.cleaned_full_aln.map{it -> tuple([id:'patch_core_aln'], it[1])}.dump( tag: 'in_cat_cat: ', pretty: true)
+                cohort_core_aln = VARIANT_CALLING_WF.out.cleaned_full_aln.map{it -> tuple([id:'patch_core_aln'], it[1])}
 
                 ch_global_aln = Channel.of([[id: 'patch_core_aln'], params.global_core_alignment])
 
-                in_cat_cat = ch_global_aln.join(cohort_core_aln)
+                ch_cat_alignments = ch_global_aln.join(cohort_core_aln)
 
-                in_cat_cat.dump(tag: 'in_cat_cat: ', pretty: true)
+                CAT_CAT(ch_cat_alignments)
 
-                //CAT_CAT(in_cat_cat)
-
-                //CLUSTERING_WF ( CAT_CAT.out.file_out )
+                CLUSTERING_WF ( CAT_CAT.out.file_out )
 
             } else {
 
@@ -148,7 +145,7 @@ workflow CHOLERASEQ {
             }
 
 
-            //ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
+            ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
             ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
 
         }
