@@ -124,7 +124,7 @@ workflow CHOLERASEQ {
         )
         ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
 
-        VARIANT_CALLING_WF.out.cleaned_full_aln.collect{it[1]}.dump( tag: 'in_cat_cat: ', pretty: true)
+        VARIANT_CALLING_WF.out.cleaned_full_aln.map{it[1]}.dump( tag: 'in_cat_cat: ', pretty: true)
 
         if (!params.skip_clustering) {
 
