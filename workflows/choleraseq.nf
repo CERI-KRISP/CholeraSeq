@@ -129,9 +129,9 @@ workflow CHOLERASEQ {
 
             if(params.global_core_alignment ) {
 
-                cohort_core_aln = VARIANT_CALLING_WF.out.cleaned_full_aln.map{it -> tuple([id:'patch_core_aln'], it[1])}
+                cohort_core_aln = VARIANT_CALLING_WF.out.cleaned_full_aln.map{it -> tuple([id:'patch_core_aln'], file(it[1]))}
 
-                ch_global_aln = Channel.of([[id: 'patch_core_aln'], params.global_core_alignment])
+                ch_global_aln = Channel.of([[id: 'patch_core_aln'], file(params.global_core_alignment)])
 
                 ch_cat_alignments = ch_global_aln.join(cohort_core_aln).map { m, f1, f2 -> [m, [f1, f2]] }
 
