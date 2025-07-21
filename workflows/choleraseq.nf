@@ -128,14 +128,13 @@ workflow CHOLERASEQ {
 
             if(params.global_core_alignment ) {
 
-                in_cat_cat = Channel.of([[id: 'patch_core_aln'],
-                                         [params.global_core_alignment,
-                                          VARIANT_CALLING_WF.out.cleaned_full_aln.collect{it[1]}]])
-                in_cat_cat.dump( tag: 'in_cat_cat: ', pretty: true)
+                ch_global_aln = Channel.of([[id: 'patch_core_aln'], params.global_core_alignment])
 
-                CAT_CAT(in_cat_cat)
+                VARIANT_CALLING_WF.out.cleaned_full_aln.collect{it[1]}.dump( tag: 'in_cat_cat: ', pretty: true)
 
-                CLUSTERING_WF ( CAT_CAT.out.file_out )
+                //CAT_CAT(in_cat_cat)
+
+                //CLUSTERING_WF ( CAT_CAT.out.file_out )
 
             } else {
 
