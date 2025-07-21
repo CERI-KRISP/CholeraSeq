@@ -1,6 +1,7 @@
 include { SNIPPY_CORE         } from '../../modules/nf-core/snippy/core/main.nf'
 include { SNIPPY_RUN          } from '../../modules/nf-core/snippy/run/main.nf'
 include { SNIPPY_CLEAN        } from '../../modules/local/snippy/snippy_clean.nf'
+include { SAMTOOLS_CONSENSUS  } from '../../modules/nf-core/samtools/consensus/main.nf'
 
 
 workflow VARIANT_CALLING_WF {
@@ -43,6 +44,9 @@ workflow VARIANT_CALLING_WF {
         SNIPPY_CORE( ch_snippy_core, params.fasta )
 
         SNIPPY_CLEAN( SNIPPY_CORE.out.full_aln )
+
+
+
 
     emit:
         cleaned_full_aln = SNIPPY_CLEAN.out.cleaned_full_aln
