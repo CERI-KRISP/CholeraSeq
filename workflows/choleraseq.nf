@@ -133,7 +133,9 @@ workflow CHOLERASEQ {
 
                 ch_global_aln = Channel.of([[id: 'patch_core_aln'], params.global_core_alignment])
 
-                ch_cat_alignments = ch_global_aln.join(cohort_core_aln)
+                //ch_cat_alignments = ch_global_aln.mix(cohort_core_aln)
+
+                ch_cat_alignments = Channel.of([[id: 'concatenate_alns'], [ch_global_aln, cohort_core_aln]])
 
                 CAT_CAT(ch_cat_alignments)
 
