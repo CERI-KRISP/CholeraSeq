@@ -124,14 +124,19 @@ workflow CHOLERASEQ {
         )
         ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
 
-        VARIANT_CALLING_WF.out.cleaned_full_aln.map{it[1]}.dump( tag: 'in_cat_cat: ', pretty: true)
 
         if (!params.skip_clustering) {
 
             if(params.global_core_alignment ) {
 
+
+                cohort_core_aln = VARIANT_CALLING_WF.out.cleaned_full_aln.map{it -> tuple([id:'patch_core_aln'], it[1])}.dump( tag: 'in_cat_cat: ', pretty: true)
+
                 ch_global_aln = Channel.of([[id: 'patch_core_aln'], params.global_core_alignment])
 
+                in_cat_cat = ch_global_aln.join(cohort_core_aln)
+
+                in_cat_cat.dump(tag: 'in_cat_cat: ', pretty: true)
 
                 //CAT_CAT(in_cat_cat)
 
