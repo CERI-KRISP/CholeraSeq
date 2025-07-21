@@ -135,6 +135,8 @@ workflow CHOLERASEQ {
 
                 ch_cat_alignments = ch_global_aln.join(cohort_core_aln).map { m, f1, f2 -> [m, [f1, f2]] }
 
+                ch_cat_alignments.dump(tag: 'ch_cat_alignments', pretty: true)
+
                 CAT_CAT(ch_cat_alignments)
 
                 CLUSTERING_WF ( CAT_CAT.out.file_out )
