@@ -24,7 +24,7 @@ workflow COMBINE_CORE_ALIGNMENTS_WF {
 
         ch_cat_core_alignment = PYTHON_SEQ_CLEANER.out.cleaned_fasta
 
-        if(params.enable_fastbaps) {
+        if(params.enable_fastbaps || !params.skip_fastbaps) {
 
             R_FASTBAPS( ch_cat_core_alignment )
 

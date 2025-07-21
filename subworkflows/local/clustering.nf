@@ -12,7 +12,7 @@ workflow CLUSTERING_WF {
         clean_full_aln_fasta
 
     main:
-        if(params.enable_fastbaps) {
+        if(params.enable_fastbaps || !params.skip_fastbaps) {
 
             R_FASTBAPS( clean_full_aln_fasta )
 
