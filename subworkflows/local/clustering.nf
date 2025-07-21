@@ -38,7 +38,9 @@ workflow CLUSTERING_WF {
          //MASK_GUBBINS.out.masked_fasta. Also use the -r to generate and output
         //a report for users for information (-a)
 
-        SAMTOOLS_CONSENSUS( )
+
+        //FIXME
+        //SAMTOOLS_CONSENSUS( )
 
         //TODO: MASK_GUBBINS output should be concatenated
 
