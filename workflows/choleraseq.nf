@@ -71,13 +71,17 @@ workflow CHOLERASEQ {
 
 
     if (params.global_core_alignment && params.cohort_core_alignment) {
-        //===============================
-        // COMBINE CORE GENOME ALIGNMENT
-        //===============================
+        //=========================
+        // PATCH GLOBAL GENOME ALIGNMENT
+        //=========================
 
+        in_cat_cat = Channel.of([[id: 'concatenate_alns'], [global_core_alignment, cohort_core_alignment]])
 
-        COMBINE_CORE_ALIGNMENTS_WF (params.global_core_alignment, params.cohort_core_alignment)
-        ch_versions = ch_versions.mix(COMBINE_CORE_ALIGNMENTS_WF.out.versions)
+        CAT_CAT(in_cat_cat)
+
+        CLUSTERING_WF ( CAT_CAT.out.cat_fasta )
+
+        ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
 
     } else {
 
@@ -122,7 +126,20 @@ workflow CHOLERASEQ {
 
         if (!params.skip_clustering) {
 
-            CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
+            if(params.global_core_alignment ) {
+
+                in_cat_cat = Channel.of([[id: 'patch_core_aln'], [params.global_core_alignment, VARIANT_CALLING_WF.out.cleaned_full_aln]])
+
+                CAT_CAT(in_cat_cat)
+
+                CLUSTERING_WF ( CAT_CAT.out.cat_fasta )
+
+            } else {
+
+                CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
+            }
+
+
             ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
             ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
 
