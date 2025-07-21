@@ -41,7 +41,6 @@ include { INPUT_CHECK                } from '../subworkflows/local/input_check'
 include { QUALITY_CONTROL_WF         } from '../subworkflows/local/quality_control'
 include { VARIANT_CALLING_WF         } from '../subworkflows/local/variant_calling'
 include { CLUSTERING_WF              } from '../subworkflows/local/clustering'
-include { COMBINE_CORE_ALIGNMENTS_WF  } from '../subworkflows/local/combine_core_alignments'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
