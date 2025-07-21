@@ -128,7 +128,9 @@ workflow CHOLERASEQ {
 
             if(params.global_core_alignment ) {
 
-                in_cat_cat = Channel.of([[id: 'patch_core_aln'], [params.global_core_alignment, VARIANT_CALLING_WF.out.cleaned_full_aln]])
+                in_cat_cat = Channel.of([[id: 'patch_core_aln'],
+                                         [params.global_core_alignment,
+                                          VARIANT_CALLING_WF.out.cleaned_full_aln.collect{it[1]}]])
 
                 CAT_CAT(in_cat_cat)
 
