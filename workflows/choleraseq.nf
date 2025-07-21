@@ -132,7 +132,7 @@ workflow CHOLERASEQ {
 
                 CAT_CAT(in_cat_cat)
 
-                CLUSTERING_WF ( CAT_CAT.out.cat_fasta )
+                CLUSTERING_WF ( CAT_CAT.out.file_out )
 
             } else {
 
