@@ -5,6 +5,7 @@ include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main
 include { MASK_GUBBINS                } from '../../modules/local/gubbins/mask.nf'
 include { CLJ_SPLIT_CLUSTERS          } from '../../modules/local/clojure/split_clusters.nf'
 include { IQTREE                      } from '../../modules/nf-core/iqtree/main'
+include { CAT_CAT                     } from '../../modules/nf-core/cat/cat/main.nf'
 
 workflow CLUSTERING_WF {
 
@@ -38,19 +39,21 @@ workflow CLUSTERING_WF {
          //MASK_GUBBINS.out.masked_fasta. Also use the -r to generate and output
         //a report for users for information (-a)
 
-        MASK_GUBBINS.out.masked_fasta.map { m, f -> [m, [f]] }.debug(tag: "MASK_GUBBINS.out.masked_fasta")
+        ch_all_masked_fastas = MASK_GUBBINS.out.masked_fasta
+                            .map{m, f -> f}
+                            .collect().map{v -> [[id: 'concatenated_masked_fastas'], v]}
+
+        CAT_CAT(ch_all_masked_fastas)
 
         //FIXME
         //SAMTOOLS_CONSENSUS( )
 
-        //TODO: MASK_GUBBINS output should be concatenated
-
-         PYTHON_SEQ_CLEANER ( MASK_GUBBINS.out.masked_fasta )
+         PYTHON_SEQ_CLEANER ( CAT_CAT.out.file_out )
 
         //TODO: Check the overall functionality
          in_iqtree = PYTHON_SEQ_CLEANER.out.cleaned_fasta.map {m -> [m[0], m[1], []]}
 
-         IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
+         // IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
     emit:
         versions = RUN_GUBBINS.out.versions //TODO:

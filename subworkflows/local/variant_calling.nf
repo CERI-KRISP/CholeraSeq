@@ -31,11 +31,11 @@ workflow VARIANT_CALLING_WF {
 
         ch_merge_vcf = ch_passed_samples
                             .collect{ meta, vcf, aligned_fa -> vcf }
-                            .map{ vcf -> [[id:'snippy-core'], vcf]}
+                            .map{ vcf -> [[id:'cohort_aln'], vcf]}
 
         ch_merge_aligned_fa = ch_passed_samples
                                 .collect{meta, vcf, aligned_fa -> aligned_fa}
-                                .map{ aligned_fa -> [[id:'snippy-core'], aligned_fa]}
+                                .map{ aligned_fa -> [[id:'cohort_aln'], aligned_fa]}
 
         ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
 
@@ -44,7 +44,6 @@ workflow VARIANT_CALLING_WF {
         SNIPPY_CORE( ch_snippy_core, params.fasta )
 
         SNIPPY_CLEAN( SNIPPY_CORE.out.full_aln )
-
 
 
 

@@ -1,5 +1,5 @@
 process PYTHON_SEQ_CLEANER {
-    tag "seq_cleaner $prefix"
+    tag "$meta.id"
     label 'process_low'
 
     conda "conda-forge::python=3.10.13"
@@ -7,7 +7,6 @@ process PYTHON_SEQ_CLEANER {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://quay.io/biocontainers/biopython:1.81':
         'quay.io/biocontainers/biopython:1.81' }"
-
 
     input:
     tuple val(meta), path(input_fasta)
