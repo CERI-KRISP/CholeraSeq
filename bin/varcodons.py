@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 
+
 # Original author: Alberto
 
 import sys
@@ -30,7 +31,7 @@ class Outfile(object):
 
     def __init__(self, filename):
         self.filename = filename
-
+        
     def __enter__(self):
         if self.filename:
             self.stream = open(self.filename, "w")
@@ -160,7 +161,7 @@ class GeneSet(object):
                         sys.stdout.write("    {} ({})\t{} ({})\t{}\t{}\n".format(cds.start, cds.frame1, cds.end, \
                             cds.frame2, 1 + cds.end - cds.start, cds.offset))
                     sys.stdout.write("\n")
-
+    
     def findCDSatpos(self, chrom, pos):
         result = []
         #print(self.genes[chrom][:10])
@@ -171,7 +172,7 @@ class GeneSet(object):
                 if cds.start <= pos <= cds.end:
                     result.append(cds)
         return result
-
+        
 class Gene(object):
     chrom = ""
     name = ""
@@ -220,7 +221,7 @@ class CDS(object):
     def __init__(self, start, end):
         #sys.stderr.write("** from gb: {} {}\n".format(start, end))
         self.start = start + 1
-        self.end = end
+        self.end = end 
 
     def tripletStart(self, pos):
         """Return the start position of a triplet in this cds given its coordinate."""
@@ -342,20 +343,23 @@ class Reference(object):
                 for j in range(5):
                     out.write(str(self.baseArray[i, j]) + "\t")
                 out.write("\n")
-
+        
     def filterInformative(self, minall, mincov):
         fp = []
+        sys.stderr.write(f"Scanning {len(self.snpPositions)} positions to determine PI SNPs.\n")
         for pos in self.snpPositions:
             ngood = 0
             totbase = 0
             total = 0
             for i in range(5):
-                c = self.baseArray[pos, i]
+                c = self.baseArray[pos-1, i]
+                #sys.stderr.write(f"{c} ")
                 total += c
                 if i > 0:
                     totbase += c
                     if c >= minall:
                         ngood += 1
+            #sys.stderr.write(f"\n{pos}: {ngood} {totbase} {total}\n")
             if (ngood > 1) and ((totbase / total) > mincov):
                 fp.append(pos)
         self.snpPositions = fp
@@ -444,7 +448,7 @@ class Main(object):
     fasta = None
     reportfile = None
     outfile = None
-    informative = False         # Filter for informative SNPs
+    informative = False         # Filter for informative SNPs 
     minCov = 0
     minAll = 0
     codons = False
@@ -456,17 +460,16 @@ Usage: varcodons.py [options...]
 
 where options are:
 
-  -g G | GenBank file containing gene annotations (required).
+  -g G | GFF or GenBank file containing gene annotations (required).
   -f F | Alignment in FASTA format (required).
   -c C | Chromosome name.
   -o O | Name of output file (default: standard output).
   -r R | Name of report file containing list of variable positions (default: no report).
   -i   | If specified, filter informative SNPs only. A SNP is considered informative
          if it meets the conditions specified by -d and -n. Default: {}.
-  -d D | Variable position should have depth of coverage of D or more (number of observations
-         of this position that are not `N' or `-'). Default: {}.
+  -d D | Fraction of bases at variable position that are not `N' or `-'. Default: {}.
   -n N | Both alleles should be seen at least N times. Default: {}.
-  -a   | If specifed outputs codons instead of SNPs.
+  -a   | If specified, outputs codons instead of SNPs.
 
 """.format(self.informative, self.minCov, self.minAll))
 
@@ -503,13 +506,13 @@ where options are:
                 self.minAll = 2
                 self.informative = True
             elif a == "-a":
-                self.codons = True
+                self.codons = True 
         return self.gff and self.fasta
 
     def run(self):
         GS = GeneSet()
         GS.parseGenes(self.gff)
-        GS.dump()
+        #GS.dump()
         R = Reference(GS)
         R.readAlignment(self.fasta)
         if self.informative:
