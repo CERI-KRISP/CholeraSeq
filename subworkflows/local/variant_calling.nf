@@ -1,7 +1,7 @@
 include { SNIPPY_CORE                         } from '../../modules/nf-core/snippy/core/main.nf'
 include { SNIPPY_RUN                          } from '../../modules/nf-core/snippy/run/main.nf'
 include { SNIPPY_CLEAN                        } from '../../modules/local/snippy/snippy_clean.nf'
-include { VARCODONS                           } from '../../modules/local/utils/varcodons/main.nf'
+include { UTILS_VARCODONS                     } from '../../modules/local/utils/varcodons/main.nf'
 include { UTILS_CAT_SAMTOOLS_CONSENSUS        } from '../../modules/local/utils/catsamtoolsconsensus/main.nf'
 include { SAMTOOLS_CONSENSUS                  } from '../../modules/nf-core/samtools/consensus/main.nf'
 
@@ -62,10 +62,10 @@ workflow VARIANT_CALLING_WF {
 
         //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 
-        VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta )
+        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta )
 
     emit:
-        //cleaned_full_aln = SNIPPY_CLEAN.out.cleaned_full_aln
+        cleaned_full_aln = UTILS_VARCODONS
         //snippy_varcall_txt = SNIPPY_RUN.out.txt
         versions = SNIPPY_RUN.out.versions
 }
