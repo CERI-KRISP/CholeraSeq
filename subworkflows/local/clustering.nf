@@ -3,7 +3,7 @@ include { PYTHON_SEQ_CLEANER          } from '../../modules/local/python/seq_cle
 include { SEQKIT_GREP                 } from '../../modules/nf-core/seqkit/grep/main'
 include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
 include { MASK_GUBBINS                } from '../../modules/local/gubbins/mask.nf'
-include { CLJ_SPLIT_CLUSTERS          } from '../../modules/local/clojure/split_clusters.nf'
+include { PYTHON_SPLIT_CLUSTERS       } from '../../modules/local/clojure/split_clusters.nf'
 include { IQTREE                      } from '../../modules/nf-core/iqtree/main'
 include { CAT_CAT                     } from '../../modules/nf-core/cat/cat/main.nf'
 

@@ -1,4 +1,4 @@
-process CLJ_SPLIT_CLUSTERS {
+process PYTHON_SPLIT_CLUSTERS {
     tag "split_clusters"
     label 'process_low'
 
