@@ -27,7 +27,7 @@ process UTILS_CAT_SAMTOOLS_CONSENSUS {
     dir_name=consensus_seqs
 
     input_files_list=inputFiles.txt
-    ls consensus_seqs/*fasta > inputFiles.txt
+    ls consensus_seqs/ > inputFiles.txt
 
 
     # Read file names from the input list and process each consensus file
