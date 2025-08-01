@@ -52,7 +52,7 @@ workflow VARIANT_CALLING_WF {
 
 
         //TODO: Concatenate the aligned fasta files
-        ch_cat_cat_in = SAMTOOLS_CONSENSUS.out.fasta.collect{ m, f -> f] }
+        ch_cat_cat_in = SAMTOOLS_CONSENSUS.out.fasta.collect{ m, f -> f }.map { f -> [[id: 'cat_consensus'], f] }
         ch_cat_cat_in.dump(tag: 'ch_cat_cat_in')
 
         //CAT_CAT ( ch_cat_cat_in )
