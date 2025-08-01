@@ -20,6 +20,16 @@ workflow VARIANT_CALLING_WF {
         SAMTOOLS_CONSENSUS(SNIPPY_RUN.out.bam )
 
 
+        ch_cat_cat_in = SAMTOOLS_CONSENSUS.out.fasta.collect{ m, f -> f }.map { f -> [[id: 'cat_consensus'], f] }
+
+        UTILS_CAT_SAMTOOLS_CONSENSUS ( ch_cat_cat_in )
+
+        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta, params.ref_genbank )
+
+        //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
+
+
+
     /*
         //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
         //to addresses the negative control
@@ -52,14 +62,6 @@ workflow VARIANT_CALLING_WF {
 
         //SNIPPY_CORE( ch_snippy_core, params.fasta )
 
-
-        ch_cat_cat_in = SAMTOOLS_CONSENSUS.out.fasta.collect{ m, f -> f }.map { f -> [[id: 'cat_consensus'], f] }
-
-        UTILS_CAT_SAMTOOLS_CONSENSUS ( ch_cat_cat_in )
-
-        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta, params.ref_genbank )
-
-        //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 
 
     emit:
