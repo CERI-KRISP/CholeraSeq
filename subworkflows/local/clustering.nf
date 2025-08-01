@@ -45,9 +45,6 @@ workflow CLUSTERING_WF {
 
         CAT_CAT(ch_all_masked_fastas)
 
-        //FIXME
-        //SAMTOOLS_CONSENSUS( )
-
          PYTHON_SEQ_CLEANER ( CAT_CAT.out.file_out )
 
         //TODO: Check the overall functionality

@@ -43,9 +43,15 @@ workflow VARIANT_CALLING_WF {
 
         SNIPPY_CORE( ch_snippy_core, params.fasta )
 
-        SNIPPY_CLEAN( SNIPPY_CORE.out.full_aln )
 
+        SAMTOOLS_CONSENSUS(SNIPPY_CORE.out.bam )
 
+        //TODO: Concatenate the aligned fasta files
+        //UTILS_CAT_CONSENSUS ( SAMTOOLS_CONSENSUS.out.consensus_fasta.collect{ m, f -> [m, f] })
+
+        //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
+
+        //VARCODONS( SAMTOOLS_CONSENSUS.out.fasta )
 
     emit:
         cleaned_full_aln = SNIPPY_CLEAN.out.cleaned_full_aln
