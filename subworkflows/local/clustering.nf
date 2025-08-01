@@ -17,7 +17,7 @@ workflow CLUSTERING_WF {
 
             R_FASTBAPS( clean_full_aln_fasta )
 
-            CLJ_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
+            PYTHON_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
 
             SEQKIT_GREP( CLJ_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [["id": it.baseName], it]},
                          clean_full_aln_fasta.map { m,f -> f}.collect())
