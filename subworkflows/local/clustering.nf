@@ -49,7 +49,7 @@ workflow CLUSTERING_WF {
         //TODO: Check the overall functionality
          in_iqtree = PYTHON_SEQ_CLEANER.out.cleaned_fasta.map {m -> [m[0], m[1], []]}
 
-         // IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
+         IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
     emit:
         versions = RUN_GUBBINS.out.versions //TODO:
