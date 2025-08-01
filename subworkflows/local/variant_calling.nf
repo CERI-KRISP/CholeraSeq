@@ -44,7 +44,7 @@ workflow VARIANT_CALLING_WF {
         SNIPPY_CORE( ch_snippy_core, params.fasta )
 
 
-        SAMTOOLS_CONSENSUS(SNIPPY_CORE.out.bam )
+        //SAMTOOLS_CONSENSUS(SNIPPY_CORE.out.bam )
 
         //TODO: Concatenate the aligned fasta files
         //UTILS_CAT_CONSENSUS ( SAMTOOLS_CONSENSUS.out.consensus_fasta.collect{ m, f -> [m, f] })
