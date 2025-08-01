@@ -13,8 +13,8 @@ workflow VARIANT_CALLING_WF {
 
     main:
 
-        //NOTE: Either fasta or gbk
-        SNIPPY_RUN(reads_ch, params.fasta)
+        //NOTE: Must be a gbk
+        SNIPPY_RUN(reads_ch, params.ref_genbank)
 
 
         SAMTOOLS_CONSENSUS(SNIPPY_RUN.out.bam )
@@ -53,16 +53,15 @@ workflow VARIANT_CALLING_WF {
         //SNIPPY_CORE( ch_snippy_core, params.fasta )
 
 
-        //TODO: Concatenate the aligned fasta files
         ch_cat_cat_in = SAMTOOLS_CONSENSUS.out.fasta.collect{ m, f -> f }.map { f -> [[id: 'cat_consensus'], f] }
-
-        ch_cat_cat_in.dump(tag: 'ch_cat_cat_in')
 
         UTILS_CAT_SAMTOOLS_CONSENSUS ( ch_cat_cat_in )
 
+
+        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta, params.ref_genbank )
+
         //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 
-        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta )
 
     emit:
         cleaned_full_aln = UTILS_VARCODONS
