@@ -31,7 +31,7 @@ process UTILS_CAT_SAMTOOLS_CONSENSUS {
     while IFS= read -r filename; do
     if [[ -n "\$filename" ]]; then
         echo ">\${filename}" >> ${meta.id}.fasta
-        grep -v '^>' consensus_seqs/\${filename} >> ${meta.id}.fasta
+        grep -v '^>' \${filename} >> ${meta.id}.fasta
     fi
     done < \${input_files_list}
 
