@@ -1,3 +1,4 @@
+include { CAT_CAT             } from '../../modules/nf-core/cat/cat/main.nf'
 include { SNIPPY_CORE         } from '../../modules/nf-core/snippy/core/main.nf'
 include { SNIPPY_RUN          } from '../../modules/nf-core/snippy/run/main.nf'
 include { SNIPPY_CLEAN        } from '../../modules/local/snippy/snippy_clean.nf'
@@ -51,7 +52,10 @@ workflow VARIANT_CALLING_WF {
 
 
         //TODO: Concatenate the aligned fasta files
-        //UTILS_CAT_CONSENSUS ( SAMTOOLS_CONSENSUS.out.consensus_fasta.collect{ m, f -> [m, f] })
+        ch_cat_cat_in = SAMTOOLS_CONSENSUS.out.fasta.collect{ m, f -> [m, f] }
+        ch_cat_cat_in.dump(tag: 'ch_cat_cat_in')
+
+        //CAT_CAT ( ch_cat_cat_in )
 
         //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 
