@@ -23,7 +23,7 @@ process UTILS_CAT_SAMTOOLS_CONSENSUS {
 
 
     """
-    ls consensus_seqs/ > inputFiles.txt
+    ls consensus_seqs/*fasta > inputFiles.txt
 
     input_files_list=inputFiles.txt
 
