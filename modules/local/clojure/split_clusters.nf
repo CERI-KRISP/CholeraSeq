@@ -22,7 +22,7 @@ process PYTHON_SPLIT_CLUSTERS {
     //prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    split_clusters.py --cluster-file $fastbaps_clusters
+    split_clusters.py csv --cluster-file $fastbaps_clusters
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

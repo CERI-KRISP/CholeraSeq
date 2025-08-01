@@ -35,7 +35,6 @@ workflow CLUSTERING_WF {
          MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
 
 
-         //VARIANT_CODON_ALIGNMENT using varcodons and GBK reference
          //MASK_GUBBINS.out.masked_fasta. Also use the -r to generate and output
         //a report for users for information (-a)
 
