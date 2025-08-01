@@ -12,7 +12,8 @@ workflow VARIANT_CALLING_WF {
 
     main:
 
-        SNIPPY_RUN(reads_ch, params.fasta) //NOTE: Either fasta or gbk
+        //NOTE: Either fasta or gbk
+        SNIPPY_RUN(reads_ch, params.fasta)
 
 
         SAMTOOLS_CONSENSUS(SNIPPY_RUN.out.bam )
@@ -55,7 +56,7 @@ workflow VARIANT_CALLING_WF {
         ch_cat_cat_in = SAMTOOLS_CONSENSUS.out.fasta.collect{ m, f -> f }.map { f -> [[id: 'cat_consensus'], f] }
         ch_cat_cat_in.dump(tag: 'ch_cat_cat_in')
 
-        //CAT_CAT ( ch_cat_cat_in )
+        CAT_CAT ( ch_cat_cat_in )
 
         //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 
