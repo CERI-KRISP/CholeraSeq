@@ -23,15 +23,18 @@ process UTILS_CAT_SAMTOOLS_CONSENSUS {
 
 
     """
-    ls consensus_seqs/*fasta > inputFiles.txt
+
+    dir_name=consensus_seqs
 
     input_files_list=inputFiles.txt
+    ls consensus_seqs/*fasta > inputFiles.txt
+
 
     # Read file names from the input list and process each consensus file
     while IFS= read -r filename; do
     if [[ -n "\$filename" ]]; then
         echo ">\${filename}" >> ${meta.id}.fasta
-        grep -v '^>' \${filename} >> ${meta.id}.fasta
+        grep -v '^>' \${dir_name}/\${filename} >> ${meta.id}.fasta
     fi
     done < \${input_files_list}
 
