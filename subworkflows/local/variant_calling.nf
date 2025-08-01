@@ -13,6 +13,11 @@ workflow VARIANT_CALLING_WF {
 
         SNIPPY_RUN(reads_ch, params.fasta) //NOTE: Either fasta or gbk
 
+
+        SAMTOOLS_CONSENSUS(SNIPPY_RUN.out.bam )
+
+
+    /*
         //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
         //to addresses the negative control
 
@@ -40,11 +45,10 @@ workflow VARIANT_CALLING_WF {
         ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
 
         ch_snippy_core.dump(tag: "ch_snippy_core")
+    */
 
-        SNIPPY_CORE( ch_snippy_core, params.fasta )
+        //SNIPPY_CORE( ch_snippy_core, params.fasta )
 
-
-        //SAMTOOLS_CONSENSUS(SNIPPY_CORE.out.bam )
 
         //TODO: Concatenate the aligned fasta files
         //UTILS_CAT_CONSENSUS ( SAMTOOLS_CONSENSUS.out.consensus_fasta.collect{ m, f -> [m, f] })
@@ -55,6 +59,6 @@ workflow VARIANT_CALLING_WF {
 
     emit:
         //cleaned_full_aln = SNIPPY_CLEAN.out.cleaned_full_aln
-        snippy_varcall_txt = SNIPPY_RUN.out.txt
+        //snippy_varcall_txt = SNIPPY_RUN.out.txt
         versions = SNIPPY_RUN.out.versions
 }
