@@ -30,13 +30,13 @@ process UTILS_CAT_SAMTOOLS_CONSENSUS {
     # Read file names from the input list and process each consensus file
     while IFS= read -r filename; do
     if [[ -n "\$filename" ]]; then
-        echo ">\${filename}" >> alignment.fasta
-        grep -v '^>' consensus_seqs/\${filename} >> alignment.fasta
+        echo ">\${filename}" >> ${meta.id}.fasta
+        grep -v '^>' consensus_seqs/\${filename} >> ${meta.id}.fasta
     fi
     done < \${input_files_list}
 
     # Replace asterisks with dashes
-    sed -i 's/\\*/\\-/g' cat_consensus_alignment.fasta
+    sed -i 's/\\*/\\-/g' ${meta.id}.fasta
 
 
     cat <<-END_VERSIONS > versions.yml
