@@ -28,8 +28,9 @@ class Outfile(object):
     filename = None
     stream = None
 
-    def __init__(self, filename):
+    def __init__(self, filename, fasta=None):
         self.filename = filename
+        self.stream = None
 
     def __enter__(self):
         if self.filename:
@@ -473,39 +474,40 @@ where options are:
 """.format(self.informative, self.minCov, self.minAll))
 
     def parseArgs(self, args):
-        if "-h" in args or "--help" in args:
-            return False
-        prev = ""
-        for a in args:
-            if prev == "-g":
-                self.gff = a
-                prev = ""
-            if prev == "-c":
-                self.chrom = a
-                prev = ""
-            if prev == "-f":
-                self.fasta = a
-                prev = ""
-            if prev == "-r":
-                self.reportfile = a
-                prev = ""
-            if prev == "-o":
-                self.outfile = a
-                prev = ""
-            elif prev == "-d":
-                self.minCov = float(a)
-                prev = ""
-            elif prev == "-n":
-                self.minAll = int(a)
-                prev = ""
-            elif a in ["-g", "-c", "-f", "-r", "-o", "-d", "-n"]:
-                prev = a
-            elif a == "-i":
+        import argparse
+        parser = argparse.ArgumentParser(
+            description="varcodons.py - Convert alignment to triplets at variable sites.",
+            formatter_class=argparse.RawTextHelpFormatter
+        )
+        parser.add_argument('-g', dest='gff', required=True, help='GFF or GenBank file containing gene annotations (required).')
+        parser.add_argument('-f', dest='fasta', required=True, help='Alignment in FASTA format (required).')
+        parser.add_argument('-c', dest='chrom', help='Chromosome name.')
+        parser.add_argument('-o', dest='outfile', help='Name of output file (default: standard output).')
+        parser.add_argument('-r', dest='reportfile', help='Name of report file containing list of variable positions (default: no report).')
+        parser.add_argument('-i', dest='informative', action='store_true', help='Filter informative SNPs only.')
+        parser.add_argument('-d', dest='minCov', type=float, default=0, help="Fraction of bases at variable position that are not 'N' or '-'.")
+        parser.add_argument('-n', dest='minAll', type=int, default=0, help='Both alleles should be seen at least N times.')
+        parser.add_argument('-a', dest='codons', action='store_true', help='Outputs codons instead of SNPs.')
+
+        parsed = parser.parse_args(args)
+
+        self.gff = parsed.gff
+        self.fasta = parsed.fasta
+        self.chrom = parsed.chrom
+        self.outfile = parsed.outfile
+        self.reportfile = parsed.reportfile
+        self.informative = parsed.informative
+        self.minCov = parsed.minCov
+        self.minAll = parsed.minAll
+        self.codons = parsed.codons
+
+        # If -i is specified, override minCov and minAll as in original logic
+        if self.informative:
+            if self.minCov == 0:
                 self.minCov = 0.7
+            if self.minAll == 0:
                 self.minAll = 2
-                self.informative = True
-            elif a == "-a":
-                self.codons = True
+
         return self.gff and self.fasta
 
     def run(self):
@@ -519,7 +521,7 @@ where options are:
         R.makeSNPs(self.codons)
         if self.reportfile:
             R.writeSNPs(self.reportfile)
-        with Outfile(self.outfile) as out:
+        with Outfile(self.outfile, self.fasta) as out:
             if self.codons:
                 R.SNPsToTriplets(self.fasta, out)
             else:

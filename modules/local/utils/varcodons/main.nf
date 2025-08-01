@@ -9,7 +9,7 @@ process UTILS_VARCODONS {
 
     input:
     tuple val(meta), path(cat_consensus_fasta)
-    path(ref_gbk)
+    path(ref_genbank)
 
     output:
     tuple val(meta), path("*.varcodons.fasta"), emit: fasta
@@ -25,8 +25,8 @@ process UTILS_VARCODONS {
     """
     varcodons.py \\
         -f ${cat_consensus_fasta} \\
-        -g ${ref_gbk} \\
-        -o ${prefix}.varcodons.fasta
+        -g ${ref_genbank} \\
+        -o ./${prefix}.varcodons.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
