@@ -26,7 +26,7 @@ process UTILS_VARCODONS {
     varcodons.py \\
         -f ${cat_consensus_fasta} \\
         -g ${ref_genbank} \\
-        -o ./${prefix}.varcodons.fasta
+        -o ${prefix}.varcodons.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

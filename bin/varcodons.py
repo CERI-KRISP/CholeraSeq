@@ -479,15 +479,15 @@ where options are:
             description="varcodons.py - Convert alignment to triplets at variable sites.",
             formatter_class=argparse.RawTextHelpFormatter
         )
-        parser.add_argument('-g', dest='gff', required=True, help='GFF or GenBank file containing gene annotations (required).')
-        parser.add_argument('-f', dest='fasta', required=True, help='Alignment in FASTA format (required).')
-        parser.add_argument('-c', dest='chrom', help='Chromosome name.')
-        parser.add_argument('-o', dest='outfile', help='Name of output file (default: standard output).')
-        parser.add_argument('-r', dest='reportfile', help='Name of report file containing list of variable positions (default: no report).')
-        parser.add_argument('-i', dest='informative', action='store_true', help='Filter informative SNPs only.')
-        parser.add_argument('-d', dest='minCov', type=float, default=0, help="Fraction of bases at variable position that are not 'N' or '-'.")
-        parser.add_argument('-n', dest='minAll', type=int, default=0, help='Both alleles should be seen at least N times.')
-        parser.add_argument('-a', dest='codons', action='store_true', help='Outputs codons instead of SNPs.')
+        parser.add_argument('-g', '--gff', dest='gff', required=True, help='GFF or GenBank file containing gene annotations (required).')
+        parser.add_argument('-f', '--fasta', dest='fasta', required=True, help='Alignment in FASTA format (required).')
+        parser.add_argument('-c', '--chrom', dest='chrom', help='Chromosome name.')
+        parser.add_argument('-o', '--outfile', dest='outfile', help='Name of output file (default: standard output).')
+        parser.add_argument('-r', '--reportfile', dest='reportfile', help='Name of report file containing list of variable positions (default: no report).')
+        parser.add_argument('-i', '--informative', dest='informative', action='store_true', help='Filter informative SNPs only.')
+        parser.add_argument('-d', '--minCov', dest='minCov', type=float, default=0, help="Fraction of bases at variable position that are not 'N' or '-'.")
+        parser.add_argument('-n', '--minAll', dest='minAll', type=int, default=0, help='Both alleles should be seen at least N times.')
+        parser.add_argument('-a', '--codons', dest='codons', action='store_true', help='Outputs codons instead of SNPs.')
 
         parsed = parser.parse_args(args)
 
