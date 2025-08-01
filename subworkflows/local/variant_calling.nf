@@ -54,7 +54,7 @@ workflow VARIANT_CALLING_WF {
         //VARCODONS( SAMTOOLS_CONSENSUS.out.fasta )
 
     emit:
-        cleaned_full_aln = SNIPPY_CLEAN.out.cleaned_full_aln
+        //cleaned_full_aln = SNIPPY_CLEAN.out.cleaned_full_aln
         snippy_varcall_txt = SNIPPY_RUN.out.txt
         versions = SNIPPY_RUN.out.versions
 }
