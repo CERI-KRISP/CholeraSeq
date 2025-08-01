@@ -22,26 +22,26 @@ process UTILS_CAT_SAMTOOLS_CONSENSUS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
 
-    // ls consensus_seqs/* > consensus_seqs/inputFile.list
-
-    // myFiles=($(<../inputFiles.list))
-
-    // for i in \${myFiles[@]};
-    // do
-    //     echo -e ">\${i}" >> alignment.fasta
-    //     grep -v '>' ../consensus_seqs/\${i}.consensus.fasta >> alignment.fasta
-    //     sed -i "s/\*/-/g" alignment.fasta
-    // done
-
-
-
     """
-    ls consensus_seqs/
+    ls consensus_seqs/ > inputFiles.txt
+
+    input_files_list=inputFiles.txt
+
+    # Read file names from the input list and process each consensus file
+    while IFS= read -r filename; do
+    if [[ -n "\$filename" ]]; then
+        echo ">\${filename}" >> alignment.fasta
+        grep -v '^>' consensus_seqs/\${filename} >> alignment.fasta
+    fi
+    done < \${input_files_list}
+
+    # Replace asterisks with dashes
+    sed -i 's/\\*/\\-/g' cat_consensus_alignment.fasta
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bash: \$(bash --version | head -n1 | cut -d' ' -f4)
-        grep: \$(grep --version | head -n1 | cut -d' ' -f4)
         sed: \$(sed --version | head -n1 | cut -d' ' -f4)
     END_VERSIONS
     """
