@@ -58,7 +58,7 @@ workflow VARIANT_CALLING_WF {
         UTILS_CAT_SAMTOOLS_CONSENSUS ( ch_cat_cat_in )
 
 
-//        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta, params.ref_genbank )
+        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta, params.ref_genbank )
 
         //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 
