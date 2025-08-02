@@ -44,12 +44,18 @@ workflow CLUSTERING_WF {
 
         CAT_CAT(ch_all_masked_fastas)
 
-         PYTHON_SEQ_CLEANER ( CAT_CAT.out.file_out )
+        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta, params.ref_genbank )
+
+        PYTHON_SEQ_CLEANER ( CAT_CAT.out.file_out )
+
+        PYTHON_SEQ_CLEANER.out.cleaned_fasta.debug(tag:"python_seq_cleaner")
+
+        //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 
         //TODO: Check the overall functionality
          in_iqtree = PYTHON_SEQ_CLEANER.out.cleaned_fasta.map {m -> [m[0], m[1], []]}
 
-         IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
+         //IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
     emit:
         versions = RUN_GUBBINS.out.versions //TODO:

@@ -24,10 +24,6 @@ workflow VARIANT_CALLING_WF {
 
         UTILS_CAT_SAMTOOLS_CONSENSUS ( ch_cat_cat_in )
 
-        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta, params.ref_genbank )
-
-        //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
-
 
 
     /*
@@ -65,7 +61,7 @@ workflow VARIANT_CALLING_WF {
 
 
     emit:
-        cleaned_full_aln = UTILS_VARCODONS.out.fasta
+        concatenated_aln = UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta
         snippy_varcall_txt = SNIPPY_RUN.out.txt
         versions = SNIPPY_RUN.out.versions
 }
