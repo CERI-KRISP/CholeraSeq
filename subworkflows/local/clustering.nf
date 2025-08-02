@@ -6,6 +6,7 @@ include { MASK_GUBBINS                } from '../../modules/local/gubbins/mask.n
 include { PYTHON_SPLIT_CLUSTERS       } from '../../modules/local/clojure/split_clusters.nf'
 include { IQTREE                      } from '../../modules/nf-core/iqtree/main'
 include { CAT_CAT                     } from '../../modules/nf-core/cat/cat/main.nf'
+include { UTILS_VARCODONS                     } from '../../modules/local/utils/varcodons/main.nf'
 
 workflow CLUSTERING_WF {
 
