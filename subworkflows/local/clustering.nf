@@ -45,7 +45,7 @@ workflow CLUSTERING_WF {
 
         CAT_CAT(ch_all_masked_fastas)
 
-        UTILS_VARCODONS( UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta, params.ref_genbank )
+        UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_genbank )
 
         PYTHON_SEQ_CLEANER ( CAT_CAT.out.file_out )
 
