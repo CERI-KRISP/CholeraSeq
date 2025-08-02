@@ -24,7 +24,6 @@ workflow VARIANT_CALLING_WF {
         UTILS_CAT_SAMTOOLS_CONSENSUS ( ch_cat_cat_in )
 
 
-
     /*
         //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
         //to addresses the negative control
@@ -53,10 +52,10 @@ workflow VARIANT_CALLING_WF {
         ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
 
         ch_snippy_core.dump(tag: "ch_snippy_core")
-    */
 
         //SNIPPY_CORE( ch_snippy_core, params.fasta )
 
+    */
 
 
     emit:
