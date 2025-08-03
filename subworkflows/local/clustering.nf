@@ -49,7 +49,7 @@ workflow CLUSTERING_WF {
 
         PYTHON_SEQ_CLEANER ( CAT_CAT.out.file_out )
 
-        PYTHON_SEQ_CLEANER.out.cleaned_fasta.debug(tag:"python_seq_cleaner")
+        PYTHON_SEQ_CLEANER.out.cleaned_fasta.dump(tag:"python_seq_cleaner")
 
         //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 
