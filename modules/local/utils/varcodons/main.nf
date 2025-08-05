@@ -26,6 +26,9 @@ process UTILS_VARCODONS {
     varcodons.py \\
         -f ${cat_consensus_fasta} \\
         -g ${ref_genbank} \\
+        -n 2 \\
+        -d 0.7 \\
+        -r report_pi_sites.txt \\
         -o ${prefix}.varcodons.fasta
 
     cat <<-END_VERSIONS > versions.yml
