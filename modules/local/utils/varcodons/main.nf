@@ -12,8 +12,9 @@ process UTILS_VARCODONS {
     path(ref_genbank)
 
     output:
-    tuple val(meta), path("*.varcodons.fasta"), emit: fasta
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.piSNPs.fasta"), emit: fasta
+    path("snps.tsv")                       , emit: snp_report
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,13 +25,13 @@ process UTILS_VARCODONS {
 
     """
     varcodons.py \\
-    -i \\
-    -n 2 \\
-    -d 0.7 \\
-    -g ${ref_genbank} \\
-    -f ${cat_consensus_fasta} \\
-    -o ${prefix}.piSNPs.fasta \
-    -r snps.tsv
+        -i \\
+        -n 2 \\
+        -d 0.7 \\
+        -g ${ref_genbank} \\
+        -f ${cat_consensus_fasta} \\
+        -o ${prefix}.piSNPs.fasta \
+        -r snps.tsv
 
 
     cat <<-END_VERSIONS > versions.yml
