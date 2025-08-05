@@ -24,12 +24,14 @@ process UTILS_VARCODONS {
 
     """
     varcodons.py \\
-        -f ${cat_consensus_fasta} \\
-        -g ${ref_genbank} \\
-        -n 2 \\
-        -d 0.7 \\
-        -r report_pi_sites.txt \\
-        -o ${prefix}.varcodons.fasta
+    -i \\
+    -n 2 \\
+    -d 0.7 \\
+    -g ${ref_genbank} \\
+    -f ${cat_consensus_fasta} \\
+    -o ${prefix}.piSNPs.fasta \
+    -r snps.tsv
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
