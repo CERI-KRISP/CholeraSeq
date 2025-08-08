@@ -14,9 +14,13 @@ workflow CLUSTERING_WF {
         clean_full_aln_fasta
 
     main:
+
+
+        PYTHON_SEQ_CLEANER ( clean_full_aln_fasta )
+
         if(params.enable_fastbaps || !params.skip_fastbaps) {
 
-            R_FASTBAPS( clean_full_aln_fasta )
+            R_FASTBAPS( PYTHON_SEQ_CLEANER.out.FIXME )
 
             PYTHON_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
 
@@ -31,7 +35,7 @@ workflow CLUSTERING_WF {
 
         }
 
-         RUN_GUBBINS( in_run_gubbins_ch )
+         RUN_GUBBINS( PYTHON_SEQ_CLEANER.out.FIXME )
 
          MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
 
@@ -47,9 +51,6 @@ workflow CLUSTERING_WF {
 
         UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_genbank )
 
-        PYTHON_SEQ_CLEANER ( CAT_CAT.out.file_out )
-
-        PYTHON_SEQ_CLEANER.out.cleaned_fasta.dump(tag:"python_seq_cleaner")
 
         //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
 

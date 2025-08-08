@@ -30,7 +30,7 @@ process UTILS_VARCODONS {
         -d 0.7 \\
         -g ${ref_genbank} \\
         -f ${cat_consensus_fasta} \\
-        -o ${prefix}.piSNPs.fasta \
+        -o ${prefix}.piSNPs.fasta \\
         -r snps.tsv
 
 

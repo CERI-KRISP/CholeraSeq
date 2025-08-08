@@ -21,9 +21,10 @@ process PYTHON_SEQ_CLEANER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def min_valid_percentage = (100 - ${params.max_missing_percentage})
 
     """
-    seq_cleaner.py -f ${params.fasta_threshold} $input_fasta ${prefix}.fasta
+    seq_cleaner.py -f ${max_missing_percentage} $input_fasta ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
