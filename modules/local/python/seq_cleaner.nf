@@ -24,7 +24,7 @@ process PYTHON_SEQ_CLEANER {
     def min_valid_percentage = (100 - ${params.max_missing_percentage})
 
     """
-    seq_cleaner.py -f ${max_missing_percentage} $input_fasta ${prefix}.fasta
+    seq_cleaner.py -f ${min_valid_percentage} $input_fasta ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
