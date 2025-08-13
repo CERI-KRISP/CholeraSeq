@@ -20,7 +20,7 @@ workflow CLUSTERING_WF {
 
         if(params.enable_fastbaps || !params.skip_fastbaps) {
 
-            R_FASTBAPS( PYTHON_SEQ_CLEANER.out.FIXME )
+            R_FASTBAPS( PYTHON_SEQ_CLEANER.out.cleaned_fasta )
 
             PYTHON_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
 
@@ -35,7 +35,7 @@ workflow CLUSTERING_WF {
 
         }
 
-         RUN_GUBBINS( PYTHON_SEQ_CLEANER.out.FIXME )
+         RUN_GUBBINS( PYTHON_SEQ_CLEANER.out.cleaned_fasta )
 
          MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
 
