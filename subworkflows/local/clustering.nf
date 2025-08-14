@@ -49,7 +49,7 @@ workflow CLUSTERING_WF {
 
         CAT_CAT(ch_all_masked_fastas)
 
-        UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_genbank )
+        UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_fasta )
 
 
         //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )

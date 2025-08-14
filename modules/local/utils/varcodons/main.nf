@@ -9,7 +9,7 @@ process UTILS_VARCODONS {
 
     input:
     tuple val(meta), path(cat_consensus_fasta)
-    path(ref_genbank)
+    path(ref_fasta)
 
     output:
     tuple val(meta), path("*.piSNPs.fasta"), emit: fasta
@@ -28,7 +28,7 @@ process UTILS_VARCODONS {
         -i \\
         -n 2 \\
         -d 0.7 \\
-        -g ${ref_genbank} \\
+        -g ${ref_fasta} \\
         -f ${cat_consensus_fasta} \\
         -o ${prefix}.piSNPs.fasta \\
         -r snps.tsv

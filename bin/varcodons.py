@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-
-# Original author: Alberto
-
 import sys
 import csv
 import numpy as np
@@ -28,10 +25,9 @@ class Outfile(object):
     filename = None
     stream = None
 
-    def __init__(self, filename, fasta=None):
+    def __init__(self, filename):
         self.filename = filename
-        self.stream = None
-
+        
     def __enter__(self):
         if self.filename:
             self.stream = open(self.filename, "w")
@@ -49,7 +45,7 @@ class GeneSet(object):
 
     def __init__(self):
         self.genes = defaultdict(dict)
-        self.chromLengths = []
+        self.chromLengths = [('contig0', 1000000000)] # initialize this to a non-existent chromosome in case annotations are not provided
 
     def add(self, gene, geneid):
         self.genes[gene.chrom][geneid] = gene
@@ -161,7 +157,7 @@ class GeneSet(object):
                         sys.stdout.write("    {} ({})\t{} ({})\t{}\t{}\n".format(cds.start, cds.frame1, cds.end, \
                             cds.frame2, 1 + cds.end - cds.start, cds.offset))
                     sys.stdout.write("\n")
-
+    
     def findCDSatpos(self, chrom, pos):
         result = []
         #print(self.genes[chrom][:10])
@@ -172,7 +168,7 @@ class GeneSet(object):
                 if cds.start <= pos <= cds.end:
                     result.append(cds)
         return result
-
+        
 class Gene(object):
     chrom = ""
     name = ""
@@ -221,7 +217,7 @@ class CDS(object):
     def __init__(self, start, end):
         #sys.stderr.write("** from gb: {} {}\n".format(start, end))
         self.start = start + 1
-        self.end = end
+        self.end = end 
 
     def tripletStart(self, pos):
         """Return the start position of a triplet in this cds given its coordinate."""
@@ -343,7 +339,7 @@ class Reference(object):
                 for j in range(5):
                     out.write(str(self.baseArray[i, j]) + "\t")
                 out.write("\n")
-
+        
     def filterInformative(self, minall, mincov):
         fp = []
         sys.stderr.write(f"Scanning {len(self.snpPositions)} positions to determine PI SNPs.\n")
@@ -368,7 +364,7 @@ class Reference(object):
     def makeSNPs(self, codons):
         for pos in self.snpPositions:
             chrom = self.genelist.findChromAtPosition(pos)
-            cds = self.genelist.findCDSatpos(chrom, pos)
+            cds   = self.genelist.findCDSatpos(chrom, pos)
             if cds:
                 S = SNP(chrom, pos, cds)
                 self.snps.append(S)
@@ -448,7 +444,7 @@ class Main(object):
     fasta = None
     reportfile = None
     outfile = None
-    informative = False         # Filter for informative SNPs
+    informative = False         # Filter for informative SNPs 
     minCov = 0
     minAll = 0
     codons = False
@@ -474,45 +470,45 @@ where options are:
 """.format(self.informative, self.minCov, self.minAll))
 
     def parseArgs(self, args):
-        import argparse
-        parser = argparse.ArgumentParser(
-            description="varcodons.py - Convert alignment to triplets at variable sites.",
-            formatter_class=argparse.RawTextHelpFormatter
-        )
-        parser.add_argument('-g', '--gff', dest='gff', required=True, help='GFF or GenBank file containing gene annotations (required).')
-        parser.add_argument('-f', '--fasta', dest='fasta', required=True, help='Alignment in FASTA format (required).')
-        parser.add_argument('-c', '--chrom', dest='chrom', help='Chromosome name.')
-        parser.add_argument('-o', '--outfile', dest='outfile', help='Name of output file (default: standard output).')
-        parser.add_argument('-r', '--reportfile', dest='reportfile', help='Name of report file containing list of variable positions (default: no report).')
-        parser.add_argument('-i', '--informative', dest='informative', action='store_true', help='Filter informative SNPs only.')
-        parser.add_argument('-d', '--minCov', dest='minCov', type=float, default=0, help="Fraction of bases at variable position that are not 'N' or '-'.")
-        parser.add_argument('-n', '--minAll', dest='minAll', type=int, default=0, help='Both alleles should be seen at least N times.')
-        parser.add_argument('-a', '--codons', dest='codons', action='store_true', help='Outputs codons instead of SNPs.')
-
-        parsed = parser.parse_args(args)
-
-        self.gff = parsed.gff
-        self.fasta = parsed.fasta
-        self.chrom = parsed.chrom
-        self.outfile = parsed.outfile
-        self.reportfile = parsed.reportfile
-        self.informative = parsed.informative
-        self.minCov = parsed.minCov
-        self.minAll = parsed.minAll
-        self.codons = parsed.codons
-
-        # If -i is specified, override minCov and minAll as in original logic
-        if self.informative:
-            if self.minCov == 0:
+        if "-h" in args or "--help" in args:
+            return False
+        prev = ""
+        for a in args:
+            if prev == "-g":
+                self.gff = a
+                prev = ""
+            if prev == "-c":
+                self.chrom = a
+                prev = ""
+            if prev == "-f":
+                self.fasta = a
+                prev = ""
+            if prev == "-r":
+                self.reportfile = a
+                prev = ""
+            if prev == "-o":
+                self.outfile = a
+                prev = ""
+            elif prev == "-d":
+                self.minCov = float(a)
+                prev = ""
+            elif prev == "-n":
+                self.minAll = int(a)
+                prev = ""
+            elif a in ["-g", "-c", "-f", "-r", "-o", "-d", "-n"]:
+                prev = a
+            elif a == "-i":
                 self.minCov = 0.7
-            if self.minAll == 0:
                 self.minAll = 2
-
-        return self.gff and self.fasta
+                self.informative = True
+            elif a == "-a":
+                self.codons = True 
+        return self.fasta
 
     def run(self):
         GS = GeneSet()
-        GS.parseGenes(self.gff)
+        if self.gff:
+            GS.parseGenes(self.gff)
         #GS.dump()
         R = Reference(GS)
         R.readAlignment(self.fasta)
@@ -521,7 +517,7 @@ where options are:
         R.makeSNPs(self.codons)
         if self.reportfile:
             R.writeSNPs(self.reportfile)
-        with Outfile(self.outfile, self.fasta) as out:
+        with Outfile(self.outfile) as out:
             if self.codons:
                 R.SNPsToTriplets(self.fasta, out)
             else:
