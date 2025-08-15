@@ -32,7 +32,7 @@ process UTILS_VARCODONS {
     """
     varcodons.py \\
         ${task.ext.args} \\
-        ${params.arg_genbank} \\
+        ${arg_genbank} \\
         -f ${cat_consensus_fasta} \\
         -o ${prefix}.fasta \\
         -r ${prefix}.snps.tsv
