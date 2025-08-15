@@ -27,7 +27,7 @@ class Outfile(object):
 
     def __init__(self, filename):
         self.filename = filename
-        
+
     def __enter__(self):
         if self.filename:
             self.stream = open(self.filename, "w")
@@ -157,7 +157,7 @@ class GeneSet(object):
                         sys.stdout.write("    {} ({})\t{} ({})\t{}\t{}\n".format(cds.start, cds.frame1, cds.end, \
                             cds.frame2, 1 + cds.end - cds.start, cds.offset))
                     sys.stdout.write("\n")
-    
+
     def findCDSatpos(self, chrom, pos):
         result = []
         #print(self.genes[chrom][:10])
@@ -168,7 +168,7 @@ class GeneSet(object):
                 if cds.start <= pos <= cds.end:
                     result.append(cds)
         return result
-        
+
 class Gene(object):
     chrom = ""
     name = ""
@@ -217,7 +217,7 @@ class CDS(object):
     def __init__(self, start, end):
         #sys.stderr.write("** from gb: {} {}\n".format(start, end))
         self.start = start + 1
-        self.end = end 
+        self.end = end
 
     def tripletStart(self, pos):
         """Return the start position of a triplet in this cds given its coordinate."""
@@ -339,7 +339,7 @@ class Reference(object):
                 for j in range(5):
                     out.write(str(self.baseArray[i, j]) + "\t")
                 out.write("\n")
-        
+
     def filterInformative(self, minall, mincov):
         fp = []
         sys.stderr.write(f"Scanning {len(self.snpPositions)} positions to determine PI SNPs.\n")
@@ -444,7 +444,7 @@ class Main(object):
     fasta = None
     reportfile = None
     outfile = None
-    informative = False         # Filter for informative SNPs 
+    informative = False         # Filter for informative SNPs
     minCov = 0
     minAll = 0
     codons = False
@@ -457,7 +457,7 @@ Usage: varcodons.py [options...]
 where options are:
 
   -g G | GFF or GenBank file containing gene annotations (required).
-  -f F | Alignment in FASTA format (required).
+  -f F | Core alignment in FASTA format (required).
   -c C | Chromosome name.
   -o O | Name of output file (default: standard output).
   -r R | Name of report file containing list of variable positions (default: no report).
@@ -502,7 +502,7 @@ where options are:
                 self.minAll = 2
                 self.informative = True
             elif a == "-a":
-                self.codons = True 
+                self.codons = True
         return self.fasta
 
     def run(self):

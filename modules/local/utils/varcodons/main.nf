@@ -10,10 +10,11 @@ process UTILS_VARCODONS {
     input:
     tuple val(meta), path(cat_consensus_fasta)
     path(ref_fasta)
+    path(ref_genbank)
 
     output:
-    tuple val(meta), path("*.piSNPs.fasta"), emit: fasta
-    path("snps.tsv")                       , emit: snp_report
+    tuple val(meta), path("*.pi.fasta")    , emit: fasta
+    path("snps.pi.tsv")                    , emit: snp_report
     path "versions.yml"                    , emit: versions
 
     when:
@@ -23,15 +24,17 @@ process UTILS_VARCODONS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+
+
+    //NOTE
+    // -g ${ref_genbank} is used only when the reference is gbk format
+
     """
     varcodons.py \\
-        -i \\
-        -n 2 \\
-        -d 0.7 \\
-        -g ${ref_fasta} \\
+        ${task.ext.args} \\
         -f ${cat_consensus_fasta} \\
-        -o ${prefix}.piSNPs.fasta \\
-        -r snps.tsv
+        -o ${prefix}.fasta \\
+        -r ${prefix}.snps.tsv
 
 
     cat <<-END_VERSIONS > versions.yml

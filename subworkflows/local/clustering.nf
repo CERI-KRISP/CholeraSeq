@@ -7,6 +7,7 @@ include { PYTHON_SPLIT_CLUSTERS       } from '../../modules/local/clojure/split_
 include { IQTREE                      } from '../../modules/nf-core/iqtree/main'
 include { CAT_CAT                     } from '../../modules/nf-core/cat/cat/main.nf'
 include { UTILS_VARCODONS             } from '../../modules/local/utils/varcodons/main.nf'
+include { UTILS_VARCODONS as UTILS_VARCODONS__GENBANK             } from '../../modules/local/utils/varcodons/main.nf'
 
 workflow CLUSTERING_WF {
 
@@ -49,15 +50,15 @@ workflow CLUSTERING_WF {
 
         CAT_CAT(ch_all_masked_fastas)
 
-        UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_fasta )
+        UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_fasta, params.ref_genbank )
 
+        in_iqtree = UTILS_VARCODONS.out.fasta.map {m -> [m[0], m[1], []]}
 
-        //VARCODONS__Optional( SAMTOOLS_CONSENSUS.out.FIXME )
+        IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
-        //TODO: Check the overall functionality
-         in_iqtree = PYTHON_SEQ_CLEANER.out.cleaned_fasta.map {m -> [m[0], m[1], []]}
+        //Run only with gbk reference -- produces complimentary output for the user.
+        UTILS_VARCODONS__GENBANK( CAT_CAT.out.file_out, params.ref_fasta, params.ref_genbank )
 
-         IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
     emit:
         versions = RUN_GUBBINS.out.versions //TODO:
