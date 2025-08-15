@@ -13,9 +13,9 @@ process UTILS_VARCODONS {
     path(ref_genbank)
 
     output:
-    tuple val(meta), path("*.pi.fasta")    , emit: fasta
-    path("snps.pi.tsv")                    , emit: snp_report
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.fasta")    , emit: fasta
+    path("*snps.tsv")                   , emit: snp_report
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
