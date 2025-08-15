@@ -7,7 +7,7 @@ include { PYTHON_SPLIT_CLUSTERS       } from '../../modules/local/clojure/split_
 include { IQTREE                      } from '../../modules/nf-core/iqtree/main'
 include { CAT_CAT                     } from '../../modules/nf-core/cat/cat/main.nf'
 include { UTILS_VARCODONS             } from '../../modules/local/utils/varcodons/main.nf'
-include { UTILS_VARCODONS as UTILS_VARCODONS__GENBANK             } from '../../modules/local/utils/varcodons/main.nf'
+include { UTILS_VARCODONS as UTILS_VARCODONS__REPORT             } from '../../modules/local/utils/varcodons/main.nf'
 
 workflow CLUSTERING_WF {
 
@@ -57,7 +57,7 @@ workflow CLUSTERING_WF {
         IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
         //Run only with gbk reference -- produces complimentary output for the user.
-        UTILS_VARCODONS__GENBANK( CAT_CAT.out.file_out, params.ref_fasta, params.ref_genbank )
+        UTILS_VARCODONS__REPORT( CAT_CAT.out.file_out, params.ref_fasta, params.ref_genbank )
 
 
     emit:
