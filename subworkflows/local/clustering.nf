@@ -19,7 +19,7 @@ workflow CLUSTERING_WF {
 
         PYTHON_SEQ_CLEANER ( clean_full_aln_fasta )
 
-        if(params.enable_fastbaps || !params.skip_fastbaps) {
+        if( !params.skip_fastbaps) {
 
             R_FASTBAPS( PYTHON_SEQ_CLEANER.out.cleaned_fasta )
 
