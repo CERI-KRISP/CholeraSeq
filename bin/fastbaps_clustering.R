@@ -1,5 +1,3 @@
-
-
 library(fastbaps)
 library(ape)
 
@@ -21,7 +19,9 @@ myClusters<- best_baps_partition(myAln, as.phylo(baps.hc))
 myClustersDF<- data.frame(
   seqNames = names(myClusters), CLusterNo = myClusters,
   stringsAsFactors = FALSE)
-#
+
+#FIXME @abhi18av: Drop all the fasta after fastbaps which have less than 4 sequences
+
 #save clusters table to file if you like
 write.table(x = myClustersDF,
             file = clusterFile,
@@ -49,6 +49,3 @@ for(i in 1:max(myClustersDF$CLusterNo)) {
 }
 
 #rm(i)
-
-
-
