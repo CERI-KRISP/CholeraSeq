@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>installation – CERI-KRISP/CholeraSeq</title>
+<title>parameters – CERI-KRISP/CholeraSeq</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -116,7 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./installation.html">Installation</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      CERI-KRISP/CholeraSeq
+      </li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -143,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./installation.html" class="sidebar-item-text sidebar-link active">
+  <a href="./installation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Installation</span></a>
   </div>
 </li>
@@ -169,13 +136,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#installation-instructions-for-nextflow-docker-and-java-jdk-17-lts-on-ubuntu" id="toc-installation-instructions-for-nextflow-docker-and-java-jdk-17-lts-on-ubuntu" class="nav-link active" data-scroll-target="#installation-instructions-for-nextflow-docker-and-java-jdk-17-lts-on-ubuntu">Installation Instructions for Nextflow, Docker, and Java JDK 17 LTS on Ubuntu</a>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a>
   <ul class="collapse">
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#install-java-jdk-17-lts" id="toc-install-java-jdk-17-lts" class="nav-link" data-scroll-target="#install-java-jdk-17-lts">1. Install Java JDK 17 LTS</a></li>
-  <li><a href="#install-nextflow" id="toc-install-nextflow" class="nav-link" data-scroll-target="#install-nextflow">2. Install Nextflow</a></li>
-  <li><a href="#install-docker" id="toc-install-docker" class="nav-link" data-scroll-target="#install-docker">3. Install Docker</a></li>
-  <li><a href="#optional-manage-docker-as-a-non-root-user" id="toc-optional-manage-docker-as-a-non-root-user" class="nav-link" data-scroll-target="#optional-manage-docker-as-a-non-root-user">4. (Optional) Manage Docker as a Non-root User</a></li>
+  <li><a href="#common-parameters" id="toc-common-parameters" class="nav-link" data-scroll-target="#common-parameters">Common Parameters</a>
+  <ul class="collapse">
+  <li><a href="#input-samplesheet" id="toc-input-samplesheet" class="nav-link" data-scroll-target="#input-samplesheet">Input Samplesheet</a></li>
+  <li><a href="#output-directory" id="toc-output-directory" class="nav-link" data-scroll-target="#output-directory">Output Directory</a></li>
+  </ul></li>
+  <li><a href="#quality-control-parameters" id="toc-quality-control-parameters" class="nav-link" data-scroll-target="#quality-control-parameters">Quality Control Parameters</a></li>
+  <li><a href="#skipping-pipeline-steps" id="toc-skipping-pipeline-steps" class="nav-link" data-scroll-target="#skipping-pipeline-steps">Skipping Pipeline Steps</a></li>
+  <li><a href="#reference-files" id="toc-reference-files" class="nav-link" data-scroll-target="#reference-files">Reference Files</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -186,96 +156,192 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="installation-instructions-for-nextflow-docker-and-java-jdk-17-lts-on-ubuntu" class="level1">
-<h1>Installation Instructions for Nextflow, Docker, and Java JDK 17 LTS on Ubuntu</h1>
-<p>In this document, we provide instructions (with minimal assumptions of target hardware) required by a user to initiate testing of the pipeline.</p>
-<p>If you need to install this pipeline on a cluster (HPC or K8s) then please refer the to the nf-core docs and community.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-nf-core documentation
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>As the CholeraSeq pipeline uses nf-core template, the extensive documentation regarding <a href="https://nf-co.re/docs/usage/getting_started/configuration">installation</a>, configuration and <a href="https://training.nextflow.io/2.1/other/nf_customize/">customization</a> of the pipeline are applicable for CholeraSeq.</p>
-</div>
-</div>
-<section id="prerequisites" class="level2">
-<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
-<ul>
-<li>Ubuntu Linux (18.04 or newer recommended)</li>
-<li><code>curl</code> and <code>wget</code> installed</li>
-</ul>
+<section id="parameters" class="level1">
+<h1>Parameters</h1>
+<p>This document provides an overview of the customizable parameters for the CHOLERASEQ pipeline. Each parameter is listed with its default value, description.</p>
+<blockquote class="blockquote">
+<p>💡 <strong>Hint</strong>: you may check a full parameters <a href="https://github.com/CERI-KRISP/CholeraSeq/blob/master/nextflow.config">reference file</a>.</p>
+</blockquote>
+<hr>
+<section id="common-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="common-parameters">Common Parameters</h2>
+<section id="input-samplesheet" class="level3">
+<h3 class="anchored" data-anchor-id="input-samplesheet">Input Samplesheet</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 18%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>input</code></td>
+<td><code>null</code></td>
+<td>The input CSV file containing sample information.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>💡 <strong>Hint</strong>: The samplesheet should include the columns <code>[sample,fastq_1,fastq_2]</code>.</p>
+</blockquote>
 <hr>
 </section>
-<section id="install-java-jdk-17-lts" class="level2">
-<h2 class="anchored" data-anchor-id="install-java-jdk-17-lts">1. Install Java JDK 17 LTS</h2>
-<p>Nextflow requires Java 17 or later. Here, we install OpenJDK 17 LTS:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> openjdk-17-jdk</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The <code>java</code> version should NOT be an <code>internal jdk</code> release! You can check the release via <code>java --version</code> Notice the <code>LTS</code> next to <code>OpenJDK</code> line.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> java <span class="at">-version</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">openjdk</span> version <span class="st">"17.0.7"</span> 2023-04-18 LTS</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">OpenJDK</span> Runtime Environment <span class="er">(</span><span class="ex">build</span> 17.0.7+7-LTS<span class="kw">)</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">OpenJDK</span> 64-Bit Server VM <span class="er">(</span><span class="ex">build</span> 17.0.7+7-LTS, mixed mode, sharing<span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="output-directory" class="level3">
+<h3 class="anchored" data-anchor-id="output-directory">Output Directory</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 20%">
+<col style="width: 68%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>outdir</code></td>
+<td><code>null</code></td>
+<td>The directory where all output files will be written.</td>
+</tr>
+</tbody>
+</table>
 <hr>
 </section>
-<section id="install-nextflow" class="level2">
-<h2 class="anchored" data-anchor-id="install-nextflow">2. Install Nextflow</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download Nextflow</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> https://get.nextflow.io <span class="kw">|</span> <span class="fu">bash</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Move Nextflow to a directory in your PATH</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mv nextflow /usr/local/bin/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Verify installation:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> <span class="at">-v</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="quality-control-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="quality-control-parameters">Quality Control Parameters</h2>
+<blockquote class="blockquote">
+<p>⚠️ <strong>Attention</strong>: Ensure these values are adjusted based on the quality of your input data to avoid processing errors. The defaults are set to faciliate a majority of users. Only advanced users are recommended to change these.</p>
+</blockquote>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 5%">
+<col style="width: 83%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>min_trim_quality</code></td>
+<td>20</td>
+<td>Fastq reads mean quality threshold 20 fastp</td>
+</tr>
+<tr class="even">
+<td><code>min_trim_length</code></td>
+<td>50</td>
+<td>fastq read minimum trim length 50 fastp</td>
+</tr>
+<tr class="odd">
+<td><code>min_mapping_quality</code></td>
+<td>20</td>
+<td>minimum mapping quality 20 samtools consensus samtools –min-MQ</td>
+</tr>
+<tr class="even">
+<td><code>min_base_quality</code></td>
+<td>20</td>
+<td>minimum base quality 20 samtools consensus samtools –min-BQ</td>
+</tr>
+<tr class="odd">
+<td><code>min_site_coverage</code></td>
+<td>5</td>
+<td>mimimum site coverage 5 samtools consensus + snippy samtools –min-depth 5; snippy –mincov 5</td>
+</tr>
+<tr class="even">
+<td><code>min_allele_fraction</code></td>
+<td>0.75</td>
+<td>minimum fraction supporting allele call 0.75 samtools consensus + snippy samtools -c 0.75; snippy –minfrac 0.75</td>
+</tr>
+<tr class="odd">
+<td><code>max_missing_percentage</code></td>
+<td>50</td>
+<td>Percentage of missing data allowed in a sample before it is excluded from the analysis. max_missing_percentage 0.5 seqcleaner, gubbins max percentage of undefined sites in any consensus fasta sequence</td>
+</tr>
+<tr class="even">
+<td><code>min_parsimony_coverage</code></td>
+<td>0.7</td>
+<td>varcodons.py pi job minimum site coverage for varcodons to keep site when generating pi output</td>
+</tr>
+</tbody>
+</table>
 <hr>
 </section>
-<section id="install-docker" class="level2">
-<h2 class="anchored" data-anchor-id="install-docker">3. Install Docker</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Update package index</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install prerequisites</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> <span class="dt">\</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  ca-certificates <span class="dt">\</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  curl <span class="dt">\</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  gnupg</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Docker’s official GPG key</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> install <span class="at">-m</span> 0755 <span class="at">-d</span> /etc/apt/keyrings</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sudo</span> gpg <span class="at">--dearmor</span> <span class="at">-o</span> /etc/apt/keyrings/docker.gpg</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Add Docker repository</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="dt">\</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"deb [arch=</span><span class="va">$(</span><span class="ex">dpkg</span> <span class="at">--print-architecture</span><span class="va">)</span><span class="st"> </span><span class="dt">\</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="st">  signed-by=/etc/apt/keyrings/docker.gpg] </span><span class="dt">\</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="st">  https://download.docker.com/linux/ubuntu </span><span class="dt">\</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="st">  </span><span class="va">$(</span><span class="ex">lsb_release</span> <span class="at">-cs</span><span class="va">)</span><span class="st"> stable"</span> <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sudo</span> tee /etc/apt/sources.list.d/docker.list <span class="op">&gt;</span> /dev/null</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Update package index again</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Docker Engine</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install <span class="at">-y</span> docker-ce docker-ce-cli containerd.io</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Verify Docker installation:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run hello-world</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="skipping-pipeline-steps" class="level2">
+<h2 class="anchored" data-anchor-id="skipping-pipeline-steps">Skipping Pipeline Steps</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 13%">
+<col style="width: 70%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>skip_clustering</code></td>
+<td><code>false</code></td>
+<td>Indicate whether you wish to enable the clustering anlysis.</td>
+</tr>
+<tr class="even">
+<td><code>skip_fastbaps</code></td>
+<td><code>true</code></td>
+<td>Indicate whether to skip fastbaps or not.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>💡 <strong>Hint</strong>: Use these flags to customize the pipeline execution based on your specific requirements.</p>
+</blockquote>
 <hr>
 </section>
-<section id="optional-manage-docker-as-a-non-root-user" class="level2">
-<h2 class="anchored" data-anchor-id="optional-manage-docker-as-a-non-root-user">4. (Optional) Manage Docker as a Non-root User</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> usermod <span class="at">-aG</span> docker <span class="va">$USER</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Log out and log back in for group changes to take effect</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="reference-files" class="level2">
+<h2 class="anchored" data-anchor-id="reference-files">Reference Files</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 32%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>fasta</code></td>
+<td><code>null</code></td>
+<td>Path to the reference fasta file.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>⚠️ <strong>Warning</strong>: It is recommended to use the provided reference files to ensure compatibility with the global core alignment.</p>
+</blockquote>
 <hr>
-<p>You are now ready to use Nextflow with Docker and Java 17 on Ubuntu!</p>
 
 
 </section>
