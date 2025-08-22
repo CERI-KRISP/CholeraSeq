@@ -12,6 +12,8 @@ website:
           href: installation.md
         - text: "Usage"
           href: usage.md
+        - text: "Parameters"
+          href: parameters.md
         - text: "Output"
           href: output.md
 
