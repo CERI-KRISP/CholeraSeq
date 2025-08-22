@@ -1,19 +1,29 @@
-Changes in module 'nf-core/gubbins'
+Changes in component 'nf-core/gubbins'
+'modules/nf-core/gubbins/environment.yml' is unchanged
+'modules/nf-core/gubbins/meta.yml' is unchanged
+Changes in 'gubbins/main.nf':
 --- modules/nf-core/gubbins/main.nf
 +++ modules/nf-core/gubbins/main.nf
-@@ -1,10 +1,10 @@
+@@ -1,5 +1,6 @@
  process GUBBINS {
      label 'process_medium'
++    tag "${meta.id}"
  
--    conda "bioconda::gubbins=3.0.0"
-+    conda "bioconda::gubbins=3.3.0"
+     conda "${moduleDir}/environment.yml"
      container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
--        'https://depot.galaxyproject.org/singularity/gubbins:3.0.0--py39h5bf99c6_0' :
--        'biocontainers/gubbins:3.0.0--py39h5bf99c6_0' }"
-+        'https://depot.galaxyproject.org/singularity/gubbins:3.3.0--py310pl5321h8472f5a_0' :
-+        'biocontainers/gubbins:3.3.0--py310pl5321h8472f5a_0' }"
+@@ -7,9 +8,10 @@
+         'biocontainers/gubbins:3.3.5--py39pl5321he4a0461_0' }"
  
      input:
-     path alignment
+-    path alignment
++    tuple val(meta), path(alignment)
+ 
+     output:
++    tuple val(meta), path("*.fasta"), path("*.gff")    , emit: fasta_gff
+     path "*.fasta"                          , emit: fasta
+     path "*.gff"                            , emit: gff
+     path "*.vcf"                            , emit: vcf
 
+'modules/nf-core/gubbins/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/gubbins/tests/main.nf.test' is unchanged
 ************************************************************

@@ -1,18 +1,11 @@
-process CLJ_SPLIT_CLUSTERS {
+process PYTHON_SPLIT_CLUSTERS {
     tag "split_clusters"
     label 'process_low'
 
-    //FIXME Publish babashka binary in a conda channel
-    //conda "bioconda::snippy=4.6.0 bioconda::snp-sites=2.5.1"
-
-    //NOTE: Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "ERROR: This module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://babashka/babashka:1.3.181':
-        'docker.io/babashka/babashka:1.3.181' }"
+        'docker://community.wave.seqera.io/library/biopython:1.70--9ffc9e654351f59a':
+        'community.wave.seqera.io/library/biopython:1.70--9ffc9e654351f59a' }"
 
     input:
     tuple val(meta), path(fastbaps_clusters)
@@ -29,7 +22,7 @@ process CLJ_SPLIT_CLUSTERS {
     //prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    split_clusters.bb.clj csv $fastbaps_clusters
+    split_clusters.py csv --cluster-file $fastbaps_clusters
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

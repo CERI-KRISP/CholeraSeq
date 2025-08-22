@@ -45,7 +45,7 @@ class GeneSet(object):
 
     def __init__(self):
         self.genes = defaultdict(dict)
-        self.chromLengths = []
+        self.chromLengths = [('contig0', 1000000000)] # initialize this to a non-existent chromosome in case annotations are not provided
 
     def add(self, gene, geneid):
         self.genes[gene.chrom][geneid] = gene
@@ -88,6 +88,7 @@ class GeneSet(object):
     def getChromLengths(self, gbfile):
         """Return a dictionary containing the length of each LOCUS from a Genbank file."""
         lengths = {}
+        self.chromLengths = []
         with open(gbfile, "r") as f:
             for line in f:
                 if line.startswith("LOCUS"):
@@ -251,8 +252,6 @@ class SNP(object):
             cSt = int(((cds.end + cds.offset - self.pos) / 3)+1)
         return {'pStrand':pSt, 'cdsStrand':cSt}
 
-
-
 class Reference(object):
     chrom = ""
     genelist = None
@@ -288,13 +287,15 @@ class Reference(object):
             self.baseArray[bp, BASE_IDX[b]] = 1
             bp += 1
 
-    def readAlignment(self, filename):
+    def readAlignment(self, filename, reference_only=False):
         nseq = 1
         nsnp = 0
         pos = 0
 
         with open(filename, "r") as f:
             self.readReference(f)
+            if reference_only:
+                return
             nseq += 1
             while True:
                 line = f.readline()
@@ -342,34 +343,65 @@ class Reference(object):
 
     def filterInformative(self, minall, mincov):
         fp = []
+        sys.stderr.write(f"Scanning {len(self.snpPositions)} positions to determine PI SNPs.\n")
         for pos in self.snpPositions:
             ngood = 0
             totbase = 0
             total = 0
             for i in range(5):
-                c = self.baseArray[pos, i]
+                c = self.baseArray[pos-1, i]
+                #sys.stderr.write(f"{c} ")
                 total += c
                 if i > 0:
                     totbase += c
                     if c >= minall:
                         ngood += 1
+            #sys.stderr.write(f"\n{pos}: {ngood} {totbase} {total}\n")
             if (ngood > 1) and ((totbase / total) > mincov):
                 fp.append(pos)
         self.snpPositions = fp
         sys.stderr.write("{} informative positions found.\n".format(len(fp)))
 
-    def makeSNPs(self, codons):
+    def makeSNPs(self, codons_only):
         for pos in self.snpPositions:
             chrom = self.genelist.findChromAtPosition(pos)
-            cds = self.genelist.findCDSatpos(chrom, pos)
+            cds   = self.genelist.findCDSatpos(chrom, pos)
             if cds:
                 S = SNP(chrom, pos, cds)
                 self.snps.append(S)
-            elif codons is False:
+            elif codons_only is False:
                 S = SNP(chrom, pos, [fakeCDS])
                 self.snps.append(S)
-        if codons:
+        if codons_only:
             sys.stderr.write("{} SNPs in CDSs found.\n".format(len(self.snps)))
+
+    def parseVCF(self, vcffile, codons_only):
+        nsamples = ""
+        nsnp = 0
+        with open(vcffile, "r") as f:
+            for line in f:
+                if line.startswith("##"):
+                    pass
+                elif line.startswith("#"):
+                    fields   = line.split("\t")
+                    nsamples = len(fields) - 9
+                    break
+            c = csv.reader(f, delimiter='\t')
+            for row in c:
+                nsnp += 1
+                chrom = row[0]
+                pos   = int(row[1])
+                cds   = self.genelist.findCDSatpos(chrom, pos)
+                if cds:
+                    S = SNP(chrom, pos, cds)
+                    self.snps.append(S)
+                elif codons_only is False:
+                    S = SNP(chrom, pos, [fakeCDS])
+                    self.snps.append(S)
+
+            sys.stderr.write("{} variable positions found.\n".format(nsnp))
+            if codons_only:
+                sys.stderr.write("{} SNPs in CDSs found.\n".format(len(self.snps)))
 
     def SNPsToFasta(self, filename, out):
         hdr = ""
@@ -435,16 +467,30 @@ class Reference(object):
                     else:
                         out.write("\t".join([snp.chrom, str(snp.pos), 'N/A', 'N/A', 'N/A', 'N/A']) + "\n")
 
+    def writeSNPsVCF(self, filename):
+        with open(filename, "w") as out:
+            out.write("Chrom\tStart\tEnd\tGene\tCodingStrand\tTripletInPlusStrand\tTripletInCodingStrand\n")
+            for snp in self.snps:
+                for cds in snp.cds:
+                    tstart = cds.tripletStart(snp.pos)
+                    indTrplt = snp.tripletn(cds)
+                    if cds.gene.name:
+                        out.write("\t".join([snp.chrom, str(tstart), str(tstart + 3), cds.gene.name, cds.gene.strand, \
+                            str(indTrplt['pStrand']), str(indTrplt['cdsStrand'])]) + "\n")
+                    else:
+                        out.write("\t".join([snp.chrom, str(tstart), str(tstart + 3), 'N/A', 'N/A', 'N/A', 'N/A']) + "\n")
+
 class Main(object):
-    gff = None
+    gff   = None
     chrom = None
     fasta = None
+    vcf   = None
     reportfile = None
     outfile = None
     informative = False         # Filter for informative SNPs
     minCov = 0
     minAll = 0
-    codons = False
+    codons_only = False
 
     def usage(self):
         sys.stdout.write("""varcodons.py - Convert alignment to triplets at variable sites.
@@ -453,17 +499,20 @@ Usage: varcodons.py [options...]
 
 where options are:
 
-  -g G | GFF or GenBank file containing gene annotations (required).
-  -f F | Alignment in FASTA format (required).
+  -f F | Alignment in FASTA format.
+  -v V | VCF file.
+  -g G | GFF or GenBank file containing gene annotations.
   -c C | Chromosome name.
   -o O | Name of output file (default: standard output).
   -r R | Name of report file containing list of variable positions (default: no report).
   -i   | If specified, filter informative SNPs only. A SNP is considered informative
          if it meets the conditions specified by -d and -n. Default: {}.
-  -d D | Variable position should have depth of coverage of D or more (number of observations
-         of this position that are not `N' or `-'). Default: {}.
+  -d D | Fraction of bases at variable position that are not `N' or `-'. Default: {}.
   -n N | Both alleles should be seen at least N times. Default: {}.
-  -a   | If specifed outputs codons instead of SNPs.
+  -a   | If specified, outputs codons instead of SNPs.
+
+Either F or V is required. If G is supplied, gene information will be provided in the
+output files.
 
 """.format(self.informative, self.minCov, self.minAll))
 
@@ -475,16 +524,19 @@ where options are:
             if prev == "-g":
                 self.gff = a
                 prev = ""
-            if prev == "-c":
+            elif prev == "-c":
                 self.chrom = a
                 prev = ""
-            if prev == "-f":
+            elif prev == "-f":
                 self.fasta = a
                 prev = ""
-            if prev == "-r":
+            elif prev == "-v":
+                self.vcf = a
+                prev = ""
+            elif prev == "-r":
                 self.reportfile = a
                 prev = ""
-            if prev == "-o":
+            elif prev == "-o":
                 self.outfile = a
                 prev = ""
             elif prev == "-d":
@@ -493,32 +545,40 @@ where options are:
             elif prev == "-n":
                 self.minAll = int(a)
                 prev = ""
-            elif a in ["-g", "-c", "-f", "-r", "-o", "-d", "-n"]:
+            elif a in ["-g", "-c", "-f", "-r", "-o", "-d", "-n", "-v"]:
                 prev = a
             elif a == "-i":
                 self.minCov = 0.7
                 self.minAll = 2
                 self.informative = True
             elif a == "-a":
-                self.codons = True
-        return self.gff and self.fasta
+                self.codons_only = True
+        return self.fasta or self.vcf
 
     def run(self):
         GS = GeneSet()
-        GS.parseGenes(self.gff)
-        GS.dump()
+        if self.gff:
+            GS.parseGenes(self.gff)
+        #GS.dump()
         R = Reference(GS)
-        R.readAlignment(self.fasta)
-        if self.informative:
-            R.filterInformative(self.minAll, self.minCov)
-        R.makeSNPs(self.codons)
+        if self.vcf:
+            R.parseVCF(self.vcf, self.codons_only)
+        else:
+            R.readAlignment(self.fasta)
+            if self.informative:
+                R.filterInformative(self.minAll, self.minCov)
+            R.makeSNPs(self.codons_only)
         if self.reportfile:
-            R.writeSNPs(self.reportfile)
-        with Outfile(self.outfile) as out:
-            if self.codons:
-                R.SNPsToTriplets(self.fasta, out)
+            if self.vcf:
+                R.writeSNPsVCF(self.reportfile)
             else:
-                R.SNPsToFasta(self.fasta, out)
+                R.writeSNPs(self.reportfile)
+        if self.fasta:
+            with Outfile(self.outfile) as out:
+                if self.codons_only:
+                    R.SNPsToTriplets(self.fasta, out)
+                else:
+                    R.SNPsToFasta(self.fasta, out)
 
 
 def main(args):

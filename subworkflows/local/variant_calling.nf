@@ -1,6 +1,8 @@
-include { SNIPPY_CORE         } from '../../modules/nf-core/snippy/core/main.nf'
-include { SNIPPY_RUN          } from '../../modules/nf-core/snippy/run/main.nf'
-include { SNIPPY_CLEAN        } from '../../modules/local/snippy/snippy_clean.nf'
+include { SNIPPY_CORE                         } from '../../modules/nf-core/snippy/core/main.nf'
+include { SNIPPY_RUN                          } from '../../modules/nf-core/snippy/run/main.nf'
+include { SNIPPY_CLEAN                        } from '../../modules/local/snippy/snippy_clean.nf'
+include { UTILS_CAT_SAMTOOLS_CONSENSUS        } from '../../modules/local/utils/catsamtoolsconsensus/main.nf'
+include { SAMTOOLS_CONSENSUS                  } from '../../modules/nf-core/samtools/consensus/main.nf'
 
 
 workflow VARIANT_CALLING_WF {
@@ -10,42 +12,20 @@ workflow VARIANT_CALLING_WF {
 
     main:
 
-        SNIPPY_RUN(reads_ch, params.fasta)
-
-        //NOTE: Drop the samples from further analysis if the effective size of vcf_report is 0
-        //to addresses the negative control
-
-        ch_snipped_samples = SNIPPY_RUN.out.vcf.join(SNIPPY_RUN.out.aligned_fa)
-
-        ch_failed_samples = ch_snipped_samples
-                                .filter { m, v, f  -> (v.countLines() <= params.vcf_threshold) }
-                                .collect { m,v,f -> [m.id] }
-                                .flatten()
-                                .collectFile(name: "${params.outdir}/failed_samples.txt", newLine: true)
+        //NOTE: Must be a gbk
+        SNIPPY_RUN(reads_ch, params.ref_genbank)
 
 
-        // 27 -> No SNP found
-        ch_passed_samples = ch_snipped_samples
-                                .filter { m, v, f  -> (v.countLines() > params.vcf_threshold) }
+        SAMTOOLS_CONSENSUS(SNIPPY_RUN.out.bam )
 
-        ch_merge_vcf = ch_passed_samples
-                            .collect{ meta, vcf, aligned_fa -> vcf }
-                            .map{ vcf -> [[id:'snippy-core'], vcf]}
 
-        ch_merge_aligned_fa = ch_passed_samples
-                                .collect{meta, vcf, aligned_fa -> aligned_fa}
-                                .map{ aligned_fa -> [[id:'snippy-core'], aligned_fa]}
+        ch_cat_cat_in = SAMTOOLS_CONSENSUS.out.fasta.collect{ m, f -> f }.map { f -> [[id: 'cat_consensus'], f] }
 
-        ch_snippy_core = ch_merge_vcf.join( ch_merge_aligned_fa )
+        UTILS_CAT_SAMTOOLS_CONSENSUS ( ch_cat_cat_in )
 
-        ch_snippy_core.dump(tag: "ch_snippy_core")
-
-        SNIPPY_CORE( ch_snippy_core, params.fasta )
-
-        SNIPPY_CLEAN( SNIPPY_CORE.out.full_aln )
 
     emit:
-        cleaned_full_aln = SNIPPY_CLEAN.out.cleaned_full_aln
+        concatenated_aln = UTILS_CAT_SAMTOOLS_CONSENSUS.out.fasta
         snippy_varcall_txt = SNIPPY_RUN.out.txt
         versions = SNIPPY_RUN.out.versions
 }
