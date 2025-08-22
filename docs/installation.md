@@ -1,11 +1,13 @@
 # Installation Instructions for Nextflow, Docker, and Java JDK 17 LTS on Ubuntu
 
 
-In this document, we provide minimal instructions required by a user to initiate testing of the pipeline. If you need to install this pipeline on a cluster (HPC or K8s) then please refer the to the nf-core docs and community.
+In this document, we provide instructions (with minimal assumptions of target hardware) required by a user to initiate testing of the pipeline.
+
+If you need to install this pipeline on a cluster (HPC or K8s) then please refer the to the nf-core docs and community.
 
 :::{.callout-tip}
 ## nf-core documentation
-As the CholeraSeq pipeline uses nf-core template, the extensive documentation regarding installation, configuration and customization of the pipeline are applicable for CholeraSeq.
+As the CholeraSeq pipeline uses nf-core template, the extensive documentation regarding [installation](https://nf-co.re/docs/usage/getting_started/configuration), configuration and [customization](https://training.nextflow.io/2.1/other/nf_customize/) of the pipeline are applicable for CholeraSeq.
 :::
 
 

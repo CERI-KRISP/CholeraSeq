@@ -41,7 +41,7 @@ include { INPUT_CHECK                } from '../subworkflows/local/input_check'
 include { QUALITY_CONTROL_WF         } from '../subworkflows/local/quality_control'
 include { VARIANT_CALLING_WF         } from '../subworkflows/local/variant_calling'
 include { CLUSTERING_WF              } from '../subworkflows/local/clustering'
-include { COMBINE_CORE_ALIGNMENTS_WF  } from '../subworkflows/local/combine_core_alignments'
+include { CAT_CAT                    } from '../modules/nf-core/cat/cat/main.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,13 +71,17 @@ workflow CHOLERASEQ {
 
 
     if (params.global_core_alignment && params.cohort_core_alignment) {
-        //===============================
-        // COMBINE CORE GENOME ALIGNMENT
-        //===============================
+        //=========================
+        // PATCH GLOBAL GENOME ALIGNMENT
+        //=========================
 
+        in_cat_cat = Channel.of([[id: 'concatenate_alns'], [global_core_alignment, cohort_core_alignment]])
 
-        COMBINE_CORE_ALIGNMENTS_WF (params.global_core_alignment, params.cohort_core_alignment)
-        ch_versions = ch_versions.mix(COMBINE_CORE_ALIGNMENTS_WF.out.versions)
+        CAT_CAT(in_cat_cat)
+
+        CLUSTERING_WF ( CAT_CAT.out.cat_fasta )
+
+        ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
 
     } else {
 
@@ -120,9 +124,29 @@ workflow CHOLERASEQ {
         )
         ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
 
+
         if (!params.skip_clustering) {
 
-            CLUSTERING_WF ( VARIANT_CALLING_WF.out.cleaned_full_aln )
+            if(params.global_core_alignment ) {
+
+                cohort_core_aln = VARIANT_CALLING_WF.out.concatenated_aln.map{it -> tuple([id:'patch_global_with_cohort_aln'], file(it[1]))}
+
+                ch_global_aln = Channel.of([[id: 'patch_global_with_cohort_aln'], file(params.global_core_alignment)])
+
+                ch_cat_alignments = ch_global_aln.join(cohort_core_aln).map { m, f1, f2 -> [m, [f1, f2]] }
+
+                ch_cat_alignments.dump(tag: 'ch_cat_alignments', pretty: true)
+
+                CAT_CAT(ch_cat_alignments)
+
+                CLUSTERING_WF ( CAT_CAT.out.file_out )
+
+            } else {
+
+                CLUSTERING_WF ( VARIANT_CALLING_WF.out.concatenated_aln )
+            }
+
+
             ch_versions = ch_versions.mix(CLUSTERING_WF.out.versions)
             ch_multiqc_files = ch_multiqc_files.mix(VARIANT_CALLING_WF.out.snippy_varcall_txt.collect{it[1]}.ifEmpty([]))
 
@@ -158,7 +182,9 @@ workflow CHOLERASEQ {
             ch_multiqc_files.collect(),
             ch_multiqc_config.toList(),
             ch_multiqc_custom_config.toList(),
-            ch_multiqc_logo.toList()
+            ch_multiqc_logo.toList(),
+            [],
+            []
         )
         multiqc_report = MULTIQC.out.report.toList()
 }

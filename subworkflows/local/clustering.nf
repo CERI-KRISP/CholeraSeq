@@ -3,8 +3,11 @@ include { PYTHON_SEQ_CLEANER          } from '../../modules/local/python/seq_cle
 include { SEQKIT_GREP                 } from '../../modules/nf-core/seqkit/grep/main'
 include { GUBBINS as RUN_GUBBINS      } from '../../modules/nf-core/gubbins/main.nf'
 include { MASK_GUBBINS                } from '../../modules/local/gubbins/mask.nf'
-include { CLJ_SPLIT_CLUSTERS          } from '../../modules/local/clojure/split_clusters.nf'
+include { PYTHON_SPLIT_CLUSTERS       } from '../../modules/local/clojure/split_clusters.nf'
 include { IQTREE                      } from '../../modules/nf-core/iqtree/main'
+include { CAT_CAT                     } from '../../modules/nf-core/cat/cat/main.nf'
+include { UTILS_VARCODONS             } from '../../modules/local/utils/varcodons/main.nf'
+include { UTILS_VARCODONS as UTILS_VARCODONS__REPORT             } from '../../modules/local/utils/varcodons/main.nf'
 
 workflow CLUSTERING_WF {
 
@@ -12,13 +15,17 @@ workflow CLUSTERING_WF {
         clean_full_aln_fasta
 
     main:
-        if(params.enable_fastbaps || !params.skip_fastbaps) {
 
-            R_FASTBAPS( clean_full_aln_fasta )
 
-            CLJ_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
+        PYTHON_SEQ_CLEANER ( clean_full_aln_fasta )
 
-            SEQKIT_GREP( CLJ_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [["id": it.baseName], it]},
+        if( !params.skip_fastbaps) {
+
+            R_FASTBAPS( PYTHON_SEQ_CLEANER.out.cleaned_fasta )
+
+            PYTHON_SPLIT_CLUSTERS( R_FASTBAPS.out.classification )
+
+            SEQKIT_GREP( PYTHON_SPLIT_CLUSTERS.out.clusters.flatten().map{ it -> [["id": it.baseName], it]},
                          clean_full_aln_fasta.map { m,f -> f}.collect())
 
             in_run_gubbins_ch = SEQKIT_GREP.out.fasta
@@ -29,24 +36,29 @@ workflow CLUSTERING_WF {
 
         }
 
-         RUN_GUBBINS( in_run_gubbins_ch )
+         RUN_GUBBINS( PYTHON_SEQ_CLEANER.out.cleaned_fasta )
 
          MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
 
 
-         //VARIANT_CODON_ALIGNMENT using varcodons and GBK reference
          //MASK_GUBBINS.out.masked_fasta. Also use the -r to generate and output
         //a report for users for information (-a)
 
+        ch_all_masked_fastas = MASK_GUBBINS.out.masked_fasta
+                            .map{m, f -> f}
+                            .collect().map{v -> [[id: 'concatenated_masked_fastas'], v]}
 
-        //TODO: MASK_GUBBINS output should be concatenated
+        CAT_CAT(ch_all_masked_fastas)
 
-         PYTHON_SEQ_CLEANER ( MASK_GUBBINS.out.masked_fasta )
+        UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_fasta, params.ref_genbank )
 
-        //TODO: Check the overall functionality
-         in_iqtree = PYTHON_SEQ_CLEANER.out.cleaned_fasta.map {m -> [m[0], m[1], []]}
+        in_iqtree = UTILS_VARCODONS.out.fasta.map {m -> [m[0], m[1], []]}
 
-         IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
+        IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
+
+        //Run only with gbk reference -- produces complimentary output for the user.
+        UTILS_VARCODONS__REPORT( CAT_CAT.out.file_out, params.ref_fasta, params.ref_genbank )
+
 
     emit:
         versions = RUN_GUBBINS.out.versions //TODO:
