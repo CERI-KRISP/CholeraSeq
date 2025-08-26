@@ -66,6 +66,13 @@ nextflow run hello
 
 ---
 
+
+:::{.callout-tip}
+## Docker or Singularity
+If your system administrator has setup Singularity or Apptainer for you, then please use the `-profile singularity` or `-profile apptainer` option. For Step-3 and Step-4 we assume that, you do have admin access for your machine and can install packages.
+:::
+
+
 ## 3. Install Docker
 
 ```bash
@@ -116,3 +123,17 @@ sudo usermod -aG docker $USER
 ---
 
 You are now ready to use Nextflow with Docker and Java 17 on Ubuntu!
+
+
+## 5. Run the test profile of CholeraSeq
+
+This profile should download a small dataset and the relevant containers to initiate the pipeline execution.
+
+```bash
+# For users with access to docker containers
+nextflow run CERI-KRISP/CholeraSeq -profile test,docker --outdir test_output
+
+
+# For users with access to singularity containers
+nextflow run CERI-KRISP/CholeraSeq -profile test,singularity --outdir test_output
+```

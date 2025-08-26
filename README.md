@@ -36,6 +36,15 @@ $ nextflow run CERI-KRISP/CholeraSeq \
 
 ```
 
+For `singularity` please use the following command
+
+```bash
+
+$ nextflow run CERI-KRISP/CholeraSeq \
+  -profile test,singularity --outdir test_output
+
+```
+
 
 
 ## Credits
