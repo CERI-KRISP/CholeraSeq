@@ -14,8 +14,26 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 ### Directory structure
 
+As of `v1.1.0` the outputs of CholeraSeq pipeline are stored in the following directory structure. We intend to change this directory structure based on feedback from routine users.
+
 
 ```
+├── cat
+├── fastp
+├── fastqc
+├── iqtree
+├── mask
+├── multiqc
+│   ├── multiqc_data
+│   └── multiqc_plots
+├── pipeline_info
+├── python
+├── r
+├── run
+├── samtools
+├── seqkit
+├── snippy
+└── utils
 
 ```
 
