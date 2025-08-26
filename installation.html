@@ -182,6 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#install-nextflow" id="toc-install-nextflow" class="nav-link" data-scroll-target="#install-nextflow">2. Install Nextflow</a></li>
   <li><a href="#install-docker" id="toc-install-docker" class="nav-link" data-scroll-target="#install-docker">3. Install Docker</a></li>
   <li><a href="#optional-manage-docker-as-a-non-root-user" id="toc-optional-manage-docker-as-a-non-root-user" class="nav-link" data-scroll-target="#optional-manage-docker-as-a-non-root-user">4. (Optional) Manage Docker as a Non-root User</a></li>
+  <li><a href="#run-the-test-profile-of-choleraseq" id="toc-run-the-test-profile-of-choleraseq" class="nav-link" data-scroll-target="#run-the-test-profile-of-choleraseq">5. Run the test profile of CholeraSeq</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -242,6 +243,19 @@ nf-core documentation
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Docker or Singularity
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If your system administrator has setup Singularity or Apptainer for you, then please use the <code>-profile singularity</code> or <code>-profile apptainer</code> option. For Step-3 and Step-4 we assume that, you do have admin access for your machine and can install packages.</p>
+</div>
+</div>
 </section>
 <section id="install-docker" class="level2">
 <h2 class="anchored" data-anchor-id="install-docker">3. Install Docker</h2>
@@ -282,6 +296,16 @@ nf-core documentation
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Log out and log back in for group changes to take effect</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 <p>You are now ready to use Nextflow with Docker and Java 17 on Ubuntu!</p>
+</section>
+<section id="run-the-test-profile-of-choleraseq" class="level2">
+<h2 class="anchored" data-anchor-id="run-the-test-profile-of-choleraseq">5. Run the test profile of CholeraSeq</h2>
+<p>This profile should download a small dataset and the relevant containers to initiate the pipeline execution.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For users with access to docker containers</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run CERI-KRISP/CholeraSeq <span class="at">-profile</span> test,docker <span class="at">--outdir</span> test_output</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># For users with access to singularity containers</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run CERI-KRISP/CholeraSeq <span class="at">-profile</span> test,singularity <span class="at">--outdir</span> test_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
