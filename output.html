@@ -145,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#pipeline-overview" id="toc-pipeline-overview" class="nav-link" data-scroll-target="#pipeline-overview">Pipeline overview</a>
   <ul class="collapse">
-  <li><a href="#fastqc" id="toc-fastqc" class="nav-link" data-scroll-target="#fastqc">FastQC</a></li>
+  <li><a href="#directory-structure" id="toc-directory-structure" class="nav-link" data-scroll-target="#directory-structure">Directory structure</a></li>
   <li><a href="#multiqc" id="toc-multiqc" class="nav-link" data-scroll-target="#multiqc">MultiQC</a></li>
   <li><a href="#pipeline-information" id="toc-pipeline-information" class="nav-link" data-scroll-target="#pipeline-information">Pipeline information</a></li>
   </ul></li>
@@ -169,22 +169,10 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="pipeline-overview" class="level2">
 <h2 class="anchored" data-anchor-id="pipeline-overview">Pipeline overview</h2>
-<p>The pipeline is built using <a href="https://www.nextflow.io/">Nextflow</a> and processes data using the following steps:</p>
-<section id="fastqc" class="level3">
-<h3 class="anchored" data-anchor-id="fastqc">FastQC</h3>
-<details>
-<summary>
-Output files
-</summary>
-<ul>
-<li><code>fastqc/</code>
-<ul>
-<li><code>*_fastqc.html</code>: FastQC report containing quality metrics.</li>
-<li><code>*_fastqc.zip</code>: Zip archive containing the FastQC report, tab-delimited data file and plot images.</li>
-</ul></li>
-</ul>
-</details>
-<p><a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> gives general quality metrics about your sequenced reads. It provides information about the quality score distribution across your reads, per base sequence content (%A/T/G/C), adapter contamination and overrepresented sequences. For further reading and documentation see the <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/">FastQC help pages</a>.</p>
+<p>The pipeline is built using <a href="https://www.nextflow.io/">Nextflow</a> and processes data to produce the following results:</p>
+<section id="directory-structure" class="level3">
+<h3 class="anchored" data-anchor-id="directory-structure">Directory structure</h3>
+<pre><code></code></pre>
 </section>
 <section id="multiqc" class="level3">
 <h3 class="anchored" data-anchor-id="multiqc">MultiQC</h3>
