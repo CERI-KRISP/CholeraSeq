@@ -57,10 +57,21 @@ This document provides an overview of the customizable parameters for the CHOLER
 
 ## Reference Files
 
-| Parameter               | Default Value                                              | Description                                                                                     |
-|-------------------------|------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| `fasta`           | `null`        | Path to the reference fasta file.                           |
+| Parameter     | Default Value              | Description                                                                                                |
+|---------------|----------------------------|------------------------------------------------------------------------------------------------------------|
+| `ref_fasta`   | `GCF_003063785.full.fasta` | Path to the reference FASTA file , we recommend the use of any2fasta to generate fasta from genbank files. |
+| `ref_genbank` | `GCF_003063785.full.gbk`   | Path to the reference GENBANK file                                                                         |
 
 > ⚠️ **Warning**: It is recommended to use the provided reference files to ensure compatibility with the global core alignment.
+
+---
+
+
+## Alignment Files
+
+| Parameter               | Default Value | Description                                                                                                                     |
+|-------------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------|
+| `global_core_alignment` | `null`        | Path to the existing global core alignment fasta file. We publish such an alignemnt on  https://doi.org/10.5281/zenodo.10984554 |
+| `cohort_core_alignment` | `null`        | Path to an existing cohort_core_alignment fasta file.                                                                           |
 
 ---
