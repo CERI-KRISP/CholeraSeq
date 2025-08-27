@@ -71,7 +71,7 @@ This document provides an overview of the customizable parameters for the CHOLER
 
 | Parameter               | Default Value | Description                                                                                                                     |
 |-------------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------|
-| `global_core_alignment` | `null`        | Path to the existing global core alignment fasta file. We publish such an alignemnt on  https://doi.org/10.5281/zenodo.10984554 |
+| `global_core_alignment` | `null`        | Path to the existing global core alignment fasta file. We publish such an alignment on  https://doi.org/10.5281/zenodo.10984554 |
 | `cohort_core_alignment` | `null`        | Path to an existing cohort_core_alignment fasta file.                                                                           |
 
 ---
