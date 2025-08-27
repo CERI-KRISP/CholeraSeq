@@ -150,6 +150,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#quality-control-parameters" id="toc-quality-control-parameters" class="nav-link" data-scroll-target="#quality-control-parameters">Quality Control Parameters</a></li>
   <li><a href="#skipping-pipeline-steps" id="toc-skipping-pipeline-steps" class="nav-link" data-scroll-target="#skipping-pipeline-steps">Skipping Pipeline Steps</a></li>
   <li><a href="#reference-files" id="toc-reference-files" class="nav-link" data-scroll-target="#reference-files">Reference Files</a></li>
+  <li><a href="#alignment-files" id="toc-alignment-files" class="nav-link" data-scroll-target="#alignment-files">Alignment Files</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -323,9 +324,9 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="reference-files">Reference Files</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 13%">
-<col style="width: 32%">
-<col style="width: 53%">
+<col style="width: 9%">
+<col style="width: 18%">
+<col style="width: 71%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -336,15 +337,50 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>fasta</code></td>
-<td><code>null</code></td>
-<td>Path to the reference fasta file.</td>
+<td><code>ref_fasta</code></td>
+<td><code>GCF_003063785.full.fasta</code></td>
+<td>Path to the reference FASTA file , we recommend the use of any2fasta to generate fasta from genbank files.</td>
+</tr>
+<tr class="even">
+<td><code>ref_genbank</code></td>
+<td><code>GCF_003063785.full.gbk</code></td>
+<td>Path to the reference GENBANK file</td>
 </tr>
 </tbody>
 </table>
 <blockquote class="blockquote">
 <p>⚠️ <strong>Warning</strong>: It is recommended to use the provided reference files to ensure compatibility with the global core alignment.</p>
 </blockquote>
+<hr>
+</section>
+<section id="alignment-files" class="level2">
+<h2 class="anchored" data-anchor-id="alignment-files">Alignment Files</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 76%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>global_core_alignment</code></td>
+<td><code>null</code></td>
+<td>Path to the existing global core alignment fasta file. We publish such an alignemnt on https://doi.org/10.5281/zenodo.10984554</td>
+</tr>
+<tr class="even">
+<td><code>cohort_core_alignment</code></td>
+<td><code>null</code></td>
+<td>Path to an existing cohort_core_alignment fasta file.</td>
+</tr>
+</tbody>
+</table>
 <hr>
 
 
