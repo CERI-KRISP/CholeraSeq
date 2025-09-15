@@ -50,14 +50,14 @@ workflow CLUSTERING_WF {
 
         CAT_CAT(ch_all_masked_fastas)
 
-        UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_fasta, params.ref_genbank )
+        UTILS_VARCODONS( CAT_CAT.out.file_out, params.ref_genbank )
 
         in_iqtree = UTILS_VARCODONS.out.fasta.map {m -> [m[0], m[1], []]}
 
         IQTREE(in_iqtree, [], [], [], [], [], [], [], [], [], [], [], [] )
 
         //Run only with gbk reference -- produces complimentary output for the user.
-        UTILS_VARCODONS__REPORT( CAT_CAT.out.file_out, params.ref_fasta, params.ref_genbank )
+        UTILS_VARCODONS__REPORT( CAT_CAT.out.file_out, params.ref_genbank )
 
 
     emit:

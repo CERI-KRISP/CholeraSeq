@@ -59,7 +59,6 @@ This document provides an overview of the customizable parameters for the CHOLER
 
 | Parameter     | Default Value              | Description                                                                                                |
 |---------------|----------------------------|------------------------------------------------------------------------------------------------------------|
-| `ref_fasta`   | `GCF_003063785.full.fasta` | Path to the reference FASTA file , we recommend the use of any2fasta to generate fasta from genbank files. |
 | `ref_genbank` | `GCF_003063785.full.gbk`   | Path to the reference GENBANK file                                                                         |
 
 > ⚠️ **Warning**: It is recommended to use the provided reference files to ensure compatibility with the global core alignment.
