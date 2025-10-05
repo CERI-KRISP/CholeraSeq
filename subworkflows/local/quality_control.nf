@@ -11,6 +11,8 @@ workflow QUALITY_CONTROL_WF {
 
         FASTQC(reads_ch)
 
+        ch_fastp_in = reads_ch.map { meta, files -> [meta, files, []] }
+
         FASTP(reads_ch, [], false, false)
 
     emit:
