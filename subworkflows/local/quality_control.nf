@@ -13,7 +13,7 @@ workflow QUALITY_CONTROL_WF {
 
         ch_fastp_in = reads_ch.map { meta, files -> [meta, files, []] }
 
-        FASTP(ch_fastp_in, true, false, false)
+        FASTP(ch_fastp_in, false, false, false)
 
     emit:
         trimmed_reads = FASTP.out.reads
