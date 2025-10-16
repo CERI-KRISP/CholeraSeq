@@ -2,7 +2,7 @@ process PYTHON_SEQ_CLEANER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "conda-forge::python=3.10.13"
+    conda "conda-forge::biopython=1.81"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://quay.io/biocontainers/biopython:1.81':

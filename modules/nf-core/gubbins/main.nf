@@ -7,6 +7,9 @@ process GUBBINS {
         'https://depot.galaxyproject.org/singularity/gubbins:3.3.5--py39pl5321he4a0461_0' :
         'biocontainers/gubbins:3.3.5--py39pl5321he4a0461_0' }"
 
+    // FIXME 3.4.1
+    // https://github.com/nickjcroucher/gubbins/releases/tag/v3.4.1
+
     input:
     tuple val(meta), path(alignment)
 
