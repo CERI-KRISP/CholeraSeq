@@ -4,4 +4,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::gubbins=3.3.5
+  - bioconda::3.4.1

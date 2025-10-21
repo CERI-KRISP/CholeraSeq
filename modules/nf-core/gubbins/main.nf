@@ -4,27 +4,24 @@ process GUBBINS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gubbins:3.3.5--py39pl5321he4a0461_0' :
-        'biocontainers/gubbins:3.3.5--py39pl5321he4a0461_0' }"
-
-    // FIXME 3.4.1
-    // https://github.com/nickjcroucher/gubbins/releases/tag/v3.4.1
+        'https://depot.galaxyproject.org/singularity/gubbins:3.4.1--py310pl5321h577a1d6_0' :
+        'biocontainers/gubbins:3.4.1--py310pl5321h577a1d6_0' }"
 
     input:
     tuple val(meta), path(alignment)
 
     output:
     tuple val(meta), path(alignment), path("*.gff")    , emit: fasta_gff
-    path "*.fasta"                          , emit: fasta
-    path "*.gff"                            , emit: gff
-    path "*.vcf"                            , emit: vcf
-    path "*.csv"                            , emit: stats
-    path "*.phylip"                         , emit: phylip
-    path "*.recombination_predictions.embl" , emit: embl_predicted
-    path "*.branch_base_reconstruction.embl", emit: embl_branch
-    path "*.final_tree.tre"                 , emit: tree
-    path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
-    path "versions.yml"                     , emit: versions
+    path "*.fasta"                                     , emit: fasta
+    path "*.gff"                                       , emit: gff
+    path "*.vcf"                                       , emit: vcf
+    path "*.csv"                                       , emit: stats
+    path "*.phylip"                                    , emit: phylip
+    path "*.recombination_predictions.embl"            , emit: embl_predicted
+    path "*.branch_base_reconstruction.embl"           , emit: embl_branch
+    path "*.final_tree.tre"                            , emit: tree
+    path "*.node_labelled.final_tree.tre"              , emit: tree_labelled
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
