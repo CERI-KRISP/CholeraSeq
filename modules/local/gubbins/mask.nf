@@ -29,7 +29,7 @@ process MASK_GUBBINS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gubbins: \$(mask_gubbins_aln.py --version 2>&1)
+        gubbins: 3.4.1
     END_VERSIONS
     """
 }
