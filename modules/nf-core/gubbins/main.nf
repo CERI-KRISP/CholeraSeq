@@ -36,9 +36,10 @@ process GUBBINS {
         --threads $task.cpus \\
         $args \\
         $alignment
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gubbins: \$(run_gubbins.py --version 2>&1)
+        gubbins: 3.4.1
     END_VERSIONS
     """
 
