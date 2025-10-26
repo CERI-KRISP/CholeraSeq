@@ -8,10 +8,9 @@
 
 ## Dataset
 
+We have created a multi-fasta reference with global cohort available on NCBI, available at the link below.
 
-https://doi.org/zenodo.10984554
-
-[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554?labelColor=000000)](https://doi.org/zenodo.10984554)
+[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
 
 ## Samplesheet input
 
@@ -65,7 +64,7 @@ $ nextflow run CERI-KRISP/CholeraSeq \
 The command for running the pipeline is as follows:
 
 ```bash
-nextflow run ceri-krisp/choleraseq \
+nextflow run CERI-KRISP/CholeraSeq \
          -profile docker \
          --samplesheet /path/to/samplesheet.csv \
          --outdir results

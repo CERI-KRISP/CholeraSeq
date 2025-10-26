@@ -9,7 +9,6 @@ process UTILS_VARCODONS {
 
     input:
     tuple val(meta), path(cat_consensus_fasta)
-    path(ref_fasta)
     path(ref_genbank)
 
     output:

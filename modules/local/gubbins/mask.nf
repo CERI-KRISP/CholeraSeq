@@ -4,8 +4,8 @@ process MASK_GUBBINS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gubbins:3.3.5--py39pl5321he4a0461_0' :
-        'biocontainers/gubbins:3.3.5--py39pl5321he4a0461_0' }"
+        'https://depot.galaxyproject.org/singularity/gubbins:3.4.1--py310pl5321h577a1d6_0' :
+        'biocontainers/gubbins:3.4.1--py310pl5321h577a1d6_0' }"
 
 
     input:
@@ -29,7 +29,7 @@ process MASK_GUBBINS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gubbins: \$(mask_gubbins_aln.py --version 2>&1)
+        gubbins: 3.4.1
     END_VERSIONS
     """
 }
