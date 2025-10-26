@@ -1,6 +1,5 @@
 [![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.15167441-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.15167441)
 
-
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.10.1-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
@@ -9,9 +8,7 @@
 
 ## Introduction
 
-
 **CERI-KRISP/CholeraSeq** is a Nextflow pipeline for data genomic analysis of Cholera outbreaks.
-
 
 ## Reference sequence
 
@@ -45,8 +42,6 @@ $ nextflow run CERI-KRISP/CholeraSeq \
 
 ```
 
-
-
 ## Credits
 
 CERI-KRISP/CholeraSeq was originally written by the CholeraSeq publication authors.
@@ -56,6 +51,7 @@ CERI-KRISP/CholeraSeq was originally written by the CholeraSeq publication autho
 ## Contributions and Support
 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
+
 ## Citations
 
 <!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->

@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an idea for the CERI-KRISP/cholera_analysis_nf pipeline
+description: Suggest an idea for the CERI-KRISP/CholeraSeq pipeline
 labels: enhancement
 body:
   - type: textarea

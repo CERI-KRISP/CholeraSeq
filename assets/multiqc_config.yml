@@ -14,16 +14,16 @@ report_section_order:
     order: -1002
 
 run_modules:
-    - custom_content
-    - fastqc
-    - fastp
-    - snippy
+  - custom_content
+  - fastqc
+  - fastp
+  - snippy
 
 module_order:
-    - custom_content
-    - fastqc
-    - fastp
-    - snippy
+  - custom_content
+  - fastqc
+  - fastp
+  - snippy
 
 # custom_data:
 #   my_genstats:

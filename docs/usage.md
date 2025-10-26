@@ -22,17 +22,15 @@ You will need to create a samplesheet with information about the samples you wou
 
 ### Full samplesheet
 
-
 # Input
 
 The input samplesheet should be in CSV format, containing either of the three possibilities
 
-  1. Paired-end reads (e.g `SRR8364252`)
+1. Paired-end reads (e.g `SRR8364252`)
 
-  2. Single-end reads (e.g. `SRR771360` )
+2. Single-end reads (e.g. `SRR771360` )
 
-  3. Fasta files (e.g. `AHGB01000000`)
-
+3. Fasta files (e.g. `AHGB01000000`)
 
 ```csv
 sample,fastq_1,fastq_2
@@ -42,7 +40,6 @@ AHGB01000000.1,https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e27826
 ```
 
 ## Running the pipeline
-
 
 ### Test profiles
 
@@ -56,8 +53,6 @@ $ nextflow run CERI-KRISP/CholeraSeq \
   -profile test,docker --outdir test_output
 
 ```
-
-
 
 ### Using your own dataset
 
@@ -81,6 +76,7 @@ work                # Directory containing the nextflow working files
 .nextflow_log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
+
 ### Use of `YAML` file for parameters
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
@@ -98,9 +94,9 @@ nextflow run ceri-krisp/choleraseq -profile docker -params-file params.yaml
 with `params.yaml` containing:
 
 ```yaml
-input: './samplesheet.csv'
-outdir: './results/'
-genome: 'GRCh37'
+input: "./samplesheet.csv"
+outdir: "./results/"
+genome: "GRCh37"
 # other parameters
 ```
 
