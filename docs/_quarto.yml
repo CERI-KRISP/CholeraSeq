@@ -5,17 +5,17 @@ website:
   title: "CERI-KRISP/CholeraSeq"
 
   sidebar:
-      style: "docked"
-      search: true
-      contents:
-        - text: "Installation"
-          href: installation.md
-        - text: "Usage"
-          href: usage.md
-        - text: "Parameters"
-          href: parameters.md
-        - text: "Output"
-          href: output.md
+    style: "docked"
+    search: true
+    contents:
+      - text: "Installation"
+        href: installation.md
+      - text: "Usage"
+        href: usage.md
+      - text: "Parameters"
+        href: parameters.md
+      - text: "Output"
+        href: output.md
 
 format:
   html:
