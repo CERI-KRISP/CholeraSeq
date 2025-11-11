@@ -183,8 +183,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#global-core-alignment" id="toc-global-core-alignment" class="nav-link active" data-scroll-target="#global-core-alignment">Global core alignment</a>
   <ul class="collapse">
-  <li><a href="#global-core-alignment-dataset" id="toc-global-core-alignment-dataset" class="nav-link" data-scroll-target="#global-core-alignment-dataset">Global core alignment dataset</a></li>
-  <li><a href="#custom-core-alignment" id="toc-custom-core-alignment" class="nav-link" data-scroll-target="#custom-core-alignment">Custom core alignment</a></li>
+  <li><a href="#updating-global-core-alignment-dataset" id="toc-updating-global-core-alignment-dataset" class="nav-link" data-scroll-target="#updating-global-core-alignment-dataset">Updating Global core alignment dataset</a></li>
+  <li><a href="#using-fasta-sequences" id="toc-using-fasta-sequences" class="nav-link" data-scroll-target="#using-fasta-sequences">Using FASTA sequences</a></li>
+  <li><a href="#using-existing-local-core-alignment" id="toc-using-existing-local-core-alignment" class="nav-link" data-scroll-target="#using-existing-local-core-alignment">Using existing local core alignment</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -210,21 +211,18 @@ Tip
 <p>This document assume that you have already read through the <a href="./usage.html">Usage</a> document</p>
 </div>
 </div>
-<section id="global-core-alignment-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="global-core-alignment-dataset">Global core alignment dataset</h2>
-<p>We have created a multi-fasta reference with global cohort available on NCBI, available at the link below.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://doi.org/10.5281/zenodo.10984554"><img src="http://img.shields.io/badge/DOI-10.5281/zenodo.10984554-1073c8?labelColor=000000" class="img-fluid figure-img"></a></p>
-<figcaption>Zenodo Dataset</figcaption>
-</figure>
-</div>
+<section id="updating-global-core-alignment-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="updating-global-core-alignment-dataset">Updating Global core alignment dataset</h2>
+<p>We have created a multi-fasta reference with global cohort available on NCBI, available at <a href="https://doi.org/10.5281/zenodo.10984554">this link</a></p>
 </section>
-<section id="custom-core-alignment" class="level2">
-<h2 class="anchored" data-anchor-id="custom-core-alignment">Custom core alignment</h2>
+<section id="using-fasta-sequences" class="level2">
+<h2 class="anchored" data-anchor-id="using-fasta-sequences">Using FASTA sequences</h2>
 <p>We intend to keep this core alignment updated on a quarterly (or annual ) and are actively looking for funding for long term sustenance.</p>
 <p>However, we also want to highlight that it is very straightforward to create custom alignment using the CholeraSeq pipeline.</p>
-<p>Essentially, you’d need to 1. Create a samplesheet with the downloaded/precomputed sequences (FASTA files) as shown below</p>
+<p>Essentially, you’d need to</p>
+<ol type="1">
+<li>Create a samplesheet with the downloaded/precomputed sequences (FASTA files) as shown below</li>
+</ol>
 <pre class="csv"><code>sample,fastq_1,fastq_2
 AHGB01000000.1,https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHGB01.fasta,
 AHGB01000000.2,/path/to/your/fasta/file,</code></pre>
@@ -252,6 +250,21 @@ Tip
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">global_core_alignment</span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/existing/global_core_alignment"</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># other parameters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="using-existing-local-core-alignment" class="level2">
+<h2 class="anchored" data-anchor-id="using-existing-local-core-alignment">Using existing local core alignment</h2>
+<p>In case you have already created a local core alignment (from the initial FASTA files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the ``</p>
+<p>You can now initiate the pipeline with:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run https://github.com/CERI-KRISP/CholeraSeq <span class="at">-profile</span> docker <span class="at">-params-file</span> params.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>with <code>params.yaml</code> containing:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">input</span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/desired/samplesheet.csv"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">outdir</span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/desired/output/directory"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Provide existing core alignments, to be merged</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">global_core_alignment</span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/existing/global_core_alignment"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cohort_core_alignment </span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/existing/cohort_core_alignment"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># other parameters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
