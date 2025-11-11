@@ -221,7 +221,7 @@ Tip
 <p>However, we also want to highlight that it is very straightforward to create custom alignment using the CholeraSeq pipeline.</p>
 <p>Essentially, you’d need to</p>
 <ol type="1">
-<li>Create a samplesheet with the downloaded/precomputed sequences (FASTA files) as shown below</li>
+<li>Create a samplesheet with the downloaded/precomputed assemblies (FASTA files) as shown below</li>
 </ol>
 <pre class="csv"><code>sample,fastq_1,fastq_2
 AHGB01000000.1,https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHGB01.fasta,
@@ -253,7 +253,7 @@ Tip
 </section>
 <section id="using-existing-local-core-alignment" class="level2">
 <h2 class="anchored" data-anchor-id="using-existing-local-core-alignment">Using existing local core alignment</h2>
-<p>In case you have already created a local core alignment (from the initial FASTA files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the ``</p>
+<p>In case you have already created a local core alignment (from the initial FASTA assemblies files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the ``</p>
 <p>You can now initiate the pipeline with:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run https://github.com/CERI-KRISP/CholeraSeq <span class="at">-profile</span> docker <span class="at">-params-file</span> params.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>with <code>params.yaml</code> containing:</p>
