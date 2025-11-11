@@ -17,7 +17,7 @@ However, we also want to highlight that it is very straightforward to create cus
 
 Essentially, you'd need to
 
-1. Create a samplesheet with the downloaded/precomputed sequences (FASTA files) as shown below
+1. Create a samplesheet with the downloaded/precomputed assemblies (FASTA files) as shown below
 
 
 ```csv
@@ -54,7 +54,7 @@ global_core_alignment: "/path/to/existing/global_core_alignment"
 
 ## Using existing local core alignment
 
-In case you have already created a local core alignment (from the initial FASTA files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the ``
+In case you have already created a local core alignment (from the initial FASTA assemblies files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the ``
 
 You can now initiate the pipeline with:
 
