@@ -16,6 +16,8 @@ website:
         href: parameters.md
       - text: "Output"
         href: output.md
+      - text: "Global core alignment"
+        href: global_core_alignment.md
 
 format:
   html:
