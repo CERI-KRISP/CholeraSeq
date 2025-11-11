@@ -5,9 +5,9 @@ This document assume that you have already read through the [Usage](./usage.md) 
 :::
 
 
-## Updating Global core alignment dataset
+## Published global core alignment
 
-We have created a multi-fasta reference with global cohort available on NCBI, available at [this link](https://doi.org/10.5281/zenodo.10984554)
+As a useful resources for the community, we have published a global core alignemnt, from the NCBI dataset available on NCBI, on [this link](https://doi.org/10.5281/zenodo.10984554)
 
 ## Using FASTA sequences
 
