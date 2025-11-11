@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>parameters – CERI-KRISP/CholeraSeq</title>
+<title>global_core_alignment – CERI-KRISP/CholeraSeq</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -81,7 +116,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./parameters.html">Parameters</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./global_core_alignment.html">Global core alignment</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -120,7 +155,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./parameters.html" class="sidebar-item-text sidebar-link active">
+  <a href="./parameters.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Parameters</span></a>
   </div>
 </li>
@@ -132,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./global_core_alignment.html" class="sidebar-item-text sidebar-link">
+  <a href="./global_core_alignment.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Global core alignment</span></a>
   </div>
 </li>
@@ -146,17 +181,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a>
+  <li><a href="#global-core-alignment" id="toc-global-core-alignment" class="nav-link active" data-scroll-target="#global-core-alignment">Global core alignment</a>
   <ul class="collapse">
-  <li><a href="#common-parameters" id="toc-common-parameters" class="nav-link" data-scroll-target="#common-parameters">Common Parameters</a>
-  <ul class="collapse">
-  <li><a href="#input-samplesheet" id="toc-input-samplesheet" class="nav-link" data-scroll-target="#input-samplesheet">Input Samplesheet</a></li>
-  <li><a href="#output-directory" id="toc-output-directory" class="nav-link" data-scroll-target="#output-directory">Output Directory</a></li>
-  </ul></li>
-  <li><a href="#quality-control-parameters" id="toc-quality-control-parameters" class="nav-link" data-scroll-target="#quality-control-parameters">Quality Control Parameters</a></li>
-  <li><a href="#skipping-pipeline-steps" id="toc-skipping-pipeline-steps" class="nav-link" data-scroll-target="#skipping-pipeline-steps">Skipping Pipeline Steps</a></li>
-  <li><a href="#reference-files" id="toc-reference-files" class="nav-link" data-scroll-target="#reference-files">Reference Files</a></li>
-  <li><a href="#alignment-files" id="toc-alignment-files" class="nav-link" data-scroll-target="#alignment-files">Alignment Files</a></li>
+  <li><a href="#global-core-alignment-dataset" id="toc-global-core-alignment-dataset" class="nav-link" data-scroll-target="#global-core-alignment-dataset">Global core alignment dataset</a></li>
+  <li><a href="#custom-core-alignment" id="toc-custom-core-alignment" class="nav-link" data-scroll-target="#custom-core-alignment">Custom core alignment</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -167,222 +195,63 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="parameters" class="level1">
-<h1>Parameters</h1>
-<p>This document provides an overview of the customizable parameters for the CHOLERASEQ pipeline. Each parameter is listed with its default value, description.</p>
-<blockquote class="blockquote">
-<p>💡 <strong>Hint</strong>: you may check a full parameters <a href="https://github.com/CERI-KRISP/CholeraSeq/blob/master/nextflow.config">reference file</a>.</p>
-</blockquote>
-<hr>
-<section id="common-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="common-parameters">Common Parameters</h2>
-<section id="input-samplesheet" class="level3">
-<h3 class="anchored" data-anchor-id="input-samplesheet">Input Samplesheet</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 69%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>input</code></td>
-<td><code>null</code></td>
-<td>The input CSV file containing sample information.</td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p>💡 <strong>Hint</strong>: The samplesheet should include the columns <code>[sample,fastq_1,fastq_2]</code>.</p>
-</blockquote>
-<hr>
+<section id="global-core-alignment" class="level1">
+<h1>Global core alignment</h1>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This document assume that you have already read through the <a href="./usage.html">Usage</a> document</p>
+</div>
+</div>
+<section id="global-core-alignment-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="global-core-alignment-dataset">Global core alignment dataset</h2>
+<p>We have created a multi-fasta reference with global cohort available on NCBI, available at the link below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://doi.org/10.5281/zenodo.10984554"><img src="http://img.shields.io/badge/DOI-10.5281/zenodo.10984554-1073c8?labelColor=000000" class="img-fluid figure-img"></a></p>
+<figcaption>Zenodo Dataset</figcaption>
+</figure>
+</div>
 </section>
-<section id="output-directory" class="level3">
-<h3 class="anchored" data-anchor-id="output-directory">Output Directory</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 17%">
-<col style="width: 70%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>outdir</code></td>
-<td><code>null</code></td>
-<td>The directory where all output files will be written.</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-</section>
-<section id="quality-control-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="quality-control-parameters">Quality Control Parameters</h2>
-<blockquote class="blockquote">
-<p>⚠️ <strong>Attention</strong>: Ensure these values are adjusted based on the quality of your input data to avoid processing errors. The defaults are set to faciliate a majority of users. Only advanced users are recommended to change these.</p>
-</blockquote>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 5%">
-<col style="width: 84%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>min_trim_quality</code></td>
-<td>20</td>
-<td>Fastq reads mean quality threshold 20 fastp</td>
-</tr>
-<tr class="even">
-<td><code>min_trim_length</code></td>
-<td>50</td>
-<td>Fastq read minimum trim length 50 fastp</td>
-</tr>
-<tr class="odd">
-<td><code>min_mapping_quality</code></td>
-<td>20</td>
-<td>minimum mapping quality 20 samtools consensus samtools –min-MQ</td>
-</tr>
-<tr class="even">
-<td><code>min_base_quality</code></td>
-<td>20</td>
-<td>minimum base quality 20 samtools consensus samtools –min-BQ</td>
-</tr>
-<tr class="odd">
-<td><code>min_site_coverage</code></td>
-<td>5</td>
-<td>mimimum site coverage 5 samtools consensus + snippy samtools –min-depth 5; snippy –mincov 5</td>
-</tr>
-<tr class="even">
-<td><code>min_allele_fraction</code></td>
-<td>0.75</td>
-<td>minimum fraction supporting allele call 0.75 samtools consensus + snippy samtools -c 0.75; snippy –minfrac 0.75</td>
-</tr>
-<tr class="odd">
-<td><code>max_missing_percentage</code></td>
-<td>50</td>
-<td>Percentage of missing data allowed in a sample before it is excluded from the analysis. max_missing_percentage 0.5 seqcleaner, gubbins max percentage of undefined sites in any consensus fasta sequence</td>
-</tr>
-<tr class="even">
-<td><code>min_parsimony_coverage</code></td>
-<td>0.7</td>
-<td>varcodons.py pi job minimum site coverage for varcodons to keep site when generating pi output</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="skipping-pipeline-steps" class="level2">
-<h2 class="anchored" data-anchor-id="skipping-pipeline-steps">Skipping Pipeline Steps</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 19%">
-<col style="width: 14%">
-<col style="width: 66%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>skip_clustering</code></td>
-<td><code>false</code></td>
-<td>Indicate whether you wish to enable the clustering anlysis.</td>
-</tr>
-<tr class="even">
-<td><code>skip_fastbaps</code></td>
-<td><code>true</code></td>
-<td>Indicate whether to skip fastbaps or not.</td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p>💡 <strong>Hint</strong>: Use these flags to customize the pipeline execution based on your specific requirements.</p>
-</blockquote>
-<hr>
-</section>
-<section id="reference-files" class="level2">
-<h2 class="anchored" data-anchor-id="reference-files">Reference Files</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 18%">
-<col style="width: 33%">
-<col style="width: 47%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>ref_genbank</code></td>
-<td><code>GCF_003063785.full.gbk</code></td>
-<td>Path to the reference GENBANK file</td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p>⚠️ <strong>Warning</strong>: It is recommended to use the provided reference files to ensure compatibility with the global core alignment.</p>
-</blockquote>
-<hr>
-</section>
-<section id="alignment-files" class="level2">
-<h2 class="anchored" data-anchor-id="alignment-files">Alignment Files</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 8%">
-<col style="width: 77%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>global_core_alignment</code></td>
-<td><code>null</code></td>
-<td>Path to the existing global core alignment fasta file. We publish such an alignment on https://doi.org/10.5281/zenodo.10984554</td>
-</tr>
-<tr class="even">
-<td><code>cohort_core_alignment</code></td>
-<td><code>null</code></td>
-<td>Path to an existing cohort_core_alignment fasta file.</td>
-</tr>
-</tbody>
-</table>
-<hr>
+<section id="custom-core-alignment" class="level2">
+<h2 class="anchored" data-anchor-id="custom-core-alignment">Custom core alignment</h2>
+<p>We intend to keep this core alignment updated on a quarterly (or annual ) and are actively looking for funding for long term sustenance.</p>
+<p>However, we also want to highlight that it is very straightforward to create custom alignment using the CholeraSeq pipeline.</p>
+<p>Essentially, you’d need to 1. Create a samplesheet with the downloaded/precomputed sequences (FASTA files) as shown below</p>
+<pre class="csv"><code>sample,fastq_1,fastq_2
+AHGB01000000.1,https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHGB01.fasta,
+AHGB01000000.2,/path/to/your/fasta/file,</code></pre>
+<ol start="2" type="1">
+<li>Instruct the pipeline to use the existing global core alignment using the <code>global_core_alignment</code> parameter either on the command or through the parameters yaml file.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>And that’s it! The pipline will automatically process the individual FASTA files as per the existing thresholds and then merge them with the global core alignment.</p>
+</div>
+</div>
+<p>You can now initiate the pipeline with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run https://github.com/CERI-KRISP/CholeraSeq <span class="at">-profile</span> docker <span class="at">-params-file</span> params.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>with <code>params.yaml</code> containing:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">input</span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/desired/samplesheet.csv"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">outdir</span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/desired/output/directory"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">global_core_alignment</span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/existing/global_core_alignment"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># other parameters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
