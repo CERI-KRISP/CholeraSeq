@@ -1,75 +1,69 @@
 # Parameters
 
-This document provides an overview of the customizable parameters for the CHOLERASEQ pipeline. Each parameter is listed with its default value, description.
+This document lists the main configuration parameters used by the CholeraSeq pipeline. For full parameter discovery, see `nextflow.config`.
 
-> 💡 **Hint**: you may check a full parameters [reference file](https://github.com/CERI-KRISP/CholeraSeq/blob/master/nextflow.config).
+## Required parameters
 
----
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `input` | `null` | Path to the sample sheet CSV file containing sample metadata and input paths. |
+| `outdir` | `null` | Output directory for pipeline results. |
 
-## Common Parameters
+> The sample sheet should contain at least `sample`, `fastq_1`, and `fastq_2`. For single-end or assembly input, leave `fastq_2` blank.
 
-### Input Samplesheet
+## Reference and alignment parameters
 
-| Parameter | Default Value | Description                                       |
-| --------- | ------------- | ------------------------------------------------- |
-| `input`   | `null`        | The input CSV file containing sample information. |
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `ref_genbank` | `GCF_003063785.full.gbk` | Path to the reference GenBank file used by `snippy` and `varcodons.py`. |
+| `global_core_alignment` | `null` | Path to an existing global core-genome alignment FASTA to merge with cohort sequences. |
+| `cohort_core_alignment` | `null` | Path to an existing cohort core-genome alignment FASTA to merge into a global core alignment. |
 
-> 💡 **Hint**: The samplesheet should include the columns `[sample,fastq_1,fastq_2]`.
+## Quality control and variant calling
 
----
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `min_trim_quality` | `20` | Minimum average base quality for `fastp` trimming. |
+| `min_trim_length` | `35` | Minimum read length after trimming. |
+| `min_mapping_quality` | `20` | Minimum mapping quality used by `samtools consensus`. |
+| `min_base_quality` | `20` | Minimum base quality used by `samtools consensus`. |
+| `min_site_coverage` | `5` | Minimum depth required to call a site. |
+| `min_allele_fraction` | `0.75` | Minimum allele frequency required to make a variant call. |
+| `max_missing_percentage` | `50` | Maximum allowed percentage of missing data in a consensus sequence before it is filtered. |
+| `min_parsimony_coverage` | `0.7` | Minimum fraction of non-missing bases required for a variable site to be retained by `varcodons.py`. |
 
-### Output Directory
+## Clustering and tree options
 
-| Parameter | Default Value | Description                                           |
-| --------- | ------------- | ----------------------------------------------------- |
-| `outdir`  | `null`        | The directory where all output files will be written. |
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `skip_fastbaps` | `true` | Skip the optional FastBAPS clustering step. |
+| `skip_clustering` | `false` | Skip the clustering and tree inference workflow. This also skips the `iqtree` tree step. |
 
----
+## Reporting and MultiQC
 
-## Quality Control Parameters
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `multiqc_config` | `null` | Custom MultiQC configuration file. |
+| `multiqc_logo` | `${projectDir}/assets/CERI_logo_b.png` | Optional logo file to include in MultiQC reports. |
+| `multiqc_methods_description` | `null` | Optional YAML or text file with method descriptions for MultiQC. |
+| `email` | `null` | Email address to notify on successful completion. |
+| `email_on_fail` | `null` | Email address to notify if the pipeline fails. |
+| `hook_url` | `null` | Webhook URL for completion notification. |
 
-> ⚠️ **Attention**: Ensure these values are adjusted based on the quality of your input data to avoid processing errors.
-> The defaults are set to faciliate a majority of users. Only advanced users are recommended to change these.
+## Execution and environment
 
-| Parameter                | Default Value | Description                                                                                                                                                                                              |
-| ------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `min_trim_quality`       | 20            | Fastq reads mean quality threshold 20 fastp                                                                                                                                                              |
-| `min_trim_length`        | 50            | Fastq read minimum trim length 50 fastp                                                                                                                                                                  |
-| `min_mapping_quality`    | 20            | minimum mapping quality 20 samtools consensus samtools --min-MQ                                                                                                                                          |
-| `min_base_quality`       | 20            | minimum base quality 20 samtools consensus samtools --min-BQ                                                                                                                                             |
-| `min_site_coverage`      | 5             | mimimum site coverage 5 samtools consensus + snippy samtools --min-depth 5; snippy --mincov 5                                                                                                            |
-| `min_allele_fraction`    | 0.75          | minimum fraction supporting allele call 0.75 samtools consensus + snippy samtools -c 0.75; snippy --minfrac 0.75                                                                                         |
-| `max_missing_percentage` | 50            | Percentage of missing data allowed in a sample before it is excluded from the analysis. max_missing_percentage 0.5 seqcleaner, gubbins max percentage of undefined sites in any consensus fasta sequence |
-| `min_parsimony_coverage` | 0.7           | varcodons.py pi job minimum site coverage for varcodons to keep site when generating pi output                                                                                                           |
+| Parameter | Default | Description |
+| --- | --- | --- |
+| `custom_config_version` | `'master'` | nf-core config repository version to use. |
+| `config_profile_description` | `null` | Optional profile description. |
+| `config_profile_name` | `null` | Optional profile name to expose to readers. |
+| `max_memory` | `128.GB` | Maximum memory limit applied to pipeline processes. |
+| `max_cpus` | `16` | Maximum CPU limit for pipeline processes. |
+| `max_time` | `240.h` | Maximum runtime limit for pipeline processes. |
 
----
+## Notes
 
-## Skipping Pipeline Steps
-
-| Parameter         | Default Value | Description                                                 |
-| ----------------- | ------------- | ----------------------------------------------------------- |
-| `skip_clustering` | `false`       | Indicate whether you wish to enable the clustering anlysis. |
-| `skip_fastbaps`   | `true`        | Indicate whether to skip fastbaps or not.                   |
-
-> 💡 **Hint**: Use these flags to customize the pipeline execution based on your specific requirements.
-
----
-
-## Reference Files
-
-| Parameter     | Default Value            | Description                        |
-| ------------- | ------------------------ | ---------------------------------- |
-| `ref_genbank` | `GCF_003063785.full.gbk` | Path to the reference GENBANK file |
-
-> ⚠️ **Warning**: It is recommended to use the provided reference files to ensure compatibility with the global core alignment.
-
----
-
-## Alignment Files
-
-| Parameter               | Default Value | Description                                                                                                                    |
-| ----------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `global_core_alignment` | `null`        | Path to the existing global core alignment fasta file. We publish such an alignment on https://doi.org/10.5281/zenodo.10984554 |
-| `cohort_core_alignment` | `null`        | Path to an existing cohort_core_alignment fasta file.                                                                          |
-
----
+- The pipeline is designed for phylogenetic analysis, not for broad genome characterization.
+- It does not perform AMR profiling, MLST, serotyping, or gene presence/absence analysis.
+- The final tree is built from a reference-guided, recombination-masked core-genome SNP alignment.
+- If you want full details of available parameters, inspect `nextflow.config` and the `schema` definitions in the repository.
