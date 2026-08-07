@@ -36,7 +36,32 @@ workflow CLUSTERING_WF {
 
         }
 
-         RUN_GUBBINS( PYTHON_SEQ_CLEANER.out.cleaned_fasta )
+        // NOTE: previously this called RUN_GUBBINS( PYTHON_SEQ_CLEANER.out.cleaned_fasta )
+        // unconditionally, silently ignoring in_run_gubbins_ch computed above - meaning
+        // Gubbins always ran on the whole alignment even when FastBAPS clustering was
+        // enabled (--skip_fastbaps false). Fixed to actually consume in_run_gubbins_ch:
+        // when FastBAPS splitting is on, that channel carries one [meta, fasta] tuple per
+        // cluster, so GUBBINS (and MASK_GUBBINS right after it) now scatter automatically
+        // and run once per cluster in parallel, instead of once on the full alignment.
+        //
+        // With scattering now actually happening, small FastBAPS clusters can contain too
+        // few sequences for RAxML to build a tree from at all (Gubbins fails with
+        // "TOO FEW SPECIES"). Filter those out before RUN_GUBBINS rather than let the
+        // process crash - clusters below params.min_partition_size are skipped and logged,
+        // not silently dropped.
+        in_run_gubbins_ch
+            .branch { meta, fasta ->
+                def n_seqs = fasta.text.count('>')
+                keep: n_seqs >= params.min_partition_size
+                skip: true
+            }
+            .set { gubbins_input_ch }
+
+        gubbins_input_ch.skip.subscribe { meta, fasta ->
+            log.warn "Skipping Gubbins for '${meta.id}': fewer than params.min_partition_size (${params.min_partition_size}) sequences - too small for RAxML to build a tree."
+        }
+
+        RUN_GUBBINS( gubbins_input_ch.keep )
 
          MASK_GUBBINS( RUN_GUBBINS.out.fasta_gff )
 
