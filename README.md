@@ -8,7 +8,7 @@
 
 ## Introduction
 
-**CERI-KRISP/CholeraSeq** is a Nextflow pipeline for data genomic analysis of Cholera outbreaks. The pipeline has been publised in [ Oxford Bioinformatics Journal](https://doi.org/10.1093/bioinformatics/btaf665) 📝.
+**CERI-KRISP/CholeraSeq** is a Nextflow pipeline for data genomic analysis of Cholera outbreaks. The pipeline has been publised in the [Oxford Bioinformatics Journal](https://doi.org/10.1093/bioinformatics/btaf665) 📝.
 
 ## Reference sequence
 
