@@ -148,15 +148,13 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#parameters" id="toc-parameters" class="nav-link active" data-scroll-target="#parameters">Parameters</a>
   <ul class="collapse">
-  <li><a href="#common-parameters" id="toc-common-parameters" class="nav-link" data-scroll-target="#common-parameters">Common Parameters</a>
-  <ul class="collapse">
-  <li><a href="#input-samplesheet" id="toc-input-samplesheet" class="nav-link" data-scroll-target="#input-samplesheet">Input Samplesheet</a></li>
-  <li><a href="#output-directory" id="toc-output-directory" class="nav-link" data-scroll-target="#output-directory">Output Directory</a></li>
-  </ul></li>
-  <li><a href="#quality-control-parameters" id="toc-quality-control-parameters" class="nav-link" data-scroll-target="#quality-control-parameters">Quality Control Parameters</a></li>
-  <li><a href="#skipping-pipeline-steps" id="toc-skipping-pipeline-steps" class="nav-link" data-scroll-target="#skipping-pipeline-steps">Skipping Pipeline Steps</a></li>
-  <li><a href="#reference-files" id="toc-reference-files" class="nav-link" data-scroll-target="#reference-files">Reference Files</a></li>
-  <li><a href="#alignment-files" id="toc-alignment-files" class="nav-link" data-scroll-target="#alignment-files">Alignment Files</a></li>
+  <li><a href="#required-parameters" id="toc-required-parameters" class="nav-link" data-scroll-target="#required-parameters">Required parameters</a></li>
+  <li><a href="#reference-and-alignment-parameters" id="toc-reference-and-alignment-parameters" class="nav-link" data-scroll-target="#reference-and-alignment-parameters">Reference and alignment parameters</a></li>
+  <li><a href="#quality-control-and-variant-calling" id="toc-quality-control-and-variant-calling" class="nav-link" data-scroll-target="#quality-control-and-variant-calling">Quality control and variant calling</a></li>
+  <li><a href="#clustering-and-tree-options" id="toc-clustering-and-tree-options" class="nav-link" data-scroll-target="#clustering-and-tree-options">Clustering and tree options</a></li>
+  <li><a href="#reporting-and-multiqc" id="toc-reporting-and-multiqc" class="nav-link" data-scroll-target="#reporting-and-multiqc">Reporting and MultiQC</a></li>
+  <li><a href="#execution-and-environment" id="toc-execution-and-environment" class="nav-link" data-scroll-target="#execution-and-environment">Execution and environment</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -169,25 +167,19 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="parameters" class="level1">
 <h1>Parameters</h1>
-<p>This document provides an overview of the customizable parameters for the CHOLERASEQ pipeline. Each parameter is listed with its default value, description.</p>
-<blockquote class="blockquote">
-<p>💡 <strong>Hint</strong>: you may check a full parameters <a href="https://github.com/CERI-KRISP/CholeraSeq/blob/master/nextflow.config">reference file</a>.</p>
-</blockquote>
-<hr>
-<section id="common-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="common-parameters">Common Parameters</h2>
-<section id="input-samplesheet" class="level3">
-<h3 class="anchored" data-anchor-id="input-samplesheet">Input Samplesheet</h3>
+<p>This document lists the main configuration parameters used by the CholeraSeq pipeline. For full parameter discovery, see <code>nextflow.config</code>.</p>
+<section id="required-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="required-parameters">Required parameters</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 69%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Parameter</th>
-<th>Default Value</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -195,149 +187,31 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td><code>input</code></td>
 <td><code>null</code></td>
-<td>The input CSV file containing sample information.</td>
+<td>Path to the sample sheet CSV file containing sample metadata and input paths.</td>
 </tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p>💡 <strong>Hint</strong>: The samplesheet should include the columns <code>[sample,fastq_1,fastq_2]</code>.</p>
-</blockquote>
-<hr>
-</section>
-<section id="output-directory" class="level3">
-<h3 class="anchored" data-anchor-id="output-directory">Output Directory</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 17%">
-<col style="width: 70%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
+<tr class="even">
 <td><code>outdir</code></td>
 <td><code>null</code></td>
-<td>The directory where all output files will be written.</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-</section>
-<section id="quality-control-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="quality-control-parameters">Quality Control Parameters</h2>
-<blockquote class="blockquote">
-<p>⚠️ <strong>Attention</strong>: Ensure these values are adjusted based on the quality of your input data to avoid processing errors. The defaults are set to faciliate a majority of users. Only advanced users are recommended to change these.</p>
-</blockquote>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 5%">
-<col style="width: 84%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>min_trim_quality</code></td>
-<td>20</td>
-<td>Fastq reads mean quality threshold 20 fastp</td>
-</tr>
-<tr class="even">
-<td><code>min_trim_length</code></td>
-<td>50</td>
-<td>Fastq read minimum trim length 50 fastp</td>
-</tr>
-<tr class="odd">
-<td><code>min_mapping_quality</code></td>
-<td>20</td>
-<td>minimum mapping quality 20 samtools consensus samtools –min-MQ</td>
-</tr>
-<tr class="even">
-<td><code>min_base_quality</code></td>
-<td>20</td>
-<td>minimum base quality 20 samtools consensus samtools –min-BQ</td>
-</tr>
-<tr class="odd">
-<td><code>min_site_coverage</code></td>
-<td>5</td>
-<td>mimimum site coverage 5 samtools consensus + snippy samtools –min-depth 5; snippy –mincov 5</td>
-</tr>
-<tr class="even">
-<td><code>min_allele_fraction</code></td>
-<td>0.75</td>
-<td>minimum fraction supporting allele call 0.75 samtools consensus + snippy samtools -c 0.75; snippy –minfrac 0.75</td>
-</tr>
-<tr class="odd">
-<td><code>max_missing_percentage</code></td>
-<td>50</td>
-<td>Percentage of missing data allowed in a sample before it is excluded from the analysis. max_missing_percentage 0.5 seqcleaner, gubbins max percentage of undefined sites in any consensus fasta sequence</td>
-</tr>
-<tr class="even">
-<td><code>min_parsimony_coverage</code></td>
-<td>0.7</td>
-<td>varcodons.py pi job minimum site coverage for varcodons to keep site when generating pi output</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="skipping-pipeline-steps" class="level2">
-<h2 class="anchored" data-anchor-id="skipping-pipeline-steps">Skipping Pipeline Steps</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 19%">
-<col style="width: 14%">
-<col style="width: 66%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Default Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>skip_clustering</code></td>
-<td><code>false</code></td>
-<td>Indicate whether you wish to enable the clustering anlysis.</td>
-</tr>
-<tr class="even">
-<td><code>skip_fastbaps</code></td>
-<td><code>true</code></td>
-<td>Indicate whether to skip fastbaps or not.</td>
+<td>Output directory for pipeline results.</td>
 </tr>
 </tbody>
 </table>
 <blockquote class="blockquote">
-<p>💡 <strong>Hint</strong>: Use these flags to customize the pipeline execution based on your specific requirements.</p>
+<p>The sample sheet should contain at least <code>sample</code>, <code>fastq_1</code>, and <code>fastq_2</code>. For single-end or assembly input, leave <code>fastq_2</code> blank.</p>
 </blockquote>
-<hr>
 </section>
-<section id="reference-files" class="level2">
-<h2 class="anchored" data-anchor-id="reference-files">Reference Files</h2>
+<section id="reference-and-alignment-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="reference-and-alignment-parameters">Reference and alignment parameters</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 18%">
 <col style="width: 33%">
-<col style="width: 47%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Parameter</th>
-<th>Default Value</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -345,44 +219,215 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td><code>ref_genbank</code></td>
 <td><code>GCF_003063785.full.gbk</code></td>
-<td>Path to the reference GENBANK file</td>
+<td>Path to the reference GenBank file used by <code>snippy</code> and <code>varcodons.py</code>.</td>
+</tr>
+<tr class="even">
+<td><code>global_core_alignment</code></td>
+<td><code>null</code></td>
+<td>Path to an existing global core-genome alignment FASTA to merge with cohort sequences.</td>
+</tr>
+<tr class="odd">
+<td><code>cohort_core_alignment</code></td>
+<td><code>null</code></td>
+<td>Path to an existing cohort core-genome alignment FASTA to merge into a global core alignment.</td>
 </tr>
 </tbody>
 </table>
-<blockquote class="blockquote">
-<p>⚠️ <strong>Warning</strong>: It is recommended to use the provided reference files to ensure compatibility with the global core alignment.</p>
-</blockquote>
-<hr>
 </section>
-<section id="alignment-files" class="level2">
-<h2 class="anchored" data-anchor-id="alignment-files">Alignment Files</h2>
+<section id="quality-control-and-variant-calling" class="level2">
+<h2 class="anchored" data-anchor-id="quality-control-and-variant-calling">Quality control and variant calling</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 14%">
-<col style="width: 8%">
-<col style="width: 77%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Parameter</th>
-<th>Default Value</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>global_core_alignment</code></td>
-<td><code>null</code></td>
-<td>Path to the existing global core alignment fasta file. We publish such an alignment on https://doi.org/10.5281/zenodo.10984554</td>
+<td><code>min_trim_quality</code></td>
+<td><code>20</code></td>
+<td>Minimum average base quality for <code>fastp</code> trimming.</td>
 </tr>
 <tr class="even">
-<td><code>cohort_core_alignment</code></td>
-<td><code>null</code></td>
-<td>Path to an existing cohort_core_alignment fasta file.</td>
+<td><code>min_trim_length</code></td>
+<td><code>35</code></td>
+<td>Minimum read length after trimming.</td>
+</tr>
+<tr class="odd">
+<td><code>min_mapping_quality</code></td>
+<td><code>20</code></td>
+<td>Minimum mapping quality used by <code>samtools consensus</code>.</td>
+</tr>
+<tr class="even">
+<td><code>min_base_quality</code></td>
+<td><code>20</code></td>
+<td>Minimum base quality used by <code>samtools consensus</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>min_site_coverage</code></td>
+<td><code>5</code></td>
+<td>Minimum depth required to call a site.</td>
+</tr>
+<tr class="even">
+<td><code>min_allele_fraction</code></td>
+<td><code>0.75</code></td>
+<td>Minimum allele frequency required to make a variant call.</td>
+</tr>
+<tr class="odd">
+<td><code>max_missing_percentage</code></td>
+<td><code>50</code></td>
+<td>Maximum allowed percentage of missing data in a consensus sequence before it is filtered.</td>
+</tr>
+<tr class="even">
+<td><code>min_parsimony_coverage</code></td>
+<td><code>0.7</code></td>
+<td>Minimum fraction of non-missing bases required for a variable site to be retained by <code>varcodons.py</code>.</td>
 </tr>
 </tbody>
 </table>
-<hr>
+</section>
+<section id="clustering-and-tree-options" class="level2">
+<h2 class="anchored" data-anchor-id="clustering-and-tree-options">Clustering and tree options</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>skip_fastbaps</code></td>
+<td><code>true</code></td>
+<td>Skip the optional FastBAPS clustering step.</td>
+</tr>
+<tr class="even">
+<td><code>skip_clustering</code></td>
+<td><code>false</code></td>
+<td>Skip the clustering and tree inference workflow. This also skips the <code>iqtree</code> tree step.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reporting-and-multiqc" class="level2">
+<h2 class="anchored" data-anchor-id="reporting-and-multiqc">Reporting and MultiQC</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>multiqc_config</code></td>
+<td><code>null</code></td>
+<td>Custom MultiQC configuration file.</td>
+</tr>
+<tr class="even">
+<td><code>multiqc_logo</code></td>
+<td><code>${projectDir}/assets/CERI_logo_b.png</code></td>
+<td>Optional logo file to include in MultiQC reports.</td>
+</tr>
+<tr class="odd">
+<td><code>multiqc_methods_description</code></td>
+<td><code>null</code></td>
+<td>Optional YAML or text file with method descriptions for MultiQC.</td>
+</tr>
+<tr class="even">
+<td><code>email</code></td>
+<td><code>null</code></td>
+<td>Email address to notify on successful completion.</td>
+</tr>
+<tr class="odd">
+<td><code>email_on_fail</code></td>
+<td><code>null</code></td>
+<td>Email address to notify if the pipeline fails.</td>
+</tr>
+<tr class="even">
+<td><code>hook_url</code></td>
+<td><code>null</code></td>
+<td>Webhook URL for completion notification.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="execution-and-environment" class="level2">
+<h2 class="anchored" data-anchor-id="execution-and-environment">Execution and environment</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>custom_config_version</code></td>
+<td><code>'master'</code></td>
+<td>nf-core config repository version to use.</td>
+</tr>
+<tr class="even">
+<td><code>config_profile_description</code></td>
+<td><code>null</code></td>
+<td>Optional profile description.</td>
+</tr>
+<tr class="odd">
+<td><code>config_profile_name</code></td>
+<td><code>null</code></td>
+<td>Optional profile name to expose to readers.</td>
+</tr>
+<tr class="even">
+<td><code>max_memory</code></td>
+<td><code>128.GB</code></td>
+<td>Maximum memory limit applied to pipeline processes.</td>
+</tr>
+<tr class="odd">
+<td><code>max_cpus</code></td>
+<td><code>16</code></td>
+<td>Maximum CPU limit for pipeline processes.</td>
+</tr>
+<tr class="even">
+<td><code>max_time</code></td>
+<td><code>240.h</code></td>
+<td>Maximum runtime limit for pipeline processes.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<ul>
+<li>The pipeline is designed for phylogenetic analysis, not for broad genome characterization.</li>
+<li>It does not perform AMR profiling, MLST, serotyping, or gene presence/absence analysis.</li>
+<li>The final tree is built from a reference-guided, recombination-masked core-genome SNP alignment.</li>
+<li>If you want full details of available parameters, inspect <code>nextflow.config</code> and the <code>schema</code> definitions in the repository.</li>
+</ul>
 
 
 </section>

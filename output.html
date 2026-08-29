@@ -148,13 +148,17 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#output" id="toc-output" class="nav-link active" data-scroll-target="#output">Output</a>
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#pipeline-overview" id="toc-pipeline-overview" class="nav-link" data-scroll-target="#pipeline-overview">Pipeline overview</a>
+  <li><a href="#what-this-document-covers" id="toc-what-this-document-covers" class="nav-link" data-scroll-target="#what-this-document-covers">What this document covers</a></li>
+  <li><a href="#result-directory-structure" id="toc-result-directory-structure" class="nav-link" data-scroll-target="#result-directory-structure">Result directory structure</a></li>
+  <li><a href="#key-outputs" id="toc-key-outputs" class="nav-link" data-scroll-target="#key-outputs">Key outputs</a>
   <ul class="collapse">
-  <li><a href="#directory-structure" id="toc-directory-structure" class="nav-link" data-scroll-target="#directory-structure">Directory structure</a></li>
-  <li><a href="#multiqc" id="toc-multiqc" class="nav-link" data-scroll-target="#multiqc">MultiQC</a></li>
-  <li><a href="#pipeline-information" id="toc-pipeline-information" class="nav-link" data-scroll-target="#pipeline-information">Pipeline information</a></li>
+  <li><a href="#final-tree-and-phylogeny" id="toc-final-tree-and-phylogeny" class="nav-link" data-scroll-target="#final-tree-and-phylogeny">Final tree and phylogeny</a></li>
+  <li><a href="#recombination-masking" id="toc-recombination-masking" class="nav-link" data-scroll-target="#recombination-masking">Recombination masking</a></li>
+  <li><a href="#consensus-and-alignment-inputs" id="toc-consensus-and-alignment-inputs" class="nav-link" data-scroll-target="#consensus-and-alignment-inputs">Consensus and alignment inputs</a></li>
+  <li><a href="#multiqc-report" id="toc-multiqc-report" class="nav-link" data-scroll-target="#multiqc-report">MultiQC report</a></li>
+  <li><a href="#workflow-metadata" id="toc-workflow-metadata" class="nav-link" data-scroll-target="#workflow-metadata">Workflow metadata</a></li>
   </ul></li>
+  <li><a href="#interpreting-the-key-tree-outputs" id="toc-interpreting-the-key-tree-outputs" class="nav-link" data-scroll-target="#interpreting-the-key-tree-outputs">Interpreting the key tree outputs</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -167,79 +171,81 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="output" class="level1">
 <h1>Output</h1>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarises results at the end of the pipeline.</p>
-<p>The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.</p>
-<!-- TODO nf-core: Write this documentation describing your workflow's output -->
+<section id="what-this-document-covers" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-document-covers">What this document covers</h2>
+<p>This page describes the files and directories produced by CholeraSeq. It explains where to find the tree outputs, QC reports, and other important result files.</p>
 </section>
-<section id="pipeline-overview" class="level2">
-<h2 class="anchored" data-anchor-id="pipeline-overview">Pipeline overview</h2>
-<p>The pipeline is built using <a href="https://www.nextflow.io/">Nextflow</a> and processes data to produce the following results:</p>
-<section id="directory-structure" class="level3">
-<h3 class="anchored" data-anchor-id="directory-structure">Directory structure</h3>
-<p>As of <code>v1.1.0</code> the outputs of CholeraSeq pipeline are stored in the following directory structure. We intend to change this directory structure based on feedback from routine users.</p>
-<pre><code>├── cat
-├── fastp
-├── fastqc
-├── iqtree
-├── mask
-├── multiqc
-│   ├── multiqc_data
-│   └── multiqc_plots
-├── pipeline_info
-├── python
-├── r
-├── run
-├── samtools
-├── seqkit
-├── snippy
-└── utils
-</code></pre>
-</section>
-<section id="multiqc" class="level3">
-<h3 class="anchored" data-anchor-id="multiqc">MultiQC</h3>
-<details>
-<summary>
-Output files
-</summary>
+<section id="result-directory-structure" class="level2">
+<h2 class="anchored" data-anchor-id="result-directory-structure">Result directory structure</h2>
+<p>By default, the pipeline creates the following top-level directories inside your <code>--outdir</code>:</p>
 <ul>
-<li><code>multiqc/</code>
-<ul>
-<li><code>multiqc_report.html</code>: a standalone HTML file that can be viewed in your web browser.</li>
-<li><code>multiqc_data/</code>: directory containing parsed statistics from the different tools used in the pipeline.</li>
-<li><code>multiqc_plots/</code>: directory containing static images from the report in various formats.</li>
-</ul></li>
+<li><code>fastp/</code> – trimmed read output and Fastp QC logs</li>
+<li><code>fastqc/</code> – FastQC reports for raw or trimmed reads</li>
+<li><code>snippy/</code> – <code>snippy</code> individual sample results and consensus FASTA input files</li>
+<li><code>mask/</code> – recombination masking outputs from <code>gubbins</code></li>
+<li><code>iqtree/</code> – final tree files and IQ-TREE reports</li>
+<li><code>multiqc/</code> – aggregated QC report and plots</li>
+<li><code>pipeline_info/</code> – Nextflow and pipeline execution reports</li>
+<li><code>cat/</code> / <code>utils/</code> / <code>python/</code> / <code>r/</code> / <code>seqkit/</code> / <code>run/</code> – workflow step-specific directories for intermediate outputs</li>
 </ul>
-</details>
-<p><a href="http://multiqc.info">MultiQC</a> is a visualization tool that generates a single HTML report summarising all samples in your project. Most of the pipeline QC results are visualised in the report and further statistics are available in the report data directory.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/multiqc.jpg" class="img-fluid figure-img"></p>
-<figcaption>MultiQC report generated for CholeraSeq</figcaption>
-</figure>
-</div>
-<p>Results generated by MultiQC collate pipeline QC from supported tools e.g.&nbsp;FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <a href="http://multiqc.info" class="uri">http://multiqc.info</a>.</p>
+<p>The exact layout may vary depending on which pipeline steps are executed and whether optional modes such as global core alignment are enabled.</p>
 </section>
-<section id="pipeline-information" class="level3">
-<h3 class="anchored" data-anchor-id="pipeline-information">Pipeline information</h3>
-<details>
-<summary>
-Output files
-</summary>
+<section id="key-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="key-outputs">Key outputs</h2>
+<section id="final-tree-and-phylogeny" class="level3">
+<h3 class="anchored" data-anchor-id="final-tree-and-phylogeny">Final tree and phylogeny</h3>
 <ul>
-<li><code>pipeline_info/</code>
-<ul>
-<li>Reports generated by Nextflow: <code>execution_report.html</code>, <code>execution_timeline.html</code>, <code>execution_trace.txt</code> and <code>pipeline_dag.dot</code>/<code>pipeline_dag.svg</code>.</li>
-<li>Reports generated by the pipeline: <code>pipeline_report.html</code>, <code>pipeline_report.txt</code> and <code>software_versions.yml</code>. The <code>pipeline_report*</code> files will only be present if the <code>--email</code> / <code>--email_on_fail</code> parameter’s are used when running the pipeline.</li>
-<li>Reformatted samplesheet files used as input to the pipeline: <code>samplesheet.valid.csv</code>.</li>
-</ul></li>
+<li><code>iqtree/*.treefile</code> – main maximum likelihood tree file in Newick-like format</li>
+<li><code>iqtree/*.iqtree</code> – IQ-TREE run summary and model information</li>
+<li><code>iqtree/*.mldist</code> – likelihood-distance matrix produced by IQ-TREE</li>
+<li><code>iqtree/*.log</code> – IQ-TREE execution log</li>
 </ul>
-</details>
-<p><a href="https://www.nextflow.io/docs/latest/tracing.html">Nextflow</a> provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.</p>
+<p>These files represent the final phylogeny inferred by CholeraSeq from a recombination-masked core-genome SNP alignment.</p>
+</section>
+<section id="recombination-masking" class="level3">
+<h3 class="anchored" data-anchor-id="recombination-masking">Recombination masking</h3>
+<ul>
+<li><code>mask/*</code> – outputs from <code>gubbins</code> and masking scripts</li>
+<li><code>mask/*.gff</code> – recombination annotation for the input alignment</li>
+<li><code>mask/*.masked.fasta</code> – recombination-masked alignments used for downstream tree inference</li>
+</ul>
+</section>
+<section id="consensus-and-alignment-inputs" class="level3">
+<h3 class="anchored" data-anchor-id="consensus-and-alignment-inputs">Consensus and alignment inputs</h3>
+<ul>
+<li><code>snippy/*</code> – consensus FASTA files and variant calling outputs from <code>snippy</code></li>
+<li><code>snippy/*.vcf</code> – variant call files</li>
+<li><code>snippy/*.bam</code> – read alignments used to generate consensus sequences</li>
+<li><code>snippy/*.consensus.fa</code> – per-sample consensus FASTA sequences</li>
+<li><code>cat/*</code> – concatenated consensus alignments</li>
+</ul>
+</section>
+<section id="multiqc-report" class="level3">
+<h3 class="anchored" data-anchor-id="multiqc-report">MultiQC report</h3>
+<ul>
+<li><code>multiqc/multiqc_report.html</code> – interactive summary report for QC and workflow metrics</li>
+<li><code>multiqc/multiqc_data/</code> – parsed statistics from supported tools</li>
+<li><code>multiqc/multiqc_plots/</code> – static plot images</li>
+</ul>
+</section>
+<section id="workflow-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="workflow-metadata">Workflow metadata</h3>
+<ul>
+<li><code>pipeline_info/execution_report.html</code> – a Nextflow execution report</li>
+<li><code>pipeline_info/execution_timeline.html</code> – timeline of pipeline processes</li>
+<li><code>pipeline_info/execution_trace.txt</code> – trace of pipeline tasks</li>
+<li><code>pipeline_info/pipeline_dag.html</code> – workflow DAG visualization</li>
+<li><code>pipeline_info/software_versions.yml</code> – list of software versions used in the run</li>
+<li><code>pipeline_info/samplesheet.valid.csv</code> – cleaned or validated sample sheet used by the pipeline</li>
+</ul>
+</section>
+</section>
+<section id="interpreting-the-key-tree-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="interpreting-the-key-tree-outputs">Interpreting the key tree outputs</h2>
+<p>The primary phylogeny is stored under <code>iqtree/</code>. Because the pipeline masks recombination and extracts variable sites through <code>varcodons.py</code>, the final tree should be interpreted as a recombination-masked phylogeny derived from a reference-guided core alignment.</p>
+<p>For additional detail on the workflow and what each directory contains, see <a href="./workflow.html">workflow.md</a>.</p>
 
 
-</section>
 </section>
 </section>
 

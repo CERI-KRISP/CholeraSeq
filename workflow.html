@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>usage – CERI-KRISP/CholeraSeq</title>
+<title>workflow – CERI-KRISP/CholeraSeq</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -116,7 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./usage.html">Usage</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      CERI-KRISP/CholeraSeq
+      </li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -149,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./usage.html" class="sidebar-item-text sidebar-link active">
+  <a href="./usage.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Usage</span></a>
   </div>
 </li>
@@ -181,32 +148,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#usage" id="toc-usage" class="nav-link active" data-scroll-target="#usage">Usage</a>
+  <li><a href="#choleraseq-workflow" id="toc-choleraseq-workflow" class="nav-link active" data-scroll-target="#choleraseq-workflow">CholeraSeq workflow</a>
   <ul class="collapse">
   <li><a href="#what-choleraseq-does" id="toc-what-choleraseq-does" class="nav-link" data-scroll-target="#what-choleraseq-does">What CholeraSeq does</a></li>
-  <li><a href="#required-inputs" id="toc-required-inputs" class="nav-link" data-scroll-target="#required-inputs">Required inputs</a>
+  <li><a href="#high-level-workflow" id="toc-high-level-workflow" class="nav-link" data-scroll-target="#high-level-workflow">High-level workflow</a></li>
+  <li><a href="#workflow-components" id="toc-workflow-components" class="nav-link" data-scroll-target="#workflow-components">Workflow components</a>
   <ul class="collapse">
-  <li><a href="#sample-sheet" id="toc-sample-sheet" class="nav-link" data-scroll-target="#sample-sheet">Sample sheet</a></li>
-  <li><a href="#reference-genome" id="toc-reference-genome" class="nav-link" data-scroll-target="#reference-genome">Reference genome</a></li>
+  <li><a href="#input-and-staging" id="toc-input-and-staging" class="nav-link" data-scroll-target="#input-and-staging">Input and staging</a></li>
+  <li><a href="#read-qc" id="toc-read-qc" class="nav-link" data-scroll-target="#read-qc">Read QC</a></li>
+  <li><a href="#reference-guided-variant-calling" id="toc-reference-guided-variant-calling" class="nav-link" data-scroll-target="#reference-guided-variant-calling">Reference-guided variant calling</a></li>
+  <li><a href="#consensus-and-alignment" id="toc-consensus-and-alignment" class="nav-link" data-scroll-target="#consensus-and-alignment">Consensus and alignment</a></li>
+  <li><a href="#cleaning-and-filtering" id="toc-cleaning-and-filtering" class="nav-link" data-scroll-target="#cleaning-and-filtering">Cleaning and filtering</a></li>
+  <li><a href="#recombination-masking" id="toc-recombination-masking" class="nav-link" data-scroll-target="#recombination-masking">Recombination masking</a></li>
+  <li><a href="#codon-aware-variable-site-conversion" id="toc-codon-aware-variable-site-conversion" class="nav-link" data-scroll-target="#codon-aware-variable-site-conversion">Codon-aware variable-site conversion</a></li>
+  <li><a href="#tree-inference" id="toc-tree-inference" class="nav-link" data-scroll-target="#tree-inference">Tree inference</a></li>
   </ul></li>
-  <li><a href="#running-the-pipeline" id="toc-running-the-pipeline" class="nav-link" data-scroll-target="#running-the-pipeline">Running the pipeline</a>
-  <ul class="collapse">
-  <li><a href="#example-command" id="toc-example-command" class="nav-link" data-scroll-target="#example-command">Example command</a></li>
-  <li><a href="#test-run" id="toc-test-run" class="nav-link" data-scroll-target="#test-run">Test run</a></li>
-  <li><a href="#use-a-params-file" id="toc-use-a-params-file" class="nav-link" data-scroll-target="#use-a-params-file">Use a params file</a></li>
-  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link" data-scroll-target="#reproducibility">Reproducibility</a></li>
-  <li><a href="#output-locations" id="toc-output-locations" class="nav-link" data-scroll-target="#output-locations">Output locations</a></li>
-  </ul></li>
-  <li><a href="#nextflow-command-line-options" id="toc-nextflow-command-line-options" class="nav-link" data-scroll-target="#nextflow-command-line-options">Nextflow command-line options</a>
-  <ul class="collapse">
-  <li><a href="#profile" id="toc-profile" class="nav-link" data-scroll-target="#profile"><code>-profile</code></a></li>
-  <li><a href="#resume" id="toc-resume" class="nav-link" data-scroll-target="#resume"><code>-resume</code></a></li>
-  <li><a href="#params-file" id="toc-params-file" class="nav-link" data-scroll-target="#params-file"><code>-params-file</code></a></li>
-  <li><a href="#c" id="toc-c" class="nav-link" data-scroll-target="#c"><code>-c</code></a></li>
-  </ul></li>
-  <li><a href="#key-parameters" id="toc-key-parameters" class="nav-link" data-scroll-target="#key-parameters">Key parameters</a></li>
-  <li><a href="#profiles-and-containers" id="toc-profiles-and-containers" class="nav-link" data-scroll-target="#profiles-and-containers">Profiles and containers</a></li>
-  <li><a href="#getting-help" id="toc-getting-help" class="nav-link" data-scroll-target="#getting-help">Getting help</a></li>
+  <li><a href="#optional-global-alignment-mode" id="toc-optional-global-alignment-mode" class="nav-link" data-scroll-target="#optional-global-alignment-mode">Optional global alignment mode</a></li>
+  <li><a href="#notes-for-users" id="toc-notes-for-users" class="nav-link" data-scroll-target="#notes-for-users">Notes for users</a></li>
+  <li><a href="#outputs-and-results" id="toc-outputs-and-results" class="nav-link" data-scroll-target="#outputs-and-results">Outputs and results</a></li>
+  <li><a href="#related-docs" id="toc-related-docs" class="nav-link" data-scroll-target="#related-docs">Related docs</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -217,133 +177,135 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="usage" class="level1">
-<h1>Usage</h1>
-<p>This page explains how to run the <code>CERI-KRISP/CholeraSeq</code> pipeline, what inputs it requires, and how to configure a typical analysis.</p>
+<section id="choleraseq-workflow" class="level1">
+<h1>CholeraSeq workflow</h1>
+<p>This document explains how the CholeraSeq pipeline works, the methods it uses, and the key decisions baked into the workflow.</p>
 <section id="what-choleraseq-does" class="level2">
 <h2 class="anchored" data-anchor-id="what-choleraseq-does">What CholeraSeq does</h2>
-<p>CholeraSeq is a Nextflow DSL2 pipeline for <em>Vibrio cholerae</em> outbreak phylogenetics. It processes either raw Illumina reads or FASTA assemblies, performs QC and reference-based variant calling, generates a recombination-masked core alignment, and infers a tree with <code>iqtree</code>.</p>
-<p>For a detailed explanation of workflow stages, see <a href="./workflow.html">workflow.md</a>.</p>
-</section>
-<section id="required-inputs" class="level2">
-<h2 class="anchored" data-anchor-id="required-inputs">Required inputs</h2>
-<section id="sample-sheet" class="level3">
-<h3 class="anchored" data-anchor-id="sample-sheet">Sample sheet</h3>
-<p>CholeraSeq requires an input sample sheet in CSV format with a header row. Required columns are:</p>
+<p>CholeraSeq is a phylogenomics pipeline for <em>Vibrio cholerae</em> that:</p>
 <ul>
-<li><code>sample</code></li>
-<li><code>fastq_1</code></li>
-<li><code>fastq_2</code></li>
+<li>accepts raw Illumina reads or FASTA assemblies</li>
+<li>performs QC and trimming on reads</li>
+<li>maps data to a reference genome using <code>snippy</code></li>
+<li>generates consensus sequences and a cohort alignment</li>
+<li>masks recombination using <code>gubbins</code></li>
+<li>extracts codon-aware variable sites with <code>varcodons.py</code></li>
+<li>infers an ML tree with <code>iqtree</code></li>
+<li>aggregates QC and workflow metadata in <code>MultiQC</code></li>
 </ul>
-<p>Each row can represent:</p>
+<p>It is not a general genome characterization pipeline. It does not include AMR profiling, MLST typing, or serotype prediction.</p>
+</section>
+<section id="high-level-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="high-level-workflow">High-level workflow</h2>
+<ol type="1">
+<li><strong>Input validation</strong>
 <ul>
-<li>paired-end reads (<code>fastq_1</code> and <code>fastq_2</code> present)</li>
-<li>single-end reads (<code>fastq_1</code> present, <code>fastq_2</code> blank)</li>
-<li>an assembly or contig FASTA (<code>fastq_1</code> contains a FASTA path, <code>fastq_2</code> blank)</li>
-</ul>
-<p>Example sample sheet:</p>
-<pre class="csv"><code>sample,fastq_1,fastq_2
-SRR8364252,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_1.fastq.gz,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_2.fastq.gz
-SRR771360,ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR771/SRR771360/SRR771360.fastq.gz,
-AHGB01000000.1,https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHGB01.fasta,</code></pre>
-</section>
-<section id="reference-genome" class="level3">
-<h3 class="anchored" data-anchor-id="reference-genome">Reference genome</h3>
-<p>The pipeline uses a GenBank reference for mapping and variant extraction. The default reference is <code>GCF_003063785.full.gbk</code> and can be overridden with <code>--ref_genbank</code>.</p>
-</section>
-</section>
-<section id="running-the-pipeline" class="level2">
-<h2 class="anchored" data-anchor-id="running-the-pipeline">Running the pipeline</h2>
-<section id="example-command" class="level3">
-<h3 class="anchored" data-anchor-id="example-command">Example command</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run CERI-KRISP/CholeraSeq <span class="dt">\</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-profile</span> docker <span class="dt">\</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> /path/to/samplesheet.csv <span class="dt">\</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--outdir</span> results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="test-run" class="level3">
-<h3 class="anchored" data-anchor-id="test-run">Test run</h3>
-<p>A built-in <code>test</code> profile is available for validation:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run CERI-KRISP/CholeraSeq <span class="at">-profile</span> test,docker <span class="at">--outdir</span> test_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="use-a-params-file" class="level3">
-<h3 class="anchored" data-anchor-id="use-a-params-file">Use a params file</h3>
-<p>To reuse the same configuration across multiple runs, provide a parameter file:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run CERI-KRISP/CholeraSeq <span class="at">-profile</span> docker <span class="at">-params-file</span> params.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Example <code>params.yaml</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">input</span><span class="kw">:</span><span class="at"> ./samplesheet.csv</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">outdir</span><span class="kw">:</span><span class="at"> ./results/</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ref_genbank</span><span class="kw">:</span><span class="at"> ./resources/reference/GCF_003063785.full.gbk</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">skip_fastbaps</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="reproducibility" class="level3">
-<h3 class="anchored" data-anchor-id="reproducibility">Reproducibility</h3>
-<p>Specifying a pipeline release tag ensures the same code version is used:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run CERI-KRISP/CholeraSeq <span class="at">-r</span> 1.2.0 <span class="at">-profile</span> docker <span class="at">--input</span> samplesheet.csv <span class="at">--outdir</span> results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="output-locations" class="level3">
-<h3 class="anchored" data-anchor-id="output-locations">Output locations</h3>
-<p>The pipeline writes results into the specified <code>--outdir</code> and creates a <code>work/</code> directory in the current working directory. Nextflow also writes log and metadata files such as <code>.nextflow_log</code>.</p>
-</section>
-</section>
-<section id="nextflow-command-line-options" class="level2">
-<h2 class="anchored" data-anchor-id="nextflow-command-line-options">Nextflow command-line options</h2>
-<blockquote class="blockquote">
-<p><strong>Note:</strong> these options are part of Nextflow and use a single hyphen. Pipeline parameters use double hyphens.</p>
-</blockquote>
-<section id="profile" class="level3">
-<h3 class="anchored" data-anchor-id="profile"><code>-profile</code></h3>
-<p>Choose a configuration profile for software execution. Common pipeline-supported profiles include:</p>
+<li>sample sheet parsing and input file checking.</li>
+</ul></li>
+<li><strong>Quality control</strong>
 <ul>
-<li><code>docker</code></li>
-<li><code>singularity</code></li>
-<li><code>podman</code></li>
-<li><code>conda</code></li>
-<li><code>test</code></li>
-</ul>
-<p>Example:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run CERI-KRISP/CholeraSeq <span class="at">-profile</span> test,docker <span class="at">--outdir</span> test_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="resume" class="level3">
-<h3 class="anchored" data-anchor-id="resume"><code>-resume</code></h3>
-<p>Resume a previous run using cached results when input files and parameters are unchanged.</p>
-</section>
-<section id="params-file" class="level3">
-<h3 class="anchored" data-anchor-id="params-file"><code>-params-file</code></h3>
-<p>Provide a YAML or JSON file with pipeline parameters.</p>
-</section>
-<section id="c" class="level3">
-<h3 class="anchored" data-anchor-id="c"><code>-c</code></h3>
-<p>Use this to load a custom Nextflow config file (typically for cluster or resource settings), not for pipeline parameters.</p>
-</section>
-</section>
-<section id="key-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="key-parameters">Key parameters</h2>
-<p>See <a href="./parameters.html">parameters.md</a> for the full parameter reference. Common settings include:</p>
+<li><code>fastp</code> trimming and QC on raw reads.</li>
+</ul></li>
+<li><strong>Variant calling and consensus generation</strong>
 <ul>
-<li><code>input</code>: path to the sample sheet</li>
-<li><code>outdir</code>: output directory</li>
-<li><code>ref_genbank</code>: reference GenBank file</li>
-<li><code>global_core_alignment</code>: input global core alignment file</li>
-<li><code>cohort_core_alignment</code>: input cohort core alignment file</li>
-<li><code>skip_fastbaps</code>: skip FastBAPS clustering</li>
-<li><code>skip_clustering</code>: skip the clustering and tree workflow</li>
-<li><code>max_missing_percentage</code>: missing-data filter threshold</li>
-</ul>
-</section>
-<section id="profiles-and-containers" class="level2">
-<h2 class="anchored" data-anchor-id="profiles-and-containers">Profiles and containers</h2>
-<p>This pipeline supports containerized execution through Docker, Singularity, Podman, and Conda. For reproducibility, use Docker or Singularity whenever possible.</p>
-<p>If your environment requires a custom cluster profile, test it with <code>-c</code> and consult <a href="https://github.com/nf-core/configs">nf-core/configs</a>.</p>
-</section>
-<section id="getting-help" class="level2">
-<h2 class="anchored" data-anchor-id="getting-help">Getting help</h2>
+<li><code>snippy</code> maps reads to the reference and calls variants.</li>
+<li><code>samtools consensus</code> makes per-sample consensus FASTA sequences.</li>
+</ul></li>
+<li><strong>Cohort alignment creation</strong>
 <ul>
-<li><a href="./workflow.html">workflow.md</a> — how the pipeline stages connect</li>
-<li><a href="./parameters.html">parameters.md</a> — parameter reference</li>
-<li><a href="./output.html">output.md</a> — result files and locations</li>
+<li>concatenate consensus FASTA sequences into one multi-sample alignment.</li>
+</ul></li>
+<li><strong>Alignment cleaning</strong>
+<ul>
+<li>filter sequences with high missingness using <code>seq_cleaner.py</code>.</li>
+</ul></li>
+<li><strong>Recombination masking</strong>
+<ul>
+<li><code>gubbins</code> identifies recombinant regions.</li>
+<li>mask recombinant positions before tree inference.</li>
+</ul></li>
+<li><strong>Variable-site extraction</strong>
+<ul>
+<li><code>varcodons.py</code> converts the masked alignment into a variable-site codon-aware alignment.</li>
+</ul></li>
+<li><strong>Phylogeny inference</strong>
+<ul>
+<li><code>iqtree</code> builds the final tree from the masked alignment.</li>
+</ul></li>
+<li><strong>Reporting</strong>
+<ul>
+<li><code>MultiQC</code> summarizes QC and workflow information.</li>
+</ul></li>
+</ol>
+</section>
+<section id="workflow-components" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-components">Workflow components</h2>
+<section id="input-and-staging" class="level3">
+<h3 class="anchored" data-anchor-id="input-and-staging">Input and staging</h3>
+<p>The pipeline reads the sample sheet and splits samples into:</p>
+<ul>
+<li>raw reads (paired-end or single-end)</li>
+<li>contigs/assemblies</li>
 </ul>
-<p>If you encounter errors, inspect <code>.nextflow_log</code> and the generated <code>pipeline_info/</code> reports.</p>
+<p>Assembly input is accepted as FASTA and bypasses read trimming.</p>
+</section>
+<section id="read-qc" class="level3">
+<h3 class="anchored" data-anchor-id="read-qc">Read QC</h3>
+<p><code>fastp</code> handles read trimming, adapter clipping, and quality filtering. QC summaries are collected from <code>fastp</code> and <code>FastQC</code> for MultiQC.</p>
+</section>
+<section id="reference-guided-variant-calling" class="level3">
+<h3 class="anchored" data-anchor-id="reference-guided-variant-calling">Reference-guided variant calling</h3>
+<p><code>snippy</code> is the core mapping and variant calling tool. It uses a GenBank reference defined by <code>--ref_genbank</code>. The default reference is <code>GCF_003063785.full.gbk</code>.</p>
+</section>
+<section id="consensus-and-alignment" class="level3">
+<h3 class="anchored" data-anchor-id="consensus-and-alignment">Consensus and alignment</h3>
+<p>The pipeline converts each sample BAM to a consensus FASTA with <code>samtools consensus</code>, then concatenates those FASTA sequences into a cohort alignment. This forms the basis for the downstream core-genome tree.</p>
+</section>
+<section id="cleaning-and-filtering" class="level3">
+<h3 class="anchored" data-anchor-id="cleaning-and-filtering">Cleaning and filtering</h3>
+<p><code>seq_cleaner.py</code> removes sequences with excessive missing data according to <code>--max_missing_percentage</code>. This step ensures only sufficiently complete sequences go into recombination masking and tree inference.</p>
+</section>
+<section id="recombination-masking" class="level3">
+<h3 class="anchored" data-anchor-id="recombination-masking">Recombination masking</h3>
+<p><code>gubbins</code> detects recombinant regions in the cleaned alignment. Those regions are masked before the tree is built, reducing the impact of horizontal gene transfer on the phylogeny.</p>
+</section>
+<section id="codon-aware-variable-site-conversion" class="level3">
+<h3 class="anchored" data-anchor-id="codon-aware-variable-site-conversion">Codon-aware variable-site conversion</h3>
+<p><code>varcodons.py</code> uses the reference annotation to extract coding-variable sites from the masked alignment. The resulting alignment is intended for phylogenetic analysis while preserving codon structure.</p>
+</section>
+<section id="tree-inference" class="level3">
+<h3 class="anchored" data-anchor-id="tree-inference">Tree inference</h3>
+<p><code>iqtree</code> is the final phylogeny engine. The tree is inferred from a recombination-masked, reference-guided alignment derived from consensus sequences.</p>
+</section>
+</section>
+<section id="optional-global-alignment-mode" class="level2">
+<h2 class="anchored" data-anchor-id="optional-global-alignment-mode">Optional global alignment mode</h2>
+<p>CholeraSeq can merge new data into an existing global core alignment using:</p>
+<ul>
+<li><code>global_core_alignment</code></li>
+<li><code>cohort_core_alignment</code></li>
+</ul>
+<p>When enabled, the pipeline concatenates the provided alignments and then proceeds through clustering and tree inference.</p>
+</section>
+<section id="notes-for-users" class="level2">
+<h2 class="anchored" data-anchor-id="notes-for-users">Notes for users</h2>
+<ul>
+<li><code>skip_clustering</code> will skip the clustering/tree workflow entirely.</li>
+<li><code>skip_fastbaps</code> disables optional FastBAPS clustering but does not affect the main tree path.</li>
+<li>The workflow focuses on phylogeny and QC, not on genome-wide characterization or downstream epidemiological annotation.</li>
+</ul>
+</section>
+<section id="outputs-and-results" class="level2">
+<h2 class="anchored" data-anchor-id="outputs-and-results">Outputs and results</h2>
+<p>For result details, see <a href="./output.html">output.md</a>.</p>
+</section>
+<section id="related-docs" class="level2">
+<h2 class="anchored" data-anchor-id="related-docs">Related docs</h2>
+<ul>
+<li><a href="./usage.html">Usage</a> for running the pipeline</li>
+<li><a href="./parameters.html">Parameters</a> for configuration options</li>
+<li><a href="./output.html">Output</a> for result file descriptions</li>
+</ul>
 
 
 </section>
