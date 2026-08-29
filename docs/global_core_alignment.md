@@ -13,7 +13,7 @@ As a useful resources for the community, we have published a global core alignem
 
 We intend to keep this core alignment updated on a quarterly (or annual ) and are actively looking for funding for long term sustenance.
 
-However, we also want to highlight that it is very straightforward to create custom alignment using the CholeraSeq pipeline.
+However, we also want to highlight that it is quite straightforward to create custom alignment using the CholeraSeq pipeline.
 
 Essentially, you'd need to
 
