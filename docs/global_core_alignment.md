@@ -54,7 +54,7 @@ global_core_alignment: "/path/to/existing/global_core_alignment"
 
 ## Using existing local core alignment
 
-In case you have already created a local core alignment (from the initial FASTA assemblies files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the ``
+In case you have already created a local core alignment (from the initial FASTA assemblies files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the relevant parameters such as `global_core_alignment` and `cohort_core_alignment` as shown below.
 
 You can now initiate the pipeline with:
 
