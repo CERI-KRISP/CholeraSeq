@@ -9,6 +9,13 @@ Initial release of CERI-KRISP/CholeraSeq, created with the [nf-core](https://nf-
 
 ### `Added`
 
+- Comprehensive documentation improvements:
+  - Rewrote `README.md` with clear pipeline description, quick start, and input requirements
+  - Updated `docs/usage.md` with streamlined run instructions and parameter explanations
+  - Reorganized `docs/parameters.md` with grouped parameters and default values
+  - Improved `docs/output.md` with result directory structure and key output descriptions
+  - Added `docs/workflow.md` detailing each pipeline stage and methods
+
 ### `Fixed`
 
 ### `Dependencies`

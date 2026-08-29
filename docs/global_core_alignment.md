@@ -11,11 +11,11 @@ As a useful resources for the community, we have published a global core alignem
 
 ## Using FASTA sequences
 
-We intend to keep this core alignment updated on a quarterly (or annual ) and are actively looking for funding for long term sustenance.
+We intend to keep this core alignment updated on a quarterly (or annually ) and are actively looking for funding for long term sustenance.
 
-However, we also want to highlight that it is very straightforward to create custom alignment using the CholeraSeq pipeline.
+However, we also want to highlight that it is quite straightforward to create custom alignment using the CholeraSeq pipeline.
 
-Essentially, you'd need to
+Essentially, you need to
 
 1. Create a samplesheet with the downloaded/precomputed assemblies (FASTA files) as shown below
 
@@ -54,7 +54,7 @@ global_core_alignment: "/path/to/existing/global_core_alignment"
 
 ## Using existing local core alignment
 
-In case you have already created a local core alignment (from the initial FASTA assemblies files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the ``
+In case you have already created a local core alignment (from the initial FASTA assemblies files) and you wish to add it to the global core alignment (or any pre-existing alignment), you can make use of the relevant parameters such as `global_core_alignment` and `cohort_core_alignment` as shown below.
 
 You can now initiate the pipeline with:
 
