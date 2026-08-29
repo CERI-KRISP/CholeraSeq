@@ -15,7 +15,7 @@ We intend to keep this core alignment updated on a quarterly (or annually ) and 
 
 However, we also want to highlight that it is quite straightforward to create custom alignment using the CholeraSeq pipeline.
 
-Essentially, you'd need to
+Essentially, you need to
 
 1. Create a samplesheet with the downloaded/precomputed assemblies (FASTA files) as shown below
 
