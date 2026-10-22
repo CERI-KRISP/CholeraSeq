@@ -14,53 +14,90 @@ We have created a multi-fasta reference with global cohort available on NCBI, av
 
 ## Input
 
-CholeraSeq accepts input in one of four ways. `--input` (samplesheet) is mutually exclusive with the other three; `--reads_dir`/`--contigs_dir`/`--sra_list` can be freely combined with each other in a single run.
+CholeraSeq accepts Illumina reads, Oxford Nanopore and PacBio long reads, and finished assemblies, in any mix. Samples can be listed in a samplesheet (`--input`), or found automatically from folders and accession lists. `--input` cannot be combined with the folder and list flags; the folder and list flags can all be combined in one run.
+
+A reference GenBank file is always required: `--ref_genbank /path/to/reference.gbk`. The repository includes `resources/reference/GCF_003063785.full.gbk`. Use it to stay compatible with the published global core alignment.
 
 ### 1. Samplesheet (`--input`)
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. It has to be a comma-separated file with a header row, as shown in the examples below.
-
-```bash
---input '[path to samplesheet file]'
-```
-
-The input samplesheet should be in CSV format, containing any mix of:
-
-1. Paired-end reads (e.g. `SRR8364252`)
-2. Single-end reads (e.g. `SRR771360`)
-3. Pre-assembled genome fasta files (e.g. `AHGB01000000`; `.fasta`/`.fna`/`.fa`, optionally gzipped) - detected automatically from the file extension; they skip de novo assembly but are aligned to the reference genome and continue through the downstream analysis
-4. An SRA/ENA accession to download, via the `sra_id` column, instead of supplying local `fastq_1`/`fastq_2` paths
+A comma-separated file with a header row, one row per sample. `sra_id` and `platform` are optional columns.
 
 ```csv
-sample,fastq_1,fastq_2,sra_id
-SRR8364252,https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_1.fastq.gz,https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8364252/SRR8364252_2.fastq.gz,
-SRR771360,https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR771/SRR771360/SRR771360.fastq.gz,,
-AHGB01000000.1,https://github.com/CERI-KRISP/CholeraSeq/raw/b0beafcc6c1315e2782667f0306b10f8b3b7e09a/resources/test_fastas/AHGB01.fasta,,
-SRR12345678,,,SRR12345678
+sample,fastq_1,fastq_2,sra_id,platform
+SRR8364252,SRR8364252_1.fastq.gz,SRR8364252_2.fastq.gz,,illumina
+SRR771360,SRR771360.fastq.gz,,,illumina
+ONT_A,ONT_A.fastq.gz,,,nanopore
+HIFI_A,HIFI_A.fastq.gz,,,pacbio_hifi
+CLR_A,CLR_A.fastq.gz,,,pacbio_clr
+SRR12345678,,,SRR12345678,illumina
+AHGB01000000.1,AHGB01.fasta,,,
+GCF_EXAMPLE,GCF_EXAMPLE_genomic.fna.gz,,,
 ```
 
-> 💡 **Hint**: use `https://` rather than `ftp://` for EBI-hosted URLs - `https://` has proven more reliable for staging large files from `ftp.sra.ebi.ac.uk`. A row's `sra_id` and `fastq_1`/`fastq_2` are mutually exclusive - populate one or the other, not both.
+| Column | Meaning |
+|---|---|
+| `sample` | Sample name |
+| `fastq_1` | Reads (`.fastq.gz`/`.fq.gz`), or an assembly (`.fasta`/`.fna`/`.fa`, optionally gzipped). Assemblies are detected by their extension; they skip de novo assembly and are aligned straight to the reference |
+| `fastq_2` | Second read file for paired-end Illumina data; leave empty otherwise |
+| `sra_id` | An SRA/ENA run accession (SRR/ERR/DRR) to download instead of local files. Fill either `sra_id` or `fastq_1`, not both |
+| `platform` | `illumina` (default when empty), `nanopore`, `pacbio_hifi`, `pacbio_clr`, or `pacbio` (chemistry taken from `--pacbio_mode`). Long-read rows must be single-end |
 
-### 2. Directory auto-discovery (`--reads_dir` / `--contigs_dir`)
+> 💡 **Hint**: for EBI-hosted files, use `https://` URLs rather than `ftp://`; `https://` has proven more reliable for staging large files.
 
-No samplesheet needed - point the pipeline directly at a directory:
+### 2. Folders (no samplesheet)
+
+| Flag | Contents |
+|---|---|
+| `--reads_dir` | Illumina fastq. Paired files (`<id>_R1/_R2.fastq.gz` or `<id>_1/_2.fastq.gz`) are paired up; any other `<id>.fastq.gz` is single-end. Tagged with `--platform` (default `illumina`) |
+| `--ont_reads_dir` | Nanopore reads: each `.fastq.gz`/`.fq.gz` file is one sample |
+| `--pacbio_hifi_reads_dir` | PacBio HiFi reads: each file is one sample |
+| `--pacbio_clr_reads_dir` | PacBio CLR reads: each file is one sample |
+| `--contigs_dir` | Assemblies (`.fasta`/`.fna`/`.fa`, optionally gzipped, e.g. NCBI's `<acc>_genomic.fna.gz`) |
 
 ```bash
 nextflow run CERI-KRISP/CholeraSeq -profile docker --outdir results \
-  --reads_dir /path/to/fastqs --contigs_dir /path/to/contigs
+  --reads_dir illumina/ --ont_reads_dir ont/ \
+  --pacbio_hifi_reads_dir hifi/ --pacbio_clr_reads_dir clr/ \
+  --contigs_dir assemblies/ \
+  --ref_genbank resources/reference/GCF_003063785.full.gbk
 ```
 
-`--reads_dir` auto-discovers both paired-end (`<id>_R1/_R2.fastq.gz` or `<id>_1/_2.fastq.gz`) and single-end (`<id>.fastq.gz`) files. `--contigs_dir` picks up pre-assembled genomes (`.fasta`/`.fna`/`.fa`, optionally gzipped - e.g. NCBI's `<acc>_genomic.fna.gz`). Each assembly is aligned to the reference genome (Snippy contig mode) and carried through core alignment, typing/AMR screening and clustering like any other sample. Every matching fasta in the directory is treated as a sample, so keep unrelated fasta files (e.g. the reference) out of it.
+Things to know:
 
-### 3. SRA/ENA accession list (`--sra_list`)
+- **The sample name is the file name** without its extension. In `--contigs_dir`, a trailing `_contigs` is also removed. Keep names unique across folders.
+- **Every matching file in `--contigs_dir` is a sample**, so keep unrelated fasta files, such as the reference, out of it.
+- **Long-read folders only pick up `.fastq.gz`/`.fq.gz` files.** PacBio data delivered as BAM (e.g. `*.hifi_reads.bam`) or as uncompressed fastq is ignored without an error - convert it first, e.g. `samtools fastq x.bam | gzip > x.fastq.gz`.
+- **In `--reads_dir`, a `_1`/`_R1` file without its mate is skipped.** Use a samplesheet to include it as single-end.
 
-A plain text file, one accession (SRR/ERR/DRR) per line:
+### 3. SRA/ENA accession lists (no samplesheet)
 
-```bash
-nextflow run CERI-KRISP/CholeraSeq -profile docker --outdir results --sra_list accessions.txt
-```
+Plain text files, one run accession per line:
 
-Downloads go via `sra-tools`, selected with `--download_method sratools` (the default, and currently the only implemented method - `ftp` and `aspera` are scaffolded for future use and will fail fast with a clear message if selected, rather than silently falling back to something else).
+| Flag | Platform |
+|---|---|
+| `--sra_list` | Illumina |
+| `--ont_sra_list` | Nanopore |
+| `--pacbio_sra_list` | PacBio, with the chemistry from `--pacbio_mode` (`hifi` or `raw`) for the whole list |
+
+For PacBio accessions of mixed chemistry, use a samplesheet with `sra_id` and `pacbio_hifi`/`pacbio_clr` rows instead. Downloads use `sra-tools` (`--download_method sratools`, the only implemented method; `ftp` and `aspera` stop with a clear message).
+
+## Long-read samples
+
+Nanopore and PacBio samples are quality-checked with NanoPlot, filtered with Filtlong, and assembled with Flye. Each assembly then follows the same path as any other assembly: alignment to the reference, typing and AMR screening, clustering and the phylogeny.
+
+- **PacBio chemistry matters.** HiFi and CLR reads use different Flye modes (`--pacbio-hifi` and `--pacbio-raw`). The wrong mode can fail only after hours - for example, CLR data run in HiFi mode produced `No overlaps found!`. The pipeline does not detect the chemistry: choose the right folder flag or samplesheet value, and check the data's provenance when in doubt.
+- **Capping coverage.** `--long_read_target_bases` keeps only the best reads up to that many bases per sample (Filtlong `--target_bases`). For example, `400000000` is about 100x of a 4 Mb genome, which shortens assembly on high-coverage data considerably.
+- **Failed assemblies.** A sample that fails to assemble (too little data, non-genomic data, or a different organism) is skipped with a `NOTE`, and the run continues. Such samples are listed as `FAILED` in `pipeline_info/execution_trace_*.txt`. They are re-attempted on every `-resume`, because failed tasks are not cached.
+
+## Samples excluded before clustering
+
+Some samples cannot contribute to a core-genome alignment. They are dropped before clustering, with a warning naming each one:
+
+- **No consensus sequence**, for example an assembly of a different organism that aligns to nothing.
+- **Only part of the reference covered**, for example no reads on one chromosome. Every sequence in the alignment must be the reference's full length.
+- **More missing data than `--max_missing_percentage`** (default 50%).
+
+If nothing is left after these checks, the run stops with a clear message.
 
 ## Running the pipeline
 
@@ -103,6 +140,13 @@ work                # Directory containing the nextflow working files
 ```
 
 ### Use of `YAML` file for parameters
+
+> ⚠️ **Command-line values on Nextflow 26.** A value typed after a flag arrives as text, not as a number or true/false. `--skip_x true` works, but `--skip_x false` does **not** switch a step on, and `--max_cpus 8` fails validation. Values in a params file keep their proper types, so use one for booleans set to `false` and for numbers such as `max_cpus`:
+>
+> ```yaml
+> skip_fastbaps: false
+> max_cpus: 8
+> ```
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 

@@ -21,12 +21,16 @@ As of `v1.1.0` the outputs of CholeraSeq pipeline are stored in the following di
 ├── cat
 ├── fastp
 ├── fastqc
+├── filtlong
+├── flye
+├── gunzip
 ├── iqtree
 ├── mask
 ├── mlst
 ├── multiqc
 │   ├── multiqc_data
 │   └── multiqc_plots
+├── nanoplot
 ├── pipeline_info
 ├── python
 ├── r
@@ -40,7 +44,7 @@ As of `v1.1.0` the outputs of CholeraSeq pipeline are stored in the following di
 
 ```
 
-> 💡 **Hint**: `abricate`, `mlst`, and `spades` are only present if `--skip_amr`/`--skip_mlst`/`--skip_assembly` are `false` (the default). `sra` is only present when using `sra_id` samplesheet rows or `--sra_list`.
+> 💡 **Hint**: `abricate`, `mlst`, and `spades` are only present if `--skip_amr`/`--skip_mlst`/`--skip_assembly` are `false` (the default). `sra` is only present when accessions are downloaded. `nanoplot`, `filtlong` and `flye` are only present when there are long-read samples; `gunzip` when there are long-read samples or gzipped assemblies.
 
 ### Assembly, typing & AMR
 
@@ -58,6 +62,26 @@ As of `v1.1.0` the outputs of CholeraSeq pipeline are stored in the following di
 </details>
 
 [SPAdes](https://github.com/ablab/spades) performs de novo genome assembly for samples supplied as reads (samples already supplied as contigs skip this step). [MLST](https://github.com/tseemann/mlst) and [ABRicate](https://github.com/tseemann/abricate) then run on the resulting assembly (or the original contigs).
+
+### Long-read QC and assembly
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `nanoplot/`
+  - `<sample>_NanoPlot-report.html`, `<sample>_NanoStats.txt` and plots: read-length and quality QC for each Nanopore/PacBio sample (on the unfiltered reads).
+- `filtlong/`
+  - `<sample>.fastq.gz`: the filtered reads used for assembly. These can be large.
+  - `<sample>.log`: Filtlong log.
+- `flye/`
+  - `<sample>.assembly.fasta.gz`: the Flye assembly.
+  - `<sample>.assembly_info.txt`: contig lengths, coverage and circularity.
+- `gunzip/`
+  - Uncompressed copies of the long-read assemblies and of any gzipped input assemblies, as passed to variant calling.
+
+</details>
+
+[NanoPlot](https://github.com/wdecoster/NanoPlot), [Filtlong](https://github.com/rrwick/Filtlong) and [Flye](https://github.com/mikolmogorov/Flye) handle Nanopore and PacBio samples. Each assembly then follows the same path as any other assembly. A sample whose assembly fails has no files here; see `pipeline_info/execution_trace_*.txt`, where it is listed as `FAILED`.
 
 ### SRA download
 

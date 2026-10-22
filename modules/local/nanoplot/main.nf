@@ -19,11 +19,16 @@ process NANOPLOT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    // -p: NanoPlot otherwise names every sample's files identically (NanoPlot-report.html,
+    // NanoStats.txt, ...), so all samples publishing into one nanoplot/ folder overwrite
+    // each other and only the last sample's QC survives.
     """
     NanoPlot \\
         $args \\
         -t $task.cpus \\
+        -p ${prefix}_ \\
         --fastq ${ontfile}
 
     cat <<-END_VERSIONS > versions.yml
@@ -33,9 +38,10 @@ process NANOPLOT {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch NanoPlot-report.html
-    touch NanoStats.txt
+    touch ${prefix}_NanoPlot-report.html
+    touch ${prefix}_NanoStats.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         nanoplot: 1.47.0
