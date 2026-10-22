@@ -6,22 +6,66 @@
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
 [![Launch on Nextflow Tower](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Nextflow%20Tower-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/CERI-KRISP/CholeraSeq)
 
-## Introduction
+# CholeraSeq
 
+<<<<<<< HEAD
 **CERI-KRISP/CholeraSeq** is a Nextflow pipeline for genomic analysis of Cholera outbreaks: quality control, reference-based variant calling and core-genome alignment, de novo assembly, MLST typing, AMR/virulence/plasmid screening, FastBAPS clustering, recombination filtering (Gubbins), and phylogenetic reconstruction (IQ-TREE).
 
 It accepts Illumina reads, Oxford Nanopore and PacBio (HiFi or CLR) long reads, and finished assemblies, in any mix. Input can be given as a samplesheet, found automatically in folders, or downloaded from SRA/ENA by accession - see [Usage](#usage) below.
+=======
+`CERI-KRISP/CholeraSeq` is a Nextflow DSL2 pipeline for phylogenetic analysis of *Vibrio cholerae* outbreak data.
+It converts raw reads or genome assemblies into a recombination-masked core-genome alignment and infers a maximum likelihood tree with `iqtree`.
+>>>>>>> upstream/dev
 
-## Reference sequence
+## What it does
 
-We have created a multi-fasta reference with global cohort available on NCBI, available at the link below.
+- accepts paired-end or single-end Illumina reads, or FASTA assemblies
+- performs QC and trimming on reads with `fastp`
+- maps data to a reference genome using `snippy`
+- generates consensus FASTA sequences and concatenates them into a cohort alignment
+- masks recombination with `gubbins`
+- extracts codon-aware variable sites using `varcodons.py`
+- infers an ML phylogeny with `iqtree`
+- aggregates QC and workflow reports via `MultiQC`
 
-[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
+> This pipeline is aimed at phylogenetics and outbreak analysis. It does not provide AMR profiling, MLST typing, serotype prediction, or pangenome analysis.
+
+## Quick start
+
+```bash
+nextflow run CERI-KRISP/CholeraSeq \
+  -profile docker \
+  --input /path/to/samplesheet.csv \
+  --outdir results
+```
+
+For a full test run:
+
+```bash
+nextflow run CERI-KRISP/CholeraSeq -profile test,docker --outdir test_output
+```
+
+For Singularity:
+
+```bash
+nextflow run CERI-KRISP/CholeraSeq -profile test,singularity --outdir test_output
+```
+
+## Input requirements
+
+The pipeline expects an input sample sheet in CSV format with at least these columns:
+
+- `sample`
+- `fastq_1`
+- `fastq_2`
+
+For single-end or assembly inputs, set `fastq_2` to blank. Assemblies are accepted as FASTA files in `fastq_1`.
 
 ## Documentation
 
-The documentation for the pipeline is hosted at https://ceri-krisp.github.io/CholeraSeq/
+The pipeline documentation is available in the `docs/` directory and includes:
 
+<<<<<<< HEAD
 ## Usage
 
 ### Input
@@ -97,16 +141,22 @@ By default a task may use up to 16 CPUs, 128 GB and 240 h. On a smaller machine 
 Run `nextflow run CERI-KRISP/CholeraSeq --help` for the full parameter list.
 
 ## Testing
+=======
+- `docs/usage.md`
+- `docs/parameters.md`
+- `docs/output.md`
+- `docs/workflow.md`
+>>>>>>> upstream/dev
 
-A built-in test profile are available in the choleraseq pipeline with different size of datasets. This profile can be used to run tests on the relevant infrastructure using the `test` profile, to help users identify and resolve any infrastructural issue before the analysis stage.
+## Reference sequence
 
-**NOTE**: The snippets below assumes you have `docker` on the sever/machine you wish to test the pipeline. For other institutional configs please refer [nf-core/configs](https://nf-co.re/docs/usage/configuration#max-resources) project, which are all applicable to this pipeline.
+The pipeline uses a reference GenBank file for mapping and variant extraction. A global reference cohort is available via Zenodo:
 
-```bash
+[![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
 
-$ nextflow run CERI-KRISP/CholeraSeq \
-  -profile test,docker --outdir test_output
+## Contributions and support
 
+<<<<<<< HEAD
 ```
 
 For `singularity` please use the following command
@@ -129,20 +179,15 @@ De novo assembly (SPAdes), MLST typing, AMR/virulence/plasmid screening (ABRicat
 ## Contributions and Support
 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
+=======
+If you want to contribute, see the [contributing guidelines](.github/CONTRIBUTING.md).
+>>>>>>> upstream/dev
 
 ## Citations
 
-<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
-<!-- If you use  CERI-KRISP/CholeraSeq for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
+Please cite the pipeline and underlying tools when using CholeraSeq.
+See `CITATIONS.md` for a full list of referenced software and data sources.
 
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
+## License
 
-An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
-
-This pipeline uses code and infrastructure developed and maintained by the [nf-core](https://nf-co.re) community, reused here under the [MIT license](https://github.com/nf-core/tools/blob/master/LICENSE).
-
-> **The nf-core framework for community-curated bioinformatics pipelines.**
->
-> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
->
-> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
+This pipeline is released under the MIT License.
