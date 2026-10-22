@@ -68,8 +68,18 @@ workflow VARIANT_CALLING_WF {
             log.warn "Sample '${meta.id}' has a consensus of ${consensus_length(fasta)} bp but the reference is ${ref_length} bp - it did not align to the whole reference (e.g. no reads on one chromosome; possibly a different organism or very low coverage) - excluded from the core alignment so every sequence keeps the same length"
         }
 
+        // Stop with a clear message only if consensus sequences WERE produced but none passed
+        // the checks above. If nothing reached this step at all (an earlier step failed), stay
+        // silent: that earlier error is the real one, and this message would only mislead.
+        consensus_ch.with_sequence.count()
+            .combine( SAMTOOLS_CONSENSUS.out.fasta.count() )
+            .subscribe { n_kept, n_total ->
+                if (n_total > 0 && n_kept == 0) {
+                    error "No sample produced a full-length consensus sequence against the reference - nothing to align. Check that the samples match the reference genome (--ref_genbank)."
+                }
+            }
+
         ch_cat_cat_in = consensus_ch.with_sequence
-            .ifEmpty { error "No sample produced a full-length consensus sequence against the reference - nothing to align. Check that the samples match the reference genome (--ref_genbank)." }
             .collect{ _m, f -> f }
             .map { f -> [[id: 'cat_consensus'], f] }
 
