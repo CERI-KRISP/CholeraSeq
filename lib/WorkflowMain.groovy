@@ -84,8 +84,8 @@ class WorkflowMain {
         // Check input has been provided - a samplesheet (--input) OR one or more
         // of the directory/list auto-discovery flags (from Cholera_genomics
         // integration). Mirrors the equivalent check in choleraseq.nf.
-        if (!params.input && !params.reads_dir && !params.contigs_dir && !params.sra_list && !params.ont_sra_list && !params.pacbio_sra_list) {
-            Nextflow.error("Please provide an input samplesheet ('--input samplesheet.csv'), or one or more of --reads_dir/--contigs_dir/--sra_list/--ont_sra_list/--pacbio_sra_list.")
+        if (!params.input && !params.reads_dir && !params.ont_reads_dir && !params.pacbio_hifi_reads_dir && !params.pacbio_clr_reads_dir && !params.contigs_dir && !params.sra_list && !params.ont_sra_list && !params.pacbio_sra_list) {
+            Nextflow.error("Please provide an input samplesheet ('--input samplesheet.csv'), or one or more of --reads_dir/--ont_reads_dir/--pacbio_hifi_reads_dir/--pacbio_clr_reads_dir/--contigs_dir/--sra_list/--ont_sra_list/--pacbio_sra_list.")
         }
     }
     }

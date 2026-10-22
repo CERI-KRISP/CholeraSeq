@@ -94,7 +94,11 @@ def is_remote_path(path) {
 
 // Function to get list of [ meta, [ fastq_1, fastq_2 ] ]
 def check_is_contig(fastq_1) {
-    def lastExtension = fastq_1.split("\\.")[-1]
+    // Strip a trailing .gz first, so gzipped assemblies (e.g. NCBI's
+    // <acc>_genomic.fna.gz) are recognised as assemblies rather than misread
+    // as fastq. reads.fastq.gz still resolves to 'fastq' after the strip.
+    def name = fastq_1.endsWith(".gz") ? fastq_1.substring(0, fastq_1.length() - 3) : fastq_1
+    def lastExtension = name.split("\\.")[-1]
     def is_valid = (lastExtension == "fasta" || lastExtension == "fna" || lastExtension == "fa" )
 
     return is_valid

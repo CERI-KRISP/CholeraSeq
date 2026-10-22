@@ -16,7 +16,7 @@ CholeraSeq accepts input in one of four ways - see the [Usage](./usage.md#input)
 | ------------------ | -------------- | ---------------------------------------------------------------------------------------------- |
 | `input`             | `null`         | The input CSV file containing sample information.                                              |
 | `reads_dir`         | `null`         | Directory of fastq files to auto-discover (paired `<id>_R1/_R2.fastq.gz`/`<id>_1/_2.fastq.gz`, or single-end `<id>.fastq.gz`). |
-| `contigs_dir`       | `null`         | Directory of pre-assembled `<id>_contigs.fasta` files to auto-discover.                        |
+| `contigs_dir`       | `null`         | Directory of pre-assembled genomes (`.fasta`/`.fna`/`.fa`, optionally `.gz`) to auto-discover; each is aligned to the reference and carried through the downstream analysis. |
 | `sra_list`          | `null`         | Text file, one SRA/ENA accession (SRR/ERR/DRR) per line, to download and process.              |
 | `download_method`   | `sratools`     | Method used to download `sra_list`/`sra_id` accessions. Only `sratools` is currently implemented - `ftp` and `aspera` are scaffolded for future use and will fail fast with a clear message if selected. |
 

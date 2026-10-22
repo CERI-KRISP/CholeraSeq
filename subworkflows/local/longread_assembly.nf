@@ -1,7 +1,8 @@
 include { NANOPLOT     } from '../../modules/local/nanoplot/main.nf'
 include { FILTLONG     } from '../../modules/local/filtlong/main.nf'
-include { FLYE as FLYE_ONT    } from '../../modules/local/flye/main.nf'
-include { FLYE as FLYE_PACBIO } from '../../modules/local/flye/main.nf'
+include { FLYE as FLYE_ONT          } from '../../modules/local/flye/main.nf'
+include { FLYE as FLYE_PACBIO_HIFI  } from '../../modules/local/flye/main.nf'
+include { FLYE as FLYE_PACBIO_CLR   } from '../../modules/local/flye/main.nf'
 
 // QC + assembly for ONT/PacBio long-read samples. Once Flye produces contigs,
 // they're tagged is_contig:true and emitted in the same shape as any other
@@ -33,23 +34,39 @@ workflow LONGREAD_ASSEMBLY_WF {
         FILTLONG ( longread_single_ch )
         ch_versions = ch_versions.mix(FILTLONG.out.versions)
 
+        // Chemistry can be set per sample: platform 'pacbio_hifi' / 'pacbio_clr'
+        // are explicit; plain 'pacbio' falls back to the run-wide --pacbio_mode.
+        // (Still selected, not auto-detected - nothing inspects the reads.)
         FILTLONG.out.reads
-            .branch {
-                ont:    it[0].platform == 'nanopore'
-                pacbio: it[0].platform == 'pacbio'
+            .branch { meta, reads ->
+                def chem = meta.platform == 'pacbio' ? (params.pacbio_mode == 'hifi' ? 'pacbio_hifi' : 'pacbio_clr') : meta.platform
+                ont:          chem == 'nanopore'
+                pacbio_hifi:  chem == 'pacbio_hifi'
+                pacbio_clr:   chem == 'pacbio_clr'
+                unrecognized: true
             }
             .set { filtered_ch }
 
-        FLYE_ONT    ( filtered_ch.ont,    '--nano-raw' )
-        FLYE_PACBIO ( filtered_ch.pacbio, params.pacbio_mode == 'hifi' ? '--pacbio-hifi' : '--pacbio-raw' )
-        ch_versions = ch_versions.mix(FLYE_ONT.out.versions).mix(FLYE_PACBIO.out.versions)
+        // A sample matching none of the labels above would otherwise vanish
+        // silently after NanoPlot/Filtlong - e.g. if a newer input stage sends
+        // 'pacbio_hifi'/'pacbio_clr' samples to an older copy of this file that
+        // only knows 'nanopore'/'pacbio', branch has no label for them and
+        // drops them with no error. Fail loudly instead.
+        filtered_ch.unrecognized.subscribe { meta, reads ->
+            error "LONGREAD_ASSEMBLY_WF: sample '${meta.id}' has platform '${meta.platform}', which has no assembly route. Expected nanopore, pacbio, pacbio_hifi or pacbio_clr - check that all pipeline files are from the same version."
+        }
+
+        FLYE_ONT         ( filtered_ch.ont,         '--nano-raw' )
+        FLYE_PACBIO_HIFI ( filtered_ch.pacbio_hifi, '--pacbio-hifi' )
+        FLYE_PACBIO_CLR  ( filtered_ch.pacbio_clr,  '--pacbio-raw' )
+        ch_versions = ch_versions.mix(FLYE_ONT.out.versions).mix(FLYE_PACBIO_HIFI.out.versions).mix(FLYE_PACBIO_CLR.out.versions)
 
         // Gunzip so output matches the plain (uncompressed) fasta convention
         // already used elsewhere for is_contig:true samples supplied directly
         // by the user (e.g. via --contigs_dir) - keeps every is_contig:true
         // sample in a consistent format regardless of how it got assembled,
         // rather than mixing gzipped and plain fasta under the same meta flag.
-        assembled_ch = FLYE_ONT.out.fasta.mix(FLYE_PACBIO.out.fasta)
+        assembled_ch = FLYE_ONT.out.fasta.mix(FLYE_PACBIO_HIFI.out.fasta).mix(FLYE_PACBIO_CLR.out.fasta)
         GUNZIP_LONGREAD_ASSEMBLY ( assembled_ch )
 
         contigs = GUNZIP_LONGREAD_ASSEMBLY.out.fasta

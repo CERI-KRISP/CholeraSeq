@@ -33,7 +33,7 @@
                 "contigs_dir": {
                     "type": "string",
                     "format": "directory-path",
-                    "description": "Directory of pre-assembled <id>_contigs.fasta files to auto-discover (alternative/addition to --input).",
+                    "description": "Directory of pre-assembled genomes (.fasta/.fna/.fa, optionally gzipped) to auto-discover (alternative/addition to --input). Each assembly is aligned to the reference genome and carried through the downstream analysis. Every matching fasta in the directory is treated as a sample.",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "sra_list": {
@@ -54,6 +54,24 @@
                     "description": "Text file, one SRA/ENA accession per line, to download and process as PacBio samples. Combinable with --sra_list/--ont_sra_list in one run.",
                     "fa_icon": "fas fa-file-alt"
                 },
+                "ont_reads_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Directory of Nanopore fastq.gz/fq.gz files, each treated as one single-end sample. Combinable with the other directory/list flags.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "pacbio_hifi_reads_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Directory of PacBio HiFi fastq.gz/fq.gz files, each treated as one single-end sample. Combinable with --pacbio_clr_reads_dir.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "pacbio_clr_reads_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Directory of PacBio CLR (raw) fastq.gz/fq.gz files, each treated as one single-end sample. Combinable with --pacbio_hifi_reads_dir.",
+                    "fa_icon": "fas fa-folder-open"
+                },
                 "download_method": {
                     "type": "string",
                     "default": "sratools",
@@ -71,9 +89,11 @@
                     "enum": [
                         "illumina",
                         "nanopore",
-                        "pacbio"
+                        "pacbio",
+                        "pacbio_hifi",
+                        "pacbio_clr"
                     ],
-                    "description": "Default platform tag applied to samples discovered via --reads_dir. Samplesheet rows (--input) can instead set this per-row via an optional 'platform' column.",
+                    "description": "Default platform tag applied to samples discovered via --reads_dir. 'pacbio' follows --pacbio_mode; 'pacbio_hifi'/'pacbio_clr' select the PacBio chemistry explicitly. Samplesheet rows (--input) can instead set this per-row via an optional 'platform' column.",
                     "fa_icon": "fas fa-microchip"
                 },
                 "outdir": {
@@ -456,6 +476,10 @@
                     "type": "integer",
                     "default": 90,
                     "description": "Filtlong --keep_percent."
+                },
+                "long_read_target_bases": {
+                    "type": "integer",
+                    "description": "Optional Filtlong --target_bases: cap each long-read sample at this many bases (keeps the best reads). ~400000000 is roughly 100x of a 4 Mb genome. Unset = no cap."
                 }
             }
         }

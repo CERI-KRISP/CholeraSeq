@@ -38,3 +38,16 @@ local_resources.config
 *.bak
 docs/.Rhistory
 sra_results/
+
+# --- local test runs and helper scripts (not part of the pipeline) ---
+# leading "/" = only at the repo top level (so bin/check_samplesheet.py is NOT matched)
+/full_test_output/
+/test_assemblies/
+/iqtree_run.log
+/full_test_samplesheet.csv
+/subset_samplesheet.csv
+/check_samplesheet.py
+/check_install.sh
+/patch_validator.py
+/make_full_test_samplesheet.sh
+/make_subset.sh

@@ -29,7 +29,12 @@ class RowChecker:
         ".fastq.gz",
         ".fasta",
         ".fna",
-        ".fa"
+        ".fa",
+        # Gzipped assemblies (e.g. NCBI's <acc>_genomic.fna.gz) - decompressed
+        # by GUNZIP_FASTA before alignment to the reference.
+        ".fasta.gz",
+        ".fna.gz",
+        ".fa.gz",
     )
 
     def __init__(
@@ -95,7 +100,8 @@ class RowChecker:
         if has_sra:
             self._validate_sra(row)
             # Pairing is unknown until the accession is actually downloaded -
-            # (input_check.nf routes them to SRA_DOWNLOAD, not create_fastq_channel).
+            # this placeholder is never read for sra_id rows (input_check.nf
+            # routes them to SRA_DOWNLOAD, not create_fastq_channel).
             row[self._single_col] = "unknown"
             self._seen.add((row[self._sample_col], row[self._sra_col]))
         else:
@@ -108,7 +114,7 @@ class RowChecker:
     def _validate_platform(self, row):
         """Normalize platform to 'illumina' if empty/absent; validate the value;
         reject fastq_2 for long-read platforms (no paired-end concept here)."""
-        valid_platforms = ("illumina", "nanopore", "pacbio")
+        valid_platforms = ("illumina", "nanopore", "pacbio", "pacbio_hifi", "pacbio_clr")
         platform = (row.get(self._platform_col, "") or "").strip().lower()
         if not platform:
             platform = "illumina"
@@ -116,7 +122,7 @@ class RowChecker:
             raise AssertionError(
                 f"'{platform}' is not a recognized platform. Must be one of: {', '.join(valid_platforms)}."
             )
-        if platform in ("nanopore", "pacbio") and len(row.get(self._second_col, "") or "") > 0:
+        if platform != "illumina" and len(row.get(self._second_col, "") or "") > 0:
             raise AssertionError(
                 f"platform '{platform}' does not support paired-end input - "
                 f"leave '{self._second_col}' empty for long-read samples."
@@ -138,7 +144,7 @@ class RowChecker:
         """Assert that the sample name exists and convert spaces to underscores."""
         if len(row[self._sample_col]) <= 0:
             raise AssertionError("Sample input is required.")
-        # Sanitize samples slightly.
+        
         row[self._sample_col] = row[self._sample_col].replace(" ", "_")
 
     def _validate_first(self, row):

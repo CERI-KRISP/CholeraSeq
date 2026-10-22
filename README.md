@@ -57,7 +57,7 @@ nextflow run CERI-KRISP/CholeraSeq -profile docker --outdir results \
   --reads_dir /path/to/fastqs --contigs_dir /path/to/contigs
 ```
 
-`--reads_dir` picks up both paired-end (`<id>_R1/_R2.fastq.gz` or `<id>_1/_2.fastq.gz`) and single-end (`<id>.fastq.gz`) files. `--contigs_dir` expects `<id>_contigs.fasta` files.
+`--reads_dir` picks up both paired-end (`<id>_R1/_R2.fastq.gz` or `<id>_1/_2.fastq.gz`) and single-end (`<id>.fastq.gz`) files. `--contigs_dir` picks up pre-assembled genomes (`.fasta`/`.fna`/`.fa`, optionally gzipped - e.g. NCBI's `<acc>_genomic.fna.gz`); each assembly is aligned to the reference genome and carried through the downstream analysis. Every matching fasta in the directory is treated as a sample.
 
 **3. SRA/ENA accession list (`--sra_list`)** - a plain text file, one accession per line:
 

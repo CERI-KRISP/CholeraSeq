@@ -28,7 +28,7 @@ The input samplesheet should be in CSV format, containing any mix of:
 
 1. Paired-end reads (e.g. `SRR8364252`)
 2. Single-end reads (e.g. `SRR771360`)
-3. Pre-assembled fasta files (e.g. `AHGB01000000`) - detected automatically from the file extension, and skip assembly/variant-calling steps that don't apply
+3. Pre-assembled genome fasta files (e.g. `AHGB01000000`; `.fasta`/`.fna`/`.fa`, optionally gzipped) - detected automatically from the file extension; they skip de novo assembly but are aligned to the reference genome and continue through the downstream analysis
 4. An SRA/ENA accession to download, via the `sra_id` column, instead of supplying local `fastq_1`/`fastq_2` paths
 
 ```csv
@@ -50,7 +50,7 @@ nextflow run CERI-KRISP/CholeraSeq -profile docker --outdir results \
   --reads_dir /path/to/fastqs --contigs_dir /path/to/contigs
 ```
 
-`--reads_dir` auto-discovers both paired-end (`<id>_R1/_R2.fastq.gz` or `<id>_1/_2.fastq.gz`) and single-end (`<id>.fastq.gz`) files. `--contigs_dir` expects `<id>_contigs.fasta` files.
+`--reads_dir` auto-discovers both paired-end (`<id>_R1/_R2.fastq.gz` or `<id>_1/_2.fastq.gz`) and single-end (`<id>.fastq.gz`) files. `--contigs_dir` picks up pre-assembled genomes (`.fasta`/`.fna`/`.fa`, optionally gzipped - e.g. NCBI's `<acc>_genomic.fna.gz`). Each assembly is aligned to the reference genome (Snippy contig mode) and carried through core alignment, typing/AMR screening and clustering like any other sample. Every matching fasta in the directory is treated as a sample, so keep unrelated fasta files (e.g. the reference) out of it.
 
 ### 3. SRA/ENA accession list (`--sra_list`)
 

@@ -32,7 +32,16 @@ workflow CLUSTERING_WF {
 
         } else {
 
-            in_run_gubbins_ch = clean_full_aln_fasta
+            // Whole-alignment mode: Gubbins must get the CLEANED alignment.
+            // NOTE: `clean_full_aln_fasta` (the take: input) is, despite its name,
+            // the RAW concatenated alignment - the cleaned one is only available as
+            // PYTHON_SEQ_CLEANER.out.cleaned_fasta. Passing the raw alignment here
+            // (as an earlier revision of this file did) makes PYTHON_SEQ_CLEANER run
+            // but have no effect on the default path, so samples
+            // max_missing_percentage reach Gubbins and the tree search; RAxML then
+            // aborts if any is entirely undetermined ("Sequence X consists entirely of
+            // undetermined values ... exiting") and the SNP alignment balloons.
+            in_run_gubbins_ch = PYTHON_SEQ_CLEANER.out.cleaned_fasta
 
         }
 
@@ -52,7 +61,7 @@ workflow CLUSTERING_WF {
         in_run_gubbins_ch
             .branch { meta, fasta ->
                 def n_seqs = fasta.text.count('>')
-                keep: n_seqs >= params.min_partition_size
+                keep: n_seqs >= (params.min_partition_size as int)   // as int: a CLI value arrives as a String, and Groovy's Integer >= String is silently false
                 skip: true
             }
             .set { gubbins_input_ch }

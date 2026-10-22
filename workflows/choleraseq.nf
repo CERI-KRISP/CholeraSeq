@@ -13,6 +13,7 @@ include { VARIANT_CALLING_WF         } from '../subworkflows/local/variant_calli
 include { CLUSTERING_WF              } from '../subworkflows/local/clustering'
 include { ASSEMBLY_TYPING_AMR_WF     } from '../subworkflows/local/assembly_typing_amr'
 include { LONGREAD_ASSEMBLY_WF       } from '../subworkflows/local/longread_assembly'
+include { GUNZIP_FASTA               } from '../modules/local/gunzip_fasta/main.nf'
 include { CAT_CAT                    } from '../modules/nf-core/cat/cat/main.nf'
 
 /*
@@ -55,19 +56,19 @@ workflow CHOLERASEQ {
     checkPathParamList.each { param -> if (param) { file(param, checkIfExists: true) } }
 
     // Check mandatory parameters - accept a samplesheet OR the directory/list
-    // auto-discovery flags. GET_INPUT_WF
+    // auto-discovery flags (from Cholera_genomics integration). GET_INPUT_WF
     // enforces the mutual-exclusivity/at-least-one-mode rules itself at runtime;
     // this is just an early, clear fail if literally nothing was given.
-    if (!params.input && !params.reads_dir && !params.contigs_dir && !params.sra_list && !params.ont_sra_list && !params.pacbio_sra_list) {
-        error('No input specified. Use --input <samplesheet.csv>, or one or more of --reads_dir/--contigs_dir/--sra_list/--ont_sra_list/--pacbio_sra_list.')
+    if (!params.input && !params.reads_dir && !params.ont_reads_dir && !params.pacbio_hifi_reads_dir && !params.pacbio_clr_reads_dir && !params.contigs_dir && !params.sra_list && !params.ont_sra_list && !params.pacbio_sra_list) {
+        error('No input specified. Use --input <samplesheet.csv>, or one or more of --reads_dir/--ont_reads_dir/--pacbio_hifi_reads_dir/--pacbio_clr_reads_dir/--contigs_dir/--sra_list/--ont_sra_list/--pacbio_sra_list.')
     }
 
     if (!(params.download_method in ['sratools', 'ftp', 'aspera'])) {
         error("--download_method must be one of: sratools, ftp, aspera (got '${params.download_method}')")
     }
 
-    if (!(params.platform in ['illumina', 'nanopore', 'pacbio'])) {
-        error("--platform must be one of: illumina, nanopore, pacbio (got '${params.platform}')")
+    if (!(params.platform in ['illumina', 'nanopore', 'pacbio', 'pacbio_hifi', 'pacbio_clr'])) {
+        error("--platform must be one of: illumina, nanopore, pacbio, pacbio_hifi, pacbio_clr (got '${params.platform}')")
     }
 
     if (!(params.pacbio_mode in ['hifi', 'raw'])) {
@@ -123,8 +124,8 @@ workflow CHOLERASEQ {
         reads_ch = GET_INPUT_WF.out.reads
                     .branch {
                         contigs:   it[0].is_contig == true
-                        longreads: it[0].is_contig == false && (it[0].platform == 'nanopore' || it[0].platform == 'pacbio')
-                        fastqs:    it[0].is_contig == false && !(it[0].platform == 'nanopore' || it[0].platform == 'pacbio')
+                        longreads: it[0].is_contig == false && it[0].platform in ['nanopore', 'pacbio', 'pacbio_hifi', 'pacbio_clr']
+                        fastqs:    it[0].is_contig == false && !(it[0].platform in ['nanopore', 'pacbio', 'pacbio_hifi', 'pacbio_clr'])
                     }
 
 
@@ -136,7 +137,7 @@ workflow CHOLERASEQ {
         ch_multiqc_files = ch_multiqc_files.mix(QUALITY_CONTROL_WF.out.fastp_json.collect{it[1]}.ifEmpty([]))
 
         //
-        // ONT/PacBio long reads, added
+        // ONT/PacBio long reads (from Cholera_genomics integration, added
         // separately from the initial integration): NanoPlot QC, Filtlong
         // filtering, Flye assembly. Output is tagged is_contig:true and
         // merged into cleaned_reads_ch below alongside reads_ch.contigs -
@@ -148,8 +149,28 @@ workflow CHOLERASEQ {
         LONGREAD_ASSEMBLY_WF ( reads_ch.longreads )
         ch_versions = ch_versions.mix(LONGREAD_ASSEMBLY_WF.out.versions)
 
+        //
+        // Pre-assembled genomes supplied by the user (samplesheet fasta rows or
+        // --contigs_dir): decompress any .gz so every is_contig:true sample
+        // reaches Snippy's contig-alignment mode as plain fasta, then rejoin
+        // the plain ones. Snippy aligns each assembly to the reference, and
+        // the result flows through core alignment, typing/AMR and clustering
+        // exactly like any other sample.
+        //
+        reads_ch.contigs
+            .branch {
+                gz:    it[1][0].name.endsWith('.gz')
+                plain: true
+            }
+            .set { contigs_by_compression }
+
+        GUNZIP_FASTA ( contigs_by_compression.gz.map { meta, files -> [ meta, files[0] ] } )
+
+        plain_contigs_ch = contigs_by_compression.plain
+            .mix( GUNZIP_FASTA.out.fasta.map { meta, fasta -> [ meta, [ fasta ] ] } )
+
         cleaned_reads_ch = QUALITY_CONTROL_WF.out.trimmed_reads
-                            .mix(reads_ch.contigs)
+                            .mix(plain_contigs_ch)
                             .mix(LONGREAD_ASSEMBLY_WF.out.contigs)
                             //.view()
                             //.collect()
@@ -161,8 +182,7 @@ workflow CHOLERASEQ {
         ch_versions = ch_versions.mix(VARIANT_CALLING_WF.out.versions)
 
         //
-        // De novo assembly + MLST typing + AMR/virulence screening (from
-        // initial integration). Runs on the same cleaned_reads_ch as
+        // De novo assembly + MLST typing + AMR/virulence screening. Runs on the same cleaned_reads_ch as
         // VARIANT_CALLING_WF above - entirely independent branch, doesn't touch
         // the existing Snippy/consensus/alignment logic. Gated by --skip_assembly
         // (whole subworkflow) and, inside it, --skip_mlst/--skip_amr (individual
@@ -246,7 +266,11 @@ workflow CHOLERASEQ {
     // `params` does not reliably resolve inside a closure registered this many levels
     // deep (CHOLERASEQ -> CERI_KRISP -> main.nf's entry workflow). The completion hook
     // now lives in main.nf's outermost `workflow {}` block instead, and builds
-    // multiqc_report as a direct file path rather than forwarding it from here
+    // multiqc_report as a direct file path rather than forwarding it from here -
+    // routing it through this workflow's `emit:` hit a separate unresolved Nextflow
+    // bug ("Missing workflow output parameter", nextflow-io/nextflow#6204). This
+    // workflow is therefore back to a plain (unlabeled) body - no take:/main:/emit:
+    // needed since nothing consumes CHOLERASEQ.out anymore.
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 

@@ -21,10 +21,17 @@ process MASK_GUBBINS {
     script:
     def args = task.ext.args ?: ''
 
+    // fix_gubbins_gff.py (bin/): Gubbins occasionally writes a recombination record
+    // with no taxa="..." attribute (seen: node="Node_7->SRR2815085.fasta"; and nothing
+    // else), which makes mask_gubbins_aln.py crash with AttributeError. The fix-up
+    // restores taxa= when the record is a branch to a single sample in the alignment,
+    // and drops it with a warning otherwise.
     """
+    fix_gubbins_gff.py ${input_gff} ${input_gff.baseName}.fixed.gff ${alignment}
+
     mask_gubbins_aln.py \\
       --aln ${alignment} \\
-      --gff ${input_gff} \\
+      --gff ${input_gff.baseName}.fixed.gff \\
       --out ${alignment.baseName}.gub.masked.fasta
 
     cat <<-END_VERSIONS > versions.yml
