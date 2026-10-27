@@ -51,3 +51,4 @@ sra_results/
 /patch_validator.py
 /make_full_test_samplesheet.sh
 /make_subset.sh
+/list_unused.sh
