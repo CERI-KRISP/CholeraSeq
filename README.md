@@ -24,7 +24,7 @@ It also assembles read data and screens assemblies for sequence type and for AMR
 - masks recombination with `gubbins`
 - extracts codon-aware variable sites using `varcodons.py`
 - infers an ML phylogeny with `iqtree`
-- assembles Illumina reads with `SPAdes`, and screens assemblies for sequence type (`mlst`) and AMR, virulence and plasmid genes (`ABRicate`)
+- assembles Illumina reads with `SPAdes`, and screens assemblies for sequence type (`mlst`) and AMR, virulence and plasmid genes (`ABRicate`), with run-wide summary tables
 - aggregates QC and workflow reports via `MultiQC`
 
 > This pipeline is aimed at phylogenetics and outbreak analysis. It does not provide serotype prediction or pangenome analysis.

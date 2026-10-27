@@ -194,7 +194,7 @@ workflow CHOLERASEQ {
         ASSEMBLY_TYPING_AMR_WF ( assembly_typing_input_ch )
         ch_versions = ch_versions.mix(ASSEMBLY_TYPING_AMR_WF.out.versions)
         ch_multiqc_files = ch_multiqc_files.mix(ASSEMBLY_TYPING_AMR_WF.out.mlst_tsv.collect{it[1]}.ifEmpty([]))
-        ch_multiqc_files = ch_multiqc_files.mix(ASSEMBLY_TYPING_AMR_WF.out.abricate_report.collect{it[1]}.ifEmpty([]))
+        ch_multiqc_files = ch_multiqc_files.mix(ASSEMBLY_TYPING_AMR_WF.out.abricate_report.map{ _meta, reports -> reports }.flatten().collect().ifEmpty([]))
 
 
         if (!params.skip_clustering) {

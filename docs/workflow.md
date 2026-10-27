@@ -103,7 +103,7 @@ The resulting alignment is intended for phylogenetic analysis while preserving c
 
 ### Assembly, typing and AMR
 
-`SPAdes` assembles Illumina reads. `mlst` assigns sequence types and `ABRicate` screens for AMR, virulence and plasmid genes, on the SPAdes assemblies, the Flye assemblies and any supplied assemblies. These results do not feed into the tree.
+`SPAdes` assembles Illumina reads. `mlst` assigns sequence types and `ABRicate` screens for AMR, virulence and plasmid genes, on the SPAdes assemblies, the Flye assemblies and any supplied assemblies. ABRicate searches each database in `abricate_dbs` separately (by default `ncbi` and `resfinder` for AMR, `vfdb` for virulence and `plasmidfinder` for plasmid replicons). The results are also combined into run-wide tables: one MLST table, and for each ABRicate database a gene-by-sample table and an all-hits table. These results do not feed into the tree.
 
 ## Optional global alignment mode
 

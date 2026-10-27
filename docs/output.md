@@ -54,8 +54,11 @@ Samples whose consensus is empty, covers only part of the reference, or has too 
 
 - `spades/<sample>.scaffolds.fa.gz` – SPAdes assembly of Illumina reads; samples supplied as assemblies, and long-read samples, skip this step
 - `spades/<sample>.spades.log` – SPAdes run log
-- `mlst/<sample>.tsv` – MLST sequence type call
-- `abricate/<sample>.txt` – AMR, virulence and plasmid gene hits
+- `mlst/<sample>.tsv` – MLST sequence type call for one sample
+- `mlst/mlst_summary.tsv` – one row per sample: MLST scheme, sequence type (ST) and allele calls
+- `abricate/<sample>.<db>.txt` – gene hits for one sample in one database: `ncbi` and `resfinder` (AMR), `vfdb` (virulence) and `plasmidfinder` (plasmid replicons) by default
+- `abricate/abricate_summary_<db>.tsv` – one row per sample and one column per gene for that database; each cell is the gene's % coverage, and `.` means not found
+- `abricate/abricate_hits_<db>.tsv` – every hit from every sample in that database, with % identity, % coverage and gene product
 
 ### Long-read QC and assembly
 

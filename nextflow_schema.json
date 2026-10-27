@@ -449,6 +449,12 @@
                     "type": "integer",
                     "default": 80,
                     "description": "ABRicate minimum %coverage to report a hit."
+                },
+                "abricate_dbs": {
+                    "type": "string",
+                    "default": "ncbi,resfinder,vfdb,plasmidfinder",
+                    "fa_icon": "fas fa-database",
+                    "description": "Comma-separated ABRicate databases to screen: ncbi and resfinder (AMR), vfdb (virulence), plasmidfinder (plasmid replicons). Also available: card, argannot, megares, ecoli_vf, ecoh."
                 }
             }
         },

@@ -60,6 +60,7 @@ De novo assembly of Illumina reads (`SPAdes`), MLST typing (`mlst`) and AMR, vir
 | `spades_cov` | `auto` | SPAdes `--cov-cutoff` (`auto`, `off`, or a number). |
 | `abricate_minid` | `80` | ABRicate minimum % identity to report a hit. |
 | `abricate_mincov` | `80` | ABRicate minimum % coverage to report a hit. |
+| `abricate_dbs` | `ncbi,resfinder,vfdb,plasmidfinder` | Comma-separated ABRicate databases to screen: `ncbi` and `resfinder` (AMR), `vfdb` (virulence), `plasmidfinder` (plasmid replicons). Also available: `card`, `argannot`, `megares`, `ecoli_vf`, `ecoh`. Each gets its own reports and summary tables. |
 
 ## Long-read parameters
 

@@ -1,6 +1,8 @@
 include { SPADES       } from '../../modules/local/spades/main.nf'
 include { MLST         } from '../../modules/local/mlst/main.nf'
 include { ABRICATE_RUN } from '../../modules/local/abricate/main.nf'
+include { ABRICATE_SUMMARY } from '../../modules/local/abricate/summary.nf'
+include { MLST_SUMMARY     } from '../../modules/local/mlst/summary.nf'
 
 // De novo assembly, MLST typing, and AMR/virulence screening. Branches off the
 // same input channel shape VARIANT_CALLING_WF takes (mixed fastq + pre-assembled
@@ -51,6 +53,10 @@ workflow ASSEMBLY_TYPING_AMR_WF {
         MLST ( mlst_input_ch )
         ch_versions = ch_versions.mix(MLST.out.versions)
 
+        // One table for all samples (runs only if MLST produced anything)
+        MLST_SUMMARY ( MLST.out.tsv.map { _meta, tsv -> tsv }.collect() )
+        ch_versions = ch_versions.mix(MLST_SUMMARY.out.versions)
+
         //
         // AMR / virulence / plasmid screening
         //
@@ -58,9 +64,15 @@ workflow ASSEMBLY_TYPING_AMR_WF {
         ABRICATE_RUN ( abricate_input_ch, [] )
         ch_versions = ch_versions.mix(ABRICATE_RUN.out.versions)
 
+        // Gene-by-sample and all-hits tables, one pair per database
+        ABRICATE_SUMMARY ( ABRICATE_RUN.out.report.map { _meta, reports -> reports }.flatten().collect() )
+        ch_versions = ch_versions.mix(ABRICATE_SUMMARY.out.versions)
+
     emit:
         assembly_ch
         mlst_tsv         = MLST.out.tsv
         abricate_report  = ABRICATE_RUN.out.report
+        mlst_summary     = MLST_SUMMARY.out.summary
+        abricate_summary = ABRICATE_SUMMARY.out.summary
         versions         = ch_versions
 }

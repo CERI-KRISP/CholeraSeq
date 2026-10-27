@@ -22,17 +22,24 @@ process ABRICATE_RUN {
     def args    = task.ext.args   ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def datadir = databasedir ? "--datadir ${databasedir}" : ''
+    // One report per database: by default AMR (ncbi), virulence (vfdb) and plasmid
+    // replicons (plasmidfinder) - set with --abricate_dbs. Without --db, abricate
+    // searches only its default 'ncbi' AMR database.
+    def dbs     = (task.ext.dbs ?: 'ncbi').tokenize(',')*.trim().findAll { db -> db }
     """
     if [[ "${assembly}" != "${prefix}.fasta" ]]; then
         ln -s ${assembly} ${prefix}.fasta
     fi
 
-    abricate \\
-        ${prefix}.fasta \\
-        ${args} \\
-        ${datadir} \\
-        --threads ${task.cpus} \\
-        > ${prefix}.txt
+    for db in ${dbs.join(' ')}; do
+        abricate \\
+            ${prefix}.fasta \\
+            --db \$db \\
+            ${args} \\
+            ${datadir} \\
+            --threads ${task.cpus} \\
+            > ${prefix}.\${db}.txt
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,8 +49,9 @@ process ABRICATE_RUN {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def dbs    = (task.ext.dbs ?: 'ncbi').tokenize(',')*.trim().findAll { db -> db }
     """
-    touch ${prefix}.txt
+    for db in ${dbs.join(' ')}; do touch ${prefix}.\${db}.txt; done
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         abricate: 1.0.1

@@ -215,6 +215,7 @@ See [parameters.md](parameters.md) for the full parameter reference. Common sett
 - `skip_fastbaps`: skip FastBAPS clustering
 - `skip_clustering`: skip the clustering and tree workflow
 - `skip_assembly`, `skip_mlst`, `skip_amr`: skip assembly, typing or AMR screening
+- `abricate_dbs`: ABRicate databases to screen (default `ncbi,resfinder,vfdb,plasmidfinder`: AMR from two sources, virulence, plasmid replicons)
 - `max_missing_percentage`: missing-data filter threshold
 - `pacbio_mode`, `long_read_target_bases`: long-read assembly settings
 
