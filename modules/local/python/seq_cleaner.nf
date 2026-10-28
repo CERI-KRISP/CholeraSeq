@@ -23,7 +23,8 @@ process PYTHON_SEQ_CLEANER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def local_min_valid_percentage = (100 - params.max_missing_percentage)
+
+    def local_min_valid_percentage = (100 - (params.max_missing_percentage as double))
 
     """
     seq_cleaner.py -f ${local_min_valid_percentage} $input_fasta ${prefix}.cleaned.fasta

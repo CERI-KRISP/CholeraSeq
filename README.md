@@ -1,6 +1,6 @@
 [![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.15167441-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.15167441)
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.10.1-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A524.04.2-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
@@ -10,19 +10,24 @@
 
 `CERI-KRISP/CholeraSeq` is a Nextflow DSL2 pipeline for phylogenetic analysis of *Vibrio cholerae* outbreak data.
 It converts raw reads or genome assemblies into a recombination-masked core-genome alignment and infers a maximum likelihood tree with `iqtree`.
+It also assembles read data and screens assemblies for sequence type and for AMR, virulence and plasmid genes.
 
 ## What it does
 
-- accepts paired-end or single-end Illumina reads, or FASTA assemblies
-- performs QC and trimming on reads with `fastp`
+- accepts Illumina reads (paired-end or single-end), Oxford Nanopore and PacBio (HiFi or CLR) long reads, and FASTA assemblies, in any mix
+- takes samples from a sample sheet, finds them in folders, or downloads them from SRA/ENA by accession
+- performs QC and trimming on Illumina reads with `fastp`
+- quality-checks, filters and assembles long reads with `NanoPlot`, `Filtlong` and `Flye`
 - maps data to a reference genome using `snippy`
-- generates consensus FASTA sequences and concatenates them into a cohort alignment
+- generates consensus FASTA sequences and concatenates them into a cohort alignment, leaving out samples whose consensus is empty, partial or too incomplete
+- optionally clusters samples with FastBAPS
 - masks recombination with `gubbins`
 - extracts codon-aware variable sites using `varcodons.py`
 - infers an ML phylogeny with `iqtree`
+- assembles Illumina reads with `SPAdes`, and screens assemblies for sequence type (`mlst`) and AMR, virulence and plasmid genes (`ABRicate`), with run-wide summary tables
 - aggregates QC and workflow reports via `MultiQC`
 
-> This pipeline is aimed at phylogenetics and outbreak analysis. It does not provide AMR profiling, MLST typing, serotype prediction, or pangenome analysis.
+> This pipeline is aimed at phylogenetics and outbreak analysis. It does not provide serotype prediction or pangenome analysis.
 
 ## Quick start
 
@@ -30,6 +35,7 @@ It converts raw reads or genome assemblies into a recombination-masked core-geno
 nextflow run CERI-KRISP/CholeraSeq \
   -profile docker \
   --input /path/to/samplesheet.csv \
+  --ref_genbank resources/reference/GCF_003063785.full.gbk \
   --outdir results
 ```
 
@@ -53,7 +59,14 @@ The pipeline expects an input sample sheet in CSV format with at least these col
 - `fastq_1`
 - `fastq_2`
 
-For single-end or assembly inputs, set `fastq_2` to blank. Assemblies are accepted as FASTA files in `fastq_1`.
+For single-end, long-read or assembly inputs, set `fastq_2` to blank. Assemblies are accepted as FASTA files (optionally gzipped) in `fastq_1`.
+Two optional columns are supported: `sra_id`, to download a sample from SRA/ENA instead of using local files, and `platform`, which is `illumina` (default), `nanopore`, `pacbio_hifi`, `pacbio_clr` or `pacbio`.
+
+Instead of a sample sheet, samples can be found in folders (`--reads_dir`, `--ont_reads_dir`, `--pacbio_hifi_reads_dir`, `--pacbio_clr_reads_dir`, `--contigs_dir`) or downloaded from accession lists (`--sra_list`, `--ont_sra_list`, `--pacbio_sra_list`). These can be combined in one run; see `docs/usage.md`.
+
+A reference GenBank file is required (`--ref_genbank`). The repository includes `resources/reference/GCF_003063785.full.gbk`, which is recommended for compatibility with the published global core alignment.
+
+> **Note:** on Nextflow 26, values typed on the command line arrive as text: `--skip_fastbaps false` does not switch a step on, and `--max_cpus 8` fails validation. Put such values in a params file instead (see `docs/usage.md`).
 
 ## Documentation
 
@@ -69,6 +82,10 @@ The pipeline documentation is available in the `docs/` directory and includes:
 The pipeline uses a reference GenBank file for mapping and variant extraction. A global reference cohort is available via Zenodo:
 
 [![Zenodo Dataset](http://img.shields.io/badge/DOI-10.5281/zenodo.10984554-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.10984554)
+
+## Credits
+
+De novo assembly, MLST typing, AMR/virulence/plasmid screening, SRA download, folder input and long-read support were integrated from [Cholera_genomics](https://github.com/ottovon-dakurah/Cholera_genomics).
 
 ## Contributions and support
 
