@@ -22,6 +22,7 @@ Give either `input`, or one or more of the folder and accession-list options (th
 | `platform` | `illumina` | Platform for samples found in `reads_dir`: `illumina`, `nanopore`, `pacbio`, `pacbio_hifi` or `pacbio_clr`. |
 | `download_method` | `sratools` | How accessions are downloaded. Only `sratools` is implemented; `ftp` and `aspera` stop with a clear message. |
 | `outdir` | `null` | Output directory for pipeline results. |
+| `trace_timestamp` | run start time | Timestamp (`yyyy-MM-dd_HH-mm-ss`) added to the `pipeline_info/` report file names. Set automatically; there is normally no reason to change it. |
 
 > In the sample sheet, leave `fastq_2` blank for single-end, long-read or assembly input. Fill either `sra_id` or `fastq_1`, not both.
 
