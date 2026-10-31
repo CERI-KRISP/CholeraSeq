@@ -4,13 +4,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Entries for 1.2.0 and earlier were reconstructed from the git tags and history; the
-`Unreleased` section follows pull requests [#24](https://github.com/CERI-KRISP/CholeraSeq/pull/24),
+2.0.0 section follows pull requests [#24](https://github.com/CERI-KRISP/CholeraSeq/pull/24),
 [#30](https://github.com/CERI-KRISP/CholeraSeq/pull/30) and
 [#31](https://github.com/CERI-KRISP/CholeraSeq/pull/31).
 
-## Unreleased
+## 2.0.0 - 2026-10-31
 
-Work on `dev` since 1.2.0. The `manifest.version` is still `1.2.0`; it should be bumped when this is released.
+A major release: the pipeline now needs **Nextflow 25.04.8 or newer** (it was 24.04.2), and adds assembly/typing/AMR, long-read and accession inputs.
+
+### Breaking changes
+
+- **Minimum Nextflow is now 25.04.8** (`manifest.nextflowVersion`, the README badge and the CI matrix). The Nextflow 26 strict-syntax changes do not compile on older releases: 24.04.2 and 24.10.9 stop with `Variable 'workflow' already defined in the process scope` in `main.nf`. 25.04.8, 25.10.4 and 26.04.3 load the pipeline and build the full workflow graph (`-preview`).
+- Real runs were only validated on Nextflow 26.04.x (26.04.3 on a Nomad cluster, 26.04.6 for the targeted tests); on 25.04.8 and 25.10.4 only the load-and-preview check above has been done.
+- On Nextflow 26, a boolean or number given on the command line arrives as a string, so `--skip_x false` does not turn a step back on. Use a params file for booleans and numbers.
 
 ### `Added`
 
@@ -34,7 +40,6 @@ Work on `dev` since 1.2.0. The `manifest.version` is still `1.2.0`; it should be
 ### `Changed`
 
 - **Nextflow 26.04 compatibility** (strict config and script syntax): `check_max()` replaced by native `resourceLimits`; the `try/catch` around `includeConfig` replaced by a conditional include; top-level statements, `for` loops and `exit 1, 'msg'` rewritten for the strict parser; `workflow.onComplete` moved to the entry workflow.
-- On Nextflow 26, a boolean or number given on the command line arrives as a string, so `--skip_x false` does not turn a step back on. Use a params file for booleans and numbers (documented in `docs/usage.md`).
 - Gubbins now runs single-threaded (`cpus = 1` in `conf/modules.config`), see *Fixed*.
 - IQ-TREE is allowed up to 72 h (was the `process_medium` limit of 8 h); still capped by `max_time`.
 - The `test` profile samplesheet uses `https://` URLs instead of `ftp://` or local-only paths, which stage more reliably.
@@ -57,7 +62,7 @@ Work on `dev` since 1.2.0. The `manifest.version` is still `1.2.0`; it should be
 
 ### `Dependencies`
 
-- Developed and run on Nextflow 26.04.x. `manifest.nextflowVersion` is still `!>=24.04.2` and the strict-syntax changes have not been re-validated on older releases.
+- Nextflow 25.04.8 or newer is required; full runs have only been validated on 26.04.x (see *Breaking changes*).
 - New tools: SPAdes, MLST, ABRicate, NanoPlot, Filtlong, Flye, `sra-tools`.
 
 ### `Deprecated`
