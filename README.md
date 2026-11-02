@@ -8,7 +8,7 @@
 
 # CholeraSeq
 
-`CERI-KRISP/CholeraSeq` is a Nextflow DSL2 pipeline for phylogenetic analysis of *Vibrio cholerae* outbreak data.
+`CERI-KRISP/CholeraSeq` is a Nextflow DSL2 pipeline for phylogenetic analysis of *Vibrio cholerae* outbreak data. The pipeline has been published in the [Oxford Bioinformatics Journal](https://doi.org/10.1093/bioinformatics/btaf665) 📝.
 It converts raw reads or genome assemblies into a recombination-masked core-genome alignment and infers a maximum likelihood tree with `iqtree`.
 It also assembles read data and screens assemblies for sequence type and for AMR, virulence and plasmid genes.
 
