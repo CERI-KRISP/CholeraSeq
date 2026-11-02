@@ -8,9 +8,9 @@ Entries for 1.2.0 and earlier were reconstructed from the git tags and history; 
 [#30](https://github.com/CERI-KRISP/CholeraSeq/pull/30) and
 [#31](https://github.com/CERI-KRISP/CholeraSeq/pull/31).
 
-## 2.0.0 - 2026-10-31
+## 2.0.0-alpha - 2026-11-02
 
-A major release: the pipeline now needs **Nextflow 25.04.8 or newer** (it was 24.04.2), and adds assembly/typing/AMR, long-read and accession inputs.
+A major release, published as a pre-release (alpha) while larger-scale validation continues: the pipeline now needs **Nextflow 25.04.8 or newer** (it was 24.04.2), and adds assembly/typing/AMR, long-read and accession inputs.
 
 ### Breaking changes
 
