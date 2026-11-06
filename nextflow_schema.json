@@ -11,7 +11,6 @@
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
             "required": [
-                "input",
                 "outdir"
             ],
             "properties": {
@@ -24,6 +23,78 @@
                     "description": "Path to comma-separated file containing information about the samples in the experiment.",
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
                     "fa_icon": "fas fa-file-csv"
+                },
+                "reads_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Directory of fastq files to auto-discover (alternative to --input). Paired (<id>_R1/_R2.fastq.gz or <id>_1/_2.fastq.gz) or single-end (<id>.fastq.gz).",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "contigs_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Directory of pre-assembled genomes (.fasta/.fna/.fa, optionally gzipped) to auto-discover (alternative/addition to --input). Each assembly is aligned to the reference genome and carried through the downstream analysis. Every matching fasta in the directory is treated as a sample.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "sra_list": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Text file, one SRA/ENA accession (SRR/ERR/DRR) per line, to download and process as Illumina samples.",
+                    "fa_icon": "fas fa-file-alt"
+                },
+                "ont_sra_list": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Text file, one SRA/ENA accession per line, to download and process as Nanopore samples. Combinable with --sra_list/--pacbio_sra_list in one run.",
+                    "fa_icon": "fas fa-file-alt"
+                },
+                "pacbio_sra_list": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Text file, one SRA/ENA accession per line, to download and process as PacBio samples. Combinable with --sra_list/--ont_sra_list in one run.",
+                    "fa_icon": "fas fa-file-alt"
+                },
+                "ont_reads_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Directory of Nanopore fastq.gz/fq.gz files, each treated as one single-end sample. Combinable with the other directory/list flags.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "pacbio_hifi_reads_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Directory of PacBio HiFi fastq.gz/fq.gz files, each treated as one single-end sample. Combinable with --pacbio_clr_reads_dir.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "pacbio_clr_reads_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Directory of PacBio CLR (raw) fastq.gz/fq.gz files, each treated as one single-end sample. Combinable with --pacbio_hifi_reads_dir.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "download_method": {
+                    "type": "string",
+                    "default": "sratools",
+                    "enum": [
+                        "sratools",
+                        "ftp",
+                        "aspera"
+                    ],
+                    "description": "Method used to download sra_list/ont_sra_list/pacbio_sra_list/sra_id accessions. Only 'sratools' is currently implemented - 'ftp'/'aspera' fail fast with a clear message if selected.",
+                    "fa_icon": "fas fa-download"
+                },
+                "platform": {
+                    "type": "string",
+                    "default": "illumina",
+                    "enum": [
+                        "illumina",
+                        "nanopore",
+                        "pacbio",
+                        "pacbio_hifi",
+                        "pacbio_clr"
+                    ],
+                    "description": "Default platform tag applied to samples discovered via --reads_dir. 'pacbio' follows --pacbio_mode; 'pacbio_hifi'/'pacbio_clr' select the PacBio chemistry explicitly. Samplesheet rows (--input) can instead set this per-row via an optional 'platform' column.",
+                    "fa_icon": "fas fa-microchip"
                 },
                 "outdir": {
                     "type": "string",
@@ -50,7 +121,14 @@
             "type": "object",
             "fa_icon": "fas fa-dna",
             "description": "Reference genome related files and options required for the workflow.",
-            "properties": {}
+            "properties": {
+                "ref_genbank": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Path to the reference GenBank file used for Snippy variant calling.",
+                    "fa_icon": "fas fa-dna"
+                }
+            }
         },
         "institutional_config_options": {
             "title": "Institutional config options",
@@ -244,6 +322,172 @@
                     "help_text": "By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters."
                 }
             }
+        },
+        "quality_control_options": {
+            "title": "Quality control options",
+            "type": "object",
+            "fa_icon": "fas fa-filter",
+            "description": "Thresholds used during read trimming, mapping, and consensus/variant calling.",
+            "properties": {
+                "min_trim_quality": {
+                    "type": "integer",
+                    "default": 20,
+                    "description": "fastp mean quality threshold for trimming."
+                },
+                "min_trim_length": {
+                    "type": "integer",
+                    "default": 35,
+                    "description": "fastp minimum read length after trimming."
+                },
+                "min_mapping_quality": {
+                    "type": "integer",
+                    "default": 20,
+                    "description": "samtools consensus --min-MQ."
+                },
+                "min_base_quality": {
+                    "type": "integer",
+                    "default": 20,
+                    "description": "samtools consensus --min-BQ."
+                },
+                "min_site_coverage": {
+                    "type": "integer",
+                    "default": 5,
+                    "description": "Minimum site coverage; samtools consensus --min-depth / snippy --mincov."
+                },
+                "min_allele_fraction": {
+                    "type": "number",
+                    "default": 0.75,
+                    "description": "Minimum fraction supporting an allele call; samtools consensus -c / snippy --minfrac."
+                },
+                "snippy_minqual": {
+                    "type": "integer",
+                    "default": 100,
+                    "description": "snippy --minqual, minimum variant call quality."
+                },
+                "max_missing_percentage": {
+                    "type": "integer",
+                    "default": 50,
+                    "description": "Max percentage of undefined sites allowed in a consensus fasta before exclusion (seqcleaner, gubbins)."
+                },
+                "min_parsimony_coverage": {
+                    "type": "number",
+                    "default": 0.7,
+                    "description": "Minimum site coverage for varcodons.py to keep a site when generating pi output."
+                }
+            }
+        },
+        "clustering_options": {
+            "title": "Clustering & alignment options",
+            "type": "object",
+            "fa_icon": "fas fa-project-diagram",
+            "description": "FastBAPS clustering, per-cluster Gubbins, and global/cohort core alignment merging.",
+            "properties": {
+                "skip_clustering": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Skip clustering/recombination-filtering/phylogeny entirely."
+                },
+                "skip_fastbaps": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Skip FastBAPS clustering (Gubbins then runs on the whole alignment instead of per-cluster)."
+                },
+                "min_partition_size": {
+                    "type": "integer",
+                    "default": 4,
+                    "description": "Minimum sequences a FastBAPS cluster must have to run Gubbins/RAxML on - smaller clusters are skipped rather than causing RAxML to fail with 'TOO FEW SPECIES'."
+                },
+                "global_core_alignment": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Path to an existing global core alignment fasta to merge with. See https://doi.org/10.5281/zenodo.10984554"
+                },
+                "cohort_core_alignment": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Path to an existing cohort core alignment fasta to merge with global_core_alignment."
+                }
+            }
+        },
+        "assembly_typing_amr_options": {
+            "title": "Assembly, typing & AMR options",
+            "type": "object",
+            "fa_icon": "fas fa-vial",
+            "description": "De novo assembly (SPAdes), MLST typing, and AMR/virulence/plasmid screening (ABRicate).",
+            "properties": {
+                "skip_assembly": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Skip the whole assembly/typing/AMR subworkflow (SPAdes + MLST + ABRicate)."
+                },
+                "skip_mlst": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Skip MLST typing only."
+                },
+                "skip_amr": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Skip ABRicate AMR/virulence/plasmid screening only."
+                },
+                "spades_mode": {
+                    "type": "string",
+                    "default": "careful",
+                    "description": "SPAdes assembly mode: 'careful', 'isolate', 'meta', 'rna', or '' for default."
+                },
+                "spades_cov": {
+                    "type": "string",
+                    "default": "auto",
+                    "description": "SPAdes --cov-cutoff value: 'auto', 'off', or a number."
+                },
+                "abricate_minid": {
+                    "type": "integer",
+                    "default": 80,
+                    "description": "ABRicate minimum %identity to report a hit."
+                },
+                "abricate_mincov": {
+                    "type": "integer",
+                    "default": 80,
+                    "description": "ABRicate minimum %coverage to report a hit."
+                },
+                "abricate_dbs": {
+                    "type": "string",
+                    "default": "ncbi,resfinder,vfdb,plasmidfinder",
+                    "fa_icon": "fas fa-database",
+                    "description": "Comma-separated ABRicate databases to screen: ncbi and resfinder (AMR), vfdb (virulence), plasmidfinder (plasmid replicons). Also available: card, argannot, megares, ecoli_vf, ecoh."
+                }
+            }
+        },
+        "long_read_options": {
+            "title": "Long-read (ONT/PacBio) options",
+            "type": "object",
+            "fa_icon": "fas fa-wave-square",
+            "description": "QC (NanoPlot), filtering (Filtlong), and assembly (Flye) for Nanopore/PacBio samples.",
+            "properties": {
+                "pacbio_mode": {
+                    "type": "string",
+                    "default": "hifi",
+                    "enum": [
+                        "hifi",
+                        "raw"
+                    ],
+                    "description": "Flye assembly mode for PacBio samples: 'hifi' (--pacbio-hifi, for high-accuracy CCS reads) or 'raw' (--pacbio-raw, for older/CLR-era data). Not auto-detected - check the accession's actual read type before choosing."
+                },
+                "long_read_min_length": {
+                    "type": "integer",
+                    "default": 1000,
+                    "description": "Filtlong --min_length."
+                },
+                "long_read_keep_percent": {
+                    "type": "integer",
+                    "default": 90,
+                    "description": "Filtlong --keep_percent."
+                },
+                "long_read_target_bases": {
+                    "type": "integer",
+                    "description": "Optional Filtlong --target_bases: cap each long-read sample at this many bases (keeps the best reads). ~400000000 is roughly 100x of a 4 Mb genome. Unset = no cap."
+                }
+            }
         }
     },
     "allOf": [
@@ -252,6 +496,18 @@
         },
         {
             "$ref": "#/definitions/reference_genome_options"
+        },
+        {
+            "$ref": "#/definitions/quality_control_options"
+        },
+        {
+            "$ref": "#/definitions/clustering_options"
+        },
+        {
+            "$ref": "#/definitions/assembly_typing_amr_options"
+        },
+        {
+            "$ref": "#/definitions/long_read_options"
         },
         {
             "$ref": "#/definitions/institutional_config_options"

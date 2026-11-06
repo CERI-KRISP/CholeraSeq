@@ -23,7 +23,7 @@ process UTILS_VARCODONS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def arg_genbank = params.ref_genbank ? "-g ${params.ref_genbank}" : ''
+    def arg_genbank = ref_genbank ? "-g ${ref_genbank}" : ''
 
     //NOTE
     // -g ${ref_genbank} is used only when the reference is gbk format
